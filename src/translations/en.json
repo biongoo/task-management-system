@@ -2,6 +2,8 @@
   "layout": {
     "title": "Task Management System",
     "shortTitle": "TMS",
-    "themeSettings": "Theme settings"
+    "themeSettings": "Theme settings",
+    "mode": "Mode",
+    "color": "Color"
   }
 }

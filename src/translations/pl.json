@@ -2,6 +2,8 @@
   "layout": {
     "title": "System zarządzania zadaniami",
     "shortTitle": "SZZ",
-    "themeSettings": "Ustawienia motywu"
+    "themeSettings": "Ustawienia motywu",
+    "mode": "Tryb",
+    "color": "Kolor"
   }
 }

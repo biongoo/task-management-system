@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { alpha } from '@mui/material/styles';
-import { Menu, MenuItem, Typography, IconButton } from '@mui/material';
+import { Menu, MenuItem, Typography, IconButton, Box } from '@mui/material';
 
 const Languages = () => {
   const { i18n } = useTranslation();
@@ -37,10 +37,16 @@ const Languages = () => {
         selected={languages[lang].id === actualLanguageId}
         onClick={handleMenuItemClick.bind(null, languages[lang].id)}
       >
-        <img
+        <Box
+          component="img"
           src={languages[lang].url}
           alt={languages[lang].name}
-          style={{ width: 28, height: 20, borderRadius: '30%' }}
+          sx={{
+            width: 27,
+            height: 20,
+            borderRadius: 2,
+            boxShadow: 4,
+          }}
         />
         <Typography ml={1} variant="body2">
           {languages[lang].name}
@@ -67,10 +73,16 @@ const Languages = () => {
         }}
         onClick={handleClick}
       >
-        <img
+        <Box
+          component="img"
           src={languages[actualLanguageId].url}
           alt={languages[actualLanguageId].name}
-          style={{ width: 28, height: 20, borderRadius: '30%' }}
+          sx={{
+            width: 27,
+            height: 20,
+            borderRadius: 2,
+            boxShadow: 4,
+          }}
         />
       </IconButton>
 

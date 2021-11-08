@@ -1,24 +1,13 @@
 import React from 'react';
 import { alpha } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import {
-  Drawer,
-  Toolbar,
-  Typography,
-  Divider,
-  Box,
-  Stack,
-  Button,
-} from '@mui/material';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import { Drawer, Toolbar, Typography, Divider, Box } from '@mui/material';
+
+import PaletteContentMode from './PaletteContentMode';
+import PaletteContentColor from './PaletteContentColor';
 
 const PaletteContent = ({ showPalette, showPaletteHandler, drawerWidth }) => {
   const { t } = useTranslation();
-
-  const colors1 = ['green', 'purple', 'light-blue'];
-  const colors2 = ['blue', 'orange', 'red'];
 
   const drawer = (
     <>
@@ -35,79 +24,8 @@ const PaletteContent = ({ showPalette, showPaletteHandler, drawerWidth }) => {
       />
 
       <Box m={3}>
-        <Typography variant="subtitle2">{t('layout.mode')}</Typography>
-
-        <Stack
-          direction="row"
-          alignItems="center"
-          spacing={1}
-          mt={2}
-          sx={{ justifyContent: 'space-between' }}
-        >
-          <Button
-            sx={{
-              width: 88,
-              height: 88,
-              boxShadow: 12,
-              bgcolor: 'palettebg.light',
-              '&.MuiButton-root:hover': {
-                bgcolor: (theme) => alpha(theme.palette.secondary.main, 0.3),
-              },
-            }}
-            color="secondary"
-          >
-            <LightModeIcon
-              sx={{
-                width: 28,
-                height: 28,
-              }}
-            />
-          </Button>
-
-          <Button
-            sx={{
-              width: 88,
-              height: 88,
-              bgcolor: 'palettebg.dark',
-              boxShadow: 12,
-              '&.MuiButton-root:hover': {
-                bgcolor: (theme) => alpha(theme.palette.secondary.main, 0.3),
-              },
-            }}
-            color="secondary"
-          >
-            <DarkModeIcon
-              sx={{
-                width: 28,
-                height: 28,
-              }}
-            />
-          </Button>
-        </Stack>
-
-        <Typography variant="subtitle2" mt={4}>
-          {t('layout.color')}
-        </Typography>
-        <Stack
-          direction="row"
-          alignItems="center"
-          spacing={1}
-          mt={2}
-          sx={{ justifyContent: 'space-between' }}
-        >
-          {colors1.map((color) => {
-            return (
-              <Button variant="outlined" color="secondary">
-                <FiberManualRecordIcon
-                  sx={{
-                    width: 28,
-                    height: 28,
-                  }}
-                />
-              </Button>
-            );
-          })}
-        </Stack>
+        <PaletteContentMode />
+        <PaletteContentColor />
       </Box>
     </>
   );
@@ -120,10 +38,9 @@ const PaletteContent = ({ showPalette, showPaletteHandler, drawerWidth }) => {
       sx={{
         '& .MuiDrawer-paper': {
           width: drawerWidth,
-          marginTop: (theme) => `${theme.mixins.toolbar.minHeight}px`,
-          height: (theme) =>
-            `calc(100% - ${theme.mixins.toolbar.minHeight * 2}px)`,
-          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.9),
+          marginTop: '10px',
+          height: `calc(100% - 20px)`,
+          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.95),
           borderRadius: 3,
         },
       }}

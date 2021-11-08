@@ -15,7 +15,7 @@ const MainLayoutTop = ({ drawerWidth, drawerToggleHandler }) => {
       sx={{
         width: { md: `calc(100% - ${drawerWidth}px)` },
         ml: { md: `${drawerWidth}px` },
-        boxShadow: 5,
+        boxShadow: 6,
         backgroundColor: (theme) => alpha(theme.palette.primary.dark, 0.96),
       }}
     >

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeColor } from '../../../store/palette-slice';
+import { changeColor } from '../../store/palette-slice';
 import { Typography, Grid, Button } from '@mui/material';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import { alpha } from '@mui/material/styles';

@@ -5,5 +5,17 @@
     "themeSettings": "Theme settings",
     "mode": "Mode",
     "color": "Color"
+  },
+  "signIn": {
+    "title": "Sign in to TMS",
+    "enterDetails": "Enter your details below.",
+    "login": "Login",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgot": "Forgot password?",
+    "signin": "Sign in",
+    "signup": "Sign up",
+    "or": "OR",
+    "incorrectEntry": "Incorrect data."
   }
 }

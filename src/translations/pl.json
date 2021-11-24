@@ -5,5 +5,17 @@
     "themeSettings": "Ustawienia motywu",
     "mode": "Tryb",
     "color": "Kolor"
+  },
+  "signIn": {
+    "title": "Zaloguj się do TMS",
+    "enterDetails": "Wpisz poniżej swoje dane.",
+    "login": "Login",
+    "password": "Hasło",
+    "rememberMe": "Zapamiętaj mnie",
+    "forgot": "Nie pamiętasz hasła?",
+    "signin": "Zaloguj się",
+    "signup": "Zarejestruj się",
+    "or": "LUB",
+    "incorrectEntry": "Nieprawidłowe dane."
   }
 }

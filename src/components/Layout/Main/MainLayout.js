@@ -7,7 +7,7 @@ import MainLayoutLeft from './MainLayoutLeft';
 
 const drawerWidth = 240;
 
-const MainLayout = () => {
+const MainLayout = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const drawerToggleHandler = () => {
@@ -36,7 +36,7 @@ const MainLayout = () => {
         }}
       >
         <Toolbar />
-        <Outlet />
+        {<Outlet />}
       </Box>
     </Box>
   );

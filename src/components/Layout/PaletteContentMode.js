@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeMode } from '../../../store/palette-slice';
+import { changeMode } from '../../store/palette-slice';
 import { useTranslation } from 'react-i18next';
 import { Stack, Button, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';

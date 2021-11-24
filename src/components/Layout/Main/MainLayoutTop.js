@@ -3,10 +3,10 @@ import { AppBar, Toolbar, IconButton, Stack, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { alpha } from '@mui/material/styles';
 
-import Language from './Languages';
+import Languages from '../Languages';
 import Account from './Account';
 import Notifications from './Notifications';
-import Palette from './Palette';
+import Palette from '../Palette';
 
 const MainLayoutTop = ({ drawerWidth, drawerToggleHandler }) => {
   return (
@@ -34,7 +34,7 @@ const MainLayoutTop = ({ drawerWidth, drawerToggleHandler }) => {
 
         {/* Stack with icons */}
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, md: 1 }}>
-          <Language />
+          <Languages />
           <Palette drawerWidth={drawerWidth} />
           <Notifications />
           <Account />

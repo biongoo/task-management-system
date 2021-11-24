@@ -1,68 +1,81 @@
-import React, { useRef, useEffect } from 'react';
-import Lottie from 'lottie-web';
-import { colorify, getColors, replaceColor } from 'lottie-colorify';
-/* import Lottie from 'lottie-react'; */
-import monster from './monster.json';
-import monster2 from './monster2.json';
-import monster1 from './monster.json';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { Box, Paper, Grid } from '@mui/material';
+import { Box, Paper, Stack } from '@mui/material';
 
-const minLogoWidth = 450;
+import Languages from '../Languages';
+import Palette from '../Palette';
+import Animation from './Animation';
 
-const AuthLayout = () => {
-  const container = useRef(null);
-  console.log(getColors(monster));
+const minLogoWidth = 400;
+const drawerWidth = 240;
+const heightNavbar = 44;
+const maxInputWidth = 480;
 
-  useEffect(() => {
-    Lottie.loadAnimation({
-      container: container.current,
-      animationData: replaceColor('#000000', '#ffffff', monster),
-    });
-  }, []);
-
+const AuthLayout = ({ children }) => {
   return (
-    <>
-      {/* <Grid
-        container
-        sx={{
-          height: '100vh',
-          alignContent: 'center',
-          display: { xs: 'none', md: 'flex' },
-        }}
-        p={3}
-      >
-        <Grid item xs={8}>
-          <Paper sx={{ height: '100vh' }}>xs=8</Paper>
-        </Grid>
-        <Grid item xs={4}>
-          <Paper>xs=4</Paper>
-        </Grid>
-      </Grid> */}
+    <Box
+      sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignContent: 'center',
+        bgcolor: 'palette.dark',
+        height: '100vh',
+      }}
+    >
       <Box
         sx={{
           display: { xs: 'none', md: 'flex' },
-          flexWrap: 'wrap',
-          alignContent: 'center',
-          bgcolor: 'background.paper',
-          height: '100vh',
+          minWidth: minLogoWidth,
+          width: '30%',
+          height: '100%',
         }}
+        p={2}
       >
-        <Box sx={{ minWidth: minLogoWidth, height: '100%' }} p={3}>
-          <Paper sx={{ width: '100%', height: '100%', boxShadow: 4 }}>
-            {/* <Lottie
-              animationData={monster}
-              style={{ width: '300px', color: '#000' }}
-              colors={{ primary: '#000' }}
-            /> */}
-            <div className="LottieContainer" ref={container} />
-          </Paper>
+        <Paper
+          sx={{
+            width: '100%',
+            height: '100%',
+            boxShadow: 4,
+            borderRadius: 5,
+            '&.MuiPaper-root': { bgcolor: 'palette.main' },
+            display: 'flex',
+            alignContent: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Animation />
+        </Paper>
+      </Box>
+
+      <Box p={2} sx={{ height: '100%', flexGrow: 1 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            height: heightNavbar,
+          }}
+        >
+          <Stack direction="row" alignItems="center" spacing={{ xs: 0, md: 1 }}>
+            <Languages />
+            <Palette drawerWidth={drawerWidth} />
+          </Stack>
         </Box>
-        <Box p={2} sx={{ width: '50%', height: '100%' }}>
-          <Outlet />
+        <Box
+          sx={{
+            height: `calc(100% - ${heightNavbar}px)`,
+            display: 'flex',
+            flexDirection: 'column',
+            flexWrap: 'wrap',
+            alignContent: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Box sx={{ width: '100%', maxWidth: maxInputWidth }}>
+            <Outlet />
+          </Box>
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 

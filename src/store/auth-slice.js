@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
+import signIn from './auth/signIn';
 
 const initialState = {
   token: '',
   isLoggedIn: false,
+  error: null,
 };
 
 const authSlice = createSlice({
@@ -17,6 +19,18 @@ const authSlice = createSlice({
       state.token = '';
       state.isLoggedIn = false;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(signIn.fulfilled, (state, { payload }) => {
+      /* state.entities[payload.id] = payload */
+    });
+    builder.addCase(signIn.rejected, (state, action) => {
+      if (action.payload) {
+        state.error = action.payload.errorMessage;
+      } else {
+        state.error = action.error.message;
+      }
+    });
   },
 });
 

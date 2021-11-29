@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
@@ -9,31 +10,35 @@ import {
   FormControlLabel,
   Checkbox,
   Link,
-  Button,
   Divider,
 } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import LoadingButton from '@mui/lab/LoadingButton';
+import { useDispatch } from 'react-redux';
+import signIn from '../store/auth/signIn.js';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import useInput from '../hooks/use-input.js';
-import AuthInput from '../components/UI/Inputs/AuthInput.js';
+import Input100Width from '../components/UI/Inputs/Input100Width.js';
+import LinkButton100Width from '../components/UI/Buttons/LinkButton100Width.js';
+import LoadingButton100Width from '../components/UI/Buttons/LoadingButton100Width.js';
 
 const Login = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [rememberPassword, setRememberPassword] = useState(true);
 
   const {
-    value: login,
-    isValid: loginIsValid,
-    hasError: loginHasError,
-    valueChangeHandler: loginChangeHandler,
-    inputTouchHandler: loginTouchHandler,
-    reset: loginReset,
-  } = useInput((value) => value.trim() !== '');
+    value: email,
+    isValid: emailIsValid,
+    hasError: emailHasError,
+    valueChangeHandler: emailChangeHandler,
+    inputTouchHandler: emailTouchHandler,
+    reset: emailReset,
+  } = useInput((value) =>
+    /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value.trim())
+  );
 
   const {
     value: password,
@@ -46,26 +51,30 @@ const Login = () => {
 
   let formIsValid = false;
 
-  if (loginIsValid && passwordIsValid) formIsValid = true;
+  if (emailIsValid && passwordIsValid) formIsValid = true;
 
-  const signInHandler = (event) => {
+  const signInHandler = async (event) => {
     event.preventDefault();
 
-    loginTouchHandler();
+    emailTouchHandler();
     passwordTouchHandler();
 
     if (!formIsValid) return;
 
     setLoading(true);
 
-    console.log(login, password, rememberPassword);
+    //const resultAction = await dispatch(signIn({ email, password }));
+    await dispatch(signIn({ email, password }));
+    
+    setLoading(false);
 
-    loginReset();
+    emailReset();
     passwordReset();
   };
 
   return (
     <>
+      {rememberPassword} {/* //TODO */}
       <Stack spacing={1}>
         <Typography variant="h5">{t('signIn.title')}</Typography>
         <Typography variant="body2" color="primary.light">
@@ -74,21 +83,19 @@ const Login = () => {
       </Stack>
 
       <Box pt={1}>
-        <AuthInput
-          id="login"
-          variant="outlined"
-          label={t('signIn.login')}
-          value={login}
-          onChange={loginChangeHandler}
-          onBlur={loginTouchHandler}
-          error={loginHasError}
-          helperText={loginHasError && t('signIn.incorrectEntry')}
-          noValidate
-          autoComplete="off"
+        <Input100Width
+          id="email"
+          label={t('signIn.email')}
+          value={email}
+          onChange={emailChangeHandler}
+          onBlur={emailTouchHandler}
+          error={emailHasError}
+          helperText={emailHasError && t('signIn.incorrectEntry')}
+          disabled={loading}
         />
-        <AuthInput
+
+        <Input100Width
           id="password"
-          variant="outlined"
           label={t('signIn.password')}
           type={showPassword ? 'text' : 'password'}
           value={password}
@@ -96,8 +103,7 @@ const Login = () => {
           onBlur={passwordTouchHandler}
           error={passwordHasError}
           helperText={passwordHasError && t('signIn.incorrectEntry')}
-          noValidate
-          autoComplete="off"
+          disabled={loading}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -138,51 +144,19 @@ const Login = () => {
       </Stack>
 
       <Stack spacing={2}>
-        <LoadingButton
-          variant="contained"
-          size="large"
-          sx={{
-            width: '100%',
-            '&.MuiButton-root:hover': {
-              bgcolor: 'secondary.main',
-              filter: 'brightness(90%)',
-            },
-            '&.MuiLoadingButton-loading': {
-              bgcolor: 'primary.light',
-              filter: 'brightness(120%)',
-            },
-          }}
-          color="secondary"
-          onClick={signInHandler}
-          loading={loading}
-        >
-          {t('signIn.signin')}
-        </LoadingButton>
+        <LoadingButton100Width onClick={signInHandler} loading={loading}>
+          {t('signIn.signIn')}
+        </LoadingButton100Width>
 
         <Divider
-          sx={{
-            '&::before,&::after': { borderColor: 'primary.light' },
-          }}
+          sx={{ '&::before,&::after': { borderColor: 'primary.light' } }}
         >
           {t('signIn.or')}
         </Divider>
 
-        <Button
-          component={RouterLink}
-          to="/signup"
-          variant="contained"
-          size="large"
-          sx={{
-            width: '100%',
-            '&.MuiButton-root:hover': {
-              bgcolor: 'secondary.main',
-              filter: 'brightness(90%)',
-            },
-          }}
-          color="secondary"
-        >
-          {t('signIn.signup')}
-        </Button>
+        <LinkButton100Width to="/signup">
+          {t('signIn.signUp')}
+        </LinkButton100Width>
       </Stack>
     </>
   );

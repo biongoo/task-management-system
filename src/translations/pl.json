@@ -4,17 +4,39 @@
     "shortTitle": "SZZ",
     "themeSettings": "Ustawienia motywu",
     "mode": "Tryb",
-    "color": "Kolor"
+    "color": "Kolor",
+    "back": "Wróć do ",
+    "homepage": "strony głównej"
+  },
+  "signUp": {
+    "title": "Zacznij całkowicie za darmo.",
+    "enterDetails": "Wpisz poniżej swoje dane.",
+    "enterEmail": "Wpisz poniżej swój email.",
+    "back": "Wróć",
+    "signUp": "Zarejestruj się",
+    "or": "Lub",
+    "incorrectEntry": "Nieprawidłowe dane.",
+    "email": "E-mail",
+    "step1": "Wprowadź email",
+    "step2": "Uzupełnij dane",
+    "step3": "Sukces",
+    "successTitle": "Sukces",
+    "errorTitle": "Błąd",
+    "connectionError": "Nie można połączyć się z serwerem.",
+    "invalidEmail": "Twój email jest nieprawidłowy.",
+    "registrationUserExists": "Mail potwierdzający pierwszy etap rejestracji został już wysłany. Bez obaw, wysłaliśmy go jeszcze raz oraz przedłużyliśmy czas na potwierdzenie.",
+    "userExists": "Podany adres został już wykorzystany.",
+    "registrationUserAdded": "Na podanego maila wysłaliśmy potwierdzenie. Kliknij w link zawarty w wiadomości aby dokończyć rejestrację."
   },
   "signIn": {
     "title": "Zaloguj się do TMS",
     "enterDetails": "Wpisz poniżej swoje dane.",
-    "login": "Login",
+    "email": "E-mail",
     "password": "Hasło",
     "rememberMe": "Zapamiętaj mnie",
     "forgot": "Nie pamiętasz hasła?",
-    "signin": "Zaloguj się",
-    "signup": "Zarejestruj się",
+    "signIn": "Zaloguj się",
+    "signUp": "Zarejestruj się",
     "or": "LUB",
     "incorrectEntry": "Nieprawidłowe dane."
   }

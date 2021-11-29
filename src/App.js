@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import Theme from './theme/Theme';
@@ -10,13 +10,11 @@ import Test1 from './pages/Test1';
 import Test2 from './pages/Test2';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import NotFound from './pages/404.js';
 import './App.css';
 
 function App() {
-  const location = useLocation();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-
-  console.log('location', location);
 
   return (
     <Theme>
@@ -31,9 +29,16 @@ function App() {
         {!isLoggedIn && (
           <Route path="/" element={<AuthLayout />}>
             <Route index element={<SignIn />} />
-            <Route path="signup" element={<SignUp />} />
+            <Route path="signup/">
+              <Route index element={<SignUp step={1} />} />
+              <Route
+                path="secondstep/:email/:token/"
+                element={<SignUp step={2} />}
+              />
+            </Route>
           </Route>
         )}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Theme>
   );

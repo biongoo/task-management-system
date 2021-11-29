@@ -1,14 +1,17 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export const signIn = createAsyncThunk(
+const signIn = createAsyncThunk(
   'auth/signIn',
   async (data, { rejectWithValue }) => {
-    const { login, password } = data;
+    const { email, password } = data;
 
-    const url =
-      'https://shopping-app-21aef-default-rtdb.europe-west1.firebasedatabase.app/produccsts.json';
+    /* const url =
+      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDuN4_mdVSG_8Yb9FTSV7DlYQ01CfkTOug';
+ */ const url = 'http://java.ts4ever.pl/signUp/firstStep';
     const method = 'POST';
-    const body = { login, password };
+    const body = { email: email, password: password };
+
+    console.log(body);
 
     try {
       const response = await fetch(url, {
@@ -17,9 +20,13 @@ export const signIn = createAsyncThunk(
         headers: {
           'Content-Type': 'application/json',
         },
+        mode: 'cors',
       });
 
       const dataRes = await response.json();
+
+      console.log(dataRes);
+
       return dataRes;
     } catch (err) {
       let error = err; // cast the error for access
@@ -32,3 +39,5 @@ export const signIn = createAsyncThunk(
     }
   }
 );
+
+export default signIn;

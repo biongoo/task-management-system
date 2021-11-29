@@ -14,10 +14,12 @@ const darkTheme = createTheme({
     text: {
       primary: '#fff',
       secondary: 'rgb(145, 158, 171)',
+      disabled: '#919eab',
     },
     action: {
       selected: 'rgba(145, 158, 171, 0.24)',
       hover: 'rgba(145, 158, 171, 0.08)',
+      disabled: '#919eab',
     },
     palettebg: {
       light: '#fff',

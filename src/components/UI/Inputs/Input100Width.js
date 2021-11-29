@@ -1,7 +1,7 @@
 import { styled } from '@mui/system';
 import { TextField } from '@mui/material';
 
-const AuthInput = styled(TextField)(({ theme }) => ({
+const StyledInput = styled(TextField)(({ theme }) => ({
   marginTop: 16,
   width: '100%',
   '& label.Mui-focused': {
@@ -13,7 +13,7 @@ const AuthInput = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
     '& fieldset': {
       borderColor: theme.palette.primary.light,
-      borderRadius: theme.shape.borderRadius * 3,
+      borderRadius: theme.shape.borderRadius * 2,
     },
     '&.Mui-focused fieldset': {
       borderColor: theme.palette.secondary.main,
@@ -21,4 +21,10 @@ const AuthInput = styled(TextField)(({ theme }) => ({
   },
 }));
 
-export default AuthInput;
+const Input100Width = (props) => {
+  return (
+    <StyledInput variant="outlined" noValidate autoComplete="off" {...props} />
+  );
+};
+
+export default Input100Width;

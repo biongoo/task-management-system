@@ -4,17 +4,39 @@
     "shortTitle": "TMS",
     "themeSettings": "Theme settings",
     "mode": "Mode",
-    "color": "Color"
+    "color": "Color",
+    "back": "Go back to ",
+    "homepage": "home page"
+  },
+  "signUp": {
+    "title": "Get started absolutely free.",
+    "enterDetails": "Enter your details below.",
+    "enterEmail": "Enter your email below.",
+    "back": "Back",
+    "signUp": "Sign up",
+    "or": "OR",
+    "incorrectEntry": "Incorrect data.",
+    "email": "E-mail",
+    "step1": "Enter email",
+    "step2": "Complete details",
+    "step3": "Success",
+    "successTitle": "Success",
+    "errorTitle": "Error",
+    "connectionError": "Cannot connect to server.",
+    "invalidEmail": "Your email is incorrect.",
+    "registrationUserExists": "An e-mail confirming the first stage of registration has already been sent. Don't worry, we sent it again and extended the time for confirmation.",
+    "userExists": "The given address has already been used.",
+    "registrationUserAdded": "We have sent a confirmation to the given e-mail. Click on the link in the message to complete the registration."
   },
   "signIn": {
     "title": "Sign in to TMS",
     "enterDetails": "Enter your details below.",
-    "login": "Login",
+    "email": "E-mail",
     "password": "Password",
     "rememberMe": "Remember me",
     "forgot": "Forgot password?",
-    "signin": "Sign in",
-    "signup": "Sign up",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
     "or": "OR",
     "incorrectEntry": "Incorrect data."
   }

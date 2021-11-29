@@ -6,19 +6,18 @@ import Languages from '../Languages';
 import Palette from '../Palette';
 import Animation from './Animation';
 
-const minLogoWidth = 400;
+const minLogoWidth = 350;
 const drawerWidth = 240;
 const heightNavbar = 44;
 const maxInputWidth = 480;
 
-const AuthLayout = ({ children }) => {
+const AuthLayout = () => {
   return (
     <Box
       sx={{
         display: 'flex',
         flexWrap: 'wrap',
         alignContent: 'center',
-        bgcolor: 'palette.dark',
         height: '100vh',
       }}
     >
@@ -29,7 +28,8 @@ const AuthLayout = ({ children }) => {
           width: '30%',
           height: '100%',
         }}
-        p={2}
+        py={2}
+        pl={2}
       >
         <Paper
           sx={{

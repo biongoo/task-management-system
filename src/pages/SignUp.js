@@ -4,6 +4,7 @@ import { Box, Stepper, Step, StepLabel } from '@mui/material';
 
 import FirstStep from '../components/SignUp/FirstStep';
 import SecondStep from '../components/SignUp/SecondStep';
+import ThirdStep from '../components/SignUp/ThirdStep';
 
 const SignUp = ({ step }) => {
   const { t } = useTranslation();
@@ -17,6 +18,9 @@ const SignUp = ({ step }) => {
       break;
     case 2:
       stepComponent = <SecondStep />;
+      break;
+    case 4:
+      stepComponent = <ThirdStep />;
       break;
     default:
       break;

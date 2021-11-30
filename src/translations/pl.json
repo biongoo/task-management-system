@@ -10,6 +10,9 @@
   },
   "signUp": {
     "title": "Zacznij całkowicie za darmo.",
+    "title2": "Jeszcze tylko jeden krok.",
+    "title3": "Zarejestrowano pomyślnie.",
+    "subTitle3": "Zaplanuj swój tydzień już teraz!",
     "enterDetails": "Wpisz poniżej swoje dane.",
     "enterEmail": "Wpisz poniżej swój email.",
     "back": "Wróć",
@@ -26,7 +29,14 @@
     "invalidEmail": "Twój email jest nieprawidłowy.",
     "registrationUserExists": "Mail potwierdzający pierwszy etap rejestracji został już wysłany. Bez obaw, wysłaliśmy go jeszcze raz oraz przedłużyliśmy czas na potwierdzenie.",
     "userExists": "Podany adres został już wykorzystany.",
-    "registrationUserAdded": "Na podanego maila wysłaliśmy potwierdzenie. Kliknij w link zawarty w wiadomości aby dokończyć rejestrację."
+    "registrationUserAdded": "Na podanego maila wysłaliśmy potwierdzenie. Kliknij w link zawarty w wiadomości w ciągu jednej godziny aby dokończyć rejestrację.",
+    "expiredRegistrationLink": "Twój link wygasł. Bez obaw, wysłaliśmy nowego maila z aktualnym linkiem na Twoją skrzynkę.",
+    "type": "Typ konta",
+    "student": "Student",
+    "teacher": "Nauczyciel",
+    "invalidPassword": "Błędne hasło.",
+    "registrationUserNotExists": "Nie tędy droga przyjacielu :)",
+    "invalidType": "Typ konta jest nieprawidłowy."
   },
   "signIn": {
     "title": "Zaloguj się do TMS",

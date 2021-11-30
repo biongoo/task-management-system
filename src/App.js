@@ -35,6 +35,7 @@ function App() {
                 path="secondstep/:email/:token/"
                 element={<SignUp step={2} />}
               />
+              <Route path="thirdstep/" element={<SignUp step={4} />} />
             </Route>
           </Route>
         )}

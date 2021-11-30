@@ -10,6 +10,9 @@
   },
   "signUp": {
     "title": "Get started absolutely free.",
+    "title2": "Just one more step.",
+    "title3": "Successfully registered.",
+    "subTitle3": "Let's plan your week now!",
     "enterDetails": "Enter your details below.",
     "enterEmail": "Enter your email below.",
     "back": "Back",
@@ -25,8 +28,15 @@
     "connectionError": "Cannot connect to server.",
     "invalidEmail": "Your email is incorrect.",
     "registrationUserExists": "An e-mail confirming the first stage of registration has already been sent. Don't worry, we sent it again and extended the time for confirmation.",
-    "userExists": "The given address has already been used.",
-    "registrationUserAdded": "We have sent a confirmation to the given e-mail. Click on the link in the message to complete the registration."
+    "userExists": "This address has already been used.",
+    "registrationUserAdded": "We have sent a confirmation to the given e-mail. Click on the link in the email within one hour to complete your registration.",
+    "expiredRegistrationLink": "Your link has expired. Don't worry, we have sent a new e-mail with the current link.",
+    "type": "Account type",
+    "student": "Student",
+    "teacher": "Teacher",
+    "invalidPassword": "The password is incorrect.",
+    "registrationUserNotExists": "Wrong way, my dear friend :)",
+    "invalidType": "Account type is incorrect."
   },
   "signIn": {
     "title": "Sign in to TMS",

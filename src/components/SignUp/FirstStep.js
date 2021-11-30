@@ -1,55 +1,30 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router-dom';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Typography, Stack, IconButton } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import useInput from '../../hooks/use-input.js';
+import { useAlert, wait } from '../../hooks/use-alert.js';
 import FilledAlert from '../UI/Alerts/FilledAlert.js';
 import signUpFirst from '../../store/auth/signUpFirst.js';
 import Input100Width from '../UI/Inputs/Input100Width.js';
 import LoadingButton100Width from '../UI/Buttons/LoadingButton100Width.js';
-
-const initOutput = { type: 'success', title: '', message: '' };
-
-const outputReducer = (state, action) => {
-  switch (action.type) {
-    case 'SET_ERROR':
-      return {
-        show: true,
-        type: 'error',
-        title: action.title,
-        message: action.message,
-      };
-    case 'SET_WARNING':
-      return {
-        show: true,
-        type: 'warning',
-        title: action.title,
-        message: action.message,
-      };
-    case 'SET_SUCCESS':
-      return {
-        show: true,
-        type: 'success',
-        title: action.title,
-        message: action.message,
-      };
-    case 'EXIT':
-      return { ...state, show: false };
-    default:
-      throw new Error();
-  }
-};
-
-const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+import Header from './Header.js';
 
 const FirstStep = () => {
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(false);
-  const [output, dispatchOutput] = useReducer(outputReducer, initOutput);
+  const {
+    showAlert,
+    alertType,
+    alertMessage,
+    alertTitle,
+    setSuccessAlert,
+    setWarningAlert,
+    setErrorAlert,
+    closeAlert,
+  } = useAlert();
 
   const {
     value: email,
@@ -64,13 +39,14 @@ const FirstStep = () => {
 
   const signUpHandler = async (event) => {
     event.preventDefault();
-
     emailTouchHandler();
     if (!emailIsValid) return;
 
     setLoading(true);
-    dispatchOutput({ type: 'EXIT' });
-    await delay(250);
+    if (showAlert) {
+      closeAlert();
+      await wait(250);
+    }
 
     const resultAction = await dispatch(
       signUpFirst({ email, language: i18n.language })
@@ -82,54 +58,33 @@ const FirstStep = () => {
     if (signUpFirst.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
         case 'registrationUserAdded':
-          dispatchOutput({
-            type: 'SET_SUCCESS',
-            title: 'signUp.successTitle',
-            message: 'signUp.registrationUserAdded',
-          });
+          setSuccessAlert(
+            'signUp.successTitle',
+            'signUp.registrationUserAdded'
+          );
           break;
         case 'registrationUserExists':
-          dispatchOutput({
-            type: 'SET_WARNING',
-            title: 'signUp.errorTitle',
-            message: 'signUp.registrationUserExists',
-          });
+          setWarningAlert('signUp.errorTitle', 'signUp.registrationUserExists');
           break;
         case 'invalidEmail':
         case 'userExists':
-          dispatchOutput({
-            type: 'SET_ERROR',
-            title: 'signUp.errorTitle',
-            message: `signUp.${resultAction.payload.message}`,
-          });
+          setErrorAlert(
+            'signUp.errorTitle',
+            `signUp.${resultAction.payload.message}`
+          );
           break;
         default:
-          dispatchOutput({
-            type: 'SET_ERROR',
-            title: 'signUp.errorTitle',
-            message: `signUp.connectionError`,
-          });
+          setErrorAlert('signUp.errorTitle', 'signUp.connectionError');
           break;
       }
     } else {
-      dispatchOutput({
-        type: 'SET_ERROR',
-        title: 'signUp.errorTitle',
-        message: 'signUp.connectionError',
-      });
+      setErrorAlert('signUp.errorTitle', 'signUp.connectionError');
     }
   };
+
   return (
     <>
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Typography variant="h5">{t('signUp.title')}</Typography>
-        <IconButton component={RouterLink} to="/" color="warning">
-          <ArrowBackIcon sx={{ height: '35px', width: '35px' }} />
-        </IconButton>
-      </Stack>
-      <Typography variant="body2" color="primary.light">
-        {t('signUp.enterEmail')}
-      </Typography>
+      <Header header={'signUp.title'} subHeader={'signUp.enterEmail'} />
 
       <Stack spacing={2} pt={1} mb={2}>
         <Input100Width
@@ -147,12 +102,13 @@ const FirstStep = () => {
           {t('signUp.signUp')}
         </LoadingButton100Width>
       </Stack>
+
       <FilledAlert
-        show={output.show}
-        severity={output.type}
-        title={t(output.title)}
-        message={t(output.message)}
-        onCloseAlert={() => dispatchOutput({ type: 'EXIT' })}
+        show={showAlert}
+        severity={alertType}
+        title={t(alertTitle)}
+        message={t(alertMessage)}
+        onCloseAlert={closeAlert}
       />
     </>
   );

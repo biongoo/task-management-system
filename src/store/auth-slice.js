@@ -38,6 +38,17 @@ const authSlice = createSlice({
       }
     },
     logout: (state) => {
+      if (localStorage.getItem('email')) {
+        localStorage.removeItem('email');
+        localStorage.removeItem('token');
+      }
+
+      if (sessionStorage.getItem('email')) {
+        sessionStorage.removeItem('email');
+        sessionStorage.removeItem('token');
+      }
+
+      state.email = '';
       state.token = '';
       state.isLoggedIn = false;
     },

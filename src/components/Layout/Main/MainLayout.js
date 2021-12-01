@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Box, Toolbar } from '@mui/material';
+import { Outlet, Navigate } from 'react-router-dom';
 
 import MainLayoutTop from './MainLayoutTop';
 import MainLayoutLeft from './MainLayoutLeft';
 
 const drawerWidth = 240;
 
-const MainLayout = ({ children }) => {
+const MainLayout = () => {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const drawerToggleHandler = () => {
@@ -36,7 +39,7 @@ const MainLayout = ({ children }) => {
         }}
       >
         <Toolbar />
-        {<Outlet />}
+        {isLoggedIn ? <Outlet /> : <Navigate to="/" />}
       </Box>
     </Box>
   );

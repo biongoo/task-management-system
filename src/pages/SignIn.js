@@ -17,7 +17,10 @@ import signIn from '../store/auth/signIn.js';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+import { login } from '../store/auth-slice';
 import useInput from '../hooks/use-input.js';
+import { useAlert, wait } from '../hooks/use-alert';
+import FilledAlert from '../components/UI/Alerts/FilledAlert';
 import Input100Width from '../components/UI/Inputs/Input100Width.js';
 import LinkButton100Width from '../components/UI/Buttons/LinkButton100Width.js';
 import LoadingButton100Width from '../components/UI/Buttons/LoadingButton100Width.js';
@@ -28,6 +31,15 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [rememberPassword, setRememberPassword] = useState(true);
+
+  const {
+    showAlert,
+    alertType,
+    alertMessage,
+    alertTitle,
+    setErrorAlert,
+    closeAlert,
+  } = useAlert();
 
   const {
     value: email,
@@ -62,14 +74,44 @@ const Login = () => {
     if (!formIsValid) return;
 
     setLoading(true);
+    if (showAlert) {
+      closeAlert();
+      await wait(250);
+    }
 
-    //const resultAction = await dispatch(signIn({ email, password }));
-    await dispatch(signIn({ email, password }));
-    
+    const resultAction = await dispatch(signIn({ email, password }));
+
     setLoading(false);
-
     emailReset();
     passwordReset();
+
+    if (signIn.fulfilled.match(resultAction)) {
+      switch (resultAction.payload.message) {
+        case 'userLoggedIn':
+          console.log(rememberPassword);
+          //localStorage.setItem('color', color);
+          dispatch(
+            login({
+              email: resultAction.payload.email,
+              token: resultAction.payload.token,
+              rememberPassword,
+            })
+          );
+          break;
+        case 'userNotExists':
+        case 'wrongPassword':
+          setErrorAlert(
+            'signUp.errorTitle',
+            `signIn.${resultAction.payload.message}`
+          );
+          break;
+        default:
+          setErrorAlert('signUp.errorTitle', 'signUp.connectionError');
+          break;
+      }
+    } else {
+      setErrorAlert('signUp.errorTitle', 'signUp.connectionError');
+    }
   };
 
   return (
@@ -81,7 +123,6 @@ const Login = () => {
           {t('signIn.enterDetails')}
         </Typography>
       </Stack>
-
       <Box pt={1}>
         <Input100Width
           id="email"
@@ -120,12 +161,11 @@ const Login = () => {
           }}
         />
       </Box>
-
       <Stack
         direction="row"
         alignItems="center"
         justifyContent="space-between"
-        sx={{ my: 2 }}
+        sx={{ my: 1 }}
       >
         <FormControlLabel
           label={t('signIn.rememberMe')}
@@ -142,8 +182,14 @@ const Login = () => {
           {t('signIn.forgot')}
         </Link>
       </Stack>
-
-      <Stack spacing={2}>
+      <FilledAlert
+        show={showAlert}
+        severity={alertType}
+        title={t(alertTitle)}
+        message={t(alertMessage)}
+        onCloseAlert={closeAlert}
+      />
+      <Stack spacing={2} mt={1}>
         <LoadingButton100Width onClick={signInHandler} loading={loading}>
           {t('signIn.signIn')}
         </LoadingButton100Width>

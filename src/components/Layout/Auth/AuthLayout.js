@@ -1,6 +1,7 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Box, Paper, Stack } from '@mui/material';
+import { Outlet, Navigate } from 'react-router-dom';
 
 import Languages from '../Languages';
 import Palette from '../Palette';
@@ -12,6 +13,8 @@ const heightNavbar = 44;
 const maxInputWidth = 480;
 
 const AuthLayout = () => {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
   return (
     <Box
       sx={{
@@ -71,7 +74,7 @@ const AuthLayout = () => {
           }}
         >
           <Box sx={{ width: '100%', maxWidth: maxInputWidth }}>
-            <Outlet />
+            {!isLoggedIn ? <Outlet /> : <Navigate to="/dashboard" />}
           </Box>
         </Box>
       </Box>

@@ -106,7 +106,7 @@ const SecondStepForm = ({
           onChange={passwordChangeHandler}
           onBlur={passwordTouchHandler}
           error={passwordHasError}
-          helperText={passwordHasError && t('signIn.incorrectEntry')}
+          helperText={passwordHasError && t('signIn.weakPassword')}
           disabled={loading}
           InputProps={{
             endAdornment: (

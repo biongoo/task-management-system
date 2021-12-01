@@ -3,20 +3,13 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 const signIn = createAsyncThunk(
   'auth/signIn',
   async (data, { rejectWithValue }) => {
-    const { email, password } = data;
-
-    /* const url =
-      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDuN4_mdVSG_8Yb9FTSV7DlYQ01CfkTOug';
- */ const url = 'http://java.ts4ever.pl/signUp/firstStep';
+    const url = 'http://java.ts4ever.pl/signin';
     const method = 'POST';
-    const body = { email: email, password: password };
-
-    console.log(body);
 
     try {
       const response = await fetch(url, {
         method: method,
-        body: JSON.stringify(body),
+        body: JSON.stringify(data), // email, password
         headers: {
           'Content-Type': 'application/json',
         },
@@ -24,8 +17,6 @@ const signIn = createAsyncThunk(
       });
 
       const dataRes = await response.json();
-
-      console.log(dataRes);
 
       return dataRes;
     } catch (err) {

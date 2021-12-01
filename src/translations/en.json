@@ -48,6 +48,9 @@
     "signIn": "Sign in",
     "signUp": "Sign up",
     "or": "OR",
-    "incorrectEntry": "Incorrect data."
+    "incorrectEntry": "Incorrect data.",
+    "userNotExists": "User does not exist.",
+    "wrongPassword": "Wrong password.",
+    "weakPassword": "The password should be at least 6 characters long."
   }
 }

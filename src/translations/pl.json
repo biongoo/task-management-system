@@ -48,6 +48,9 @@
     "signIn": "Zaloguj się",
     "signUp": "Zarejestruj się",
     "or": "LUB",
-    "incorrectEntry": "Nieprawidłowe dane."
+    "incorrectEntry": "Nieprawidłowe dane.",
+    "userNotExists": "Podany użytkownik nie istnieje.",
+    "wrongPassword": "Błędne hasło.",
+    "weakPassword": "Hasło powinno składać się z przynajmniej 6 znaków."
   }
 }

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Grid, Paper, Container } from '@mui/material';
 
+import LinkButton100Width from '../components/UI/Buttons/LinkButton100Width';
+
 const DUMMY_DATA = [
   {
     id: 1,
@@ -18,7 +20,7 @@ const Dashboard = () => {
       <Grid container spacing={3}>
         {DUMMY_DATA.map((note) => (
           <Grid key={note.id} item xs={12} sm={6} md={4}>
-            <Paper> {note.title} </Paper>
+            <Paper> {note.title} <LinkButton100Width to="/" /> </Paper>
           </Grid>
         ))}
       </Grid>

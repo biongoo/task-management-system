@@ -1,10 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
-import signIn from './auth/signIn';
 
 const initialState = {
-  token: '',
-  isLoggedIn: false,
-  error: null,
+  token:
+    localStorage.getItem('token') || sessionStorage.getItem('token')
+      ? localStorage.getItem('token')
+        ? localStorage.getItem('token')
+        : sessionStorage.getItem('token')
+      : '',
+  email:
+    localStorage.getItem('email') || sessionStorage.getItem('email')
+      ? localStorage.getItem('email')
+        ? localStorage.getItem('email')
+        : sessionStorage.getItem('email')
+      : '',
+  isLoggedIn:
+    localStorage.getItem('token') || sessionStorage.getItem('token')
+      ? true
+      : false,
 };
 
 const authSlice = createSlice({
@@ -12,25 +24,23 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      state.token = action.payload;
+      const { email, token, rememberPassword } = action.payload;
+      state.token = token;
+      state.email = email;
       state.isLoggedIn = true;
+
+      if (rememberPassword) {
+        localStorage.setItem('token', token);
+        localStorage.setItem('email', email);
+      } else {
+        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('email', email);
+      }
     },
     logout: (state) => {
       state.token = '';
       state.isLoggedIn = false;
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(signIn.fulfilled, (state, { payload }) => {
-      /* state.entities[payload.id] = payload */
-    });
-    builder.addCase(signIn.rejected, (state, action) => {
-      if (action.payload) {
-        state.error = action.payload.errorMessage;
-      } else {
-        state.error = action.error.message;
-      }
-    });
   },
 });
 

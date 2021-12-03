@@ -7,8 +7,9 @@ import AuthLayout from './components/Layout/Auth/AuthLayout';
 import Dashboard from './pages/Dashboard';
 import Test1 from './pages/Test1';
 import Test2 from './pages/Test2';
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Forgot from './pages/Forgot';
 import NotFound from './pages/404.js';
 import './App.css';
 
@@ -23,14 +24,24 @@ function App() {
         </Route>
 
         <Route path="/" element={<AuthLayout />}>
-          <Route index element={<SignIn />} />
+          <Route index element={<Login />} />
+
           <Route path="signup/">
-            <Route index element={<SignUp step={1} />} />
+            <Route index element={<Register step={1} />} />
             <Route
               path="secondstep/:email/:token/"
-              element={<SignUp step={2} />}
+              element={<Register step={2} />}
             />
-            <Route path="thirdstep/" element={<SignUp step={4} />} />
+            <Route path="thirdstep/" element={<Register step={4} />} />
+          </Route>
+
+          <Route path="forgot/">
+            <Route index element={<Forgot step={1} />} />
+            <Route
+              path="secondstep/:email/:token/"
+              element={<Forgot step={2} />}
+            />
+            <Route path="thirdstep/" element={<Forgot step={4} />} />
           </Route>
         </Route>
 

@@ -5,11 +5,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { useAlert } from '../../hooks/use-alert.js';
-import FilledAlert from '../UI/Alerts/FilledAlert.js';
-import signUpSecond from '../../store/auth/signUpSecond';
+import { useAlert } from '../../../hooks/use-alert.js';
+import FilledAlert from '../../UI/Alerts/FilledAlert.js';
+import forgotSecond from '../../../store/auth/forgotSecond';
 import SecondStepForm from './SecondStepForm';
-import Header from './Header';
+import Header from '../Header';
 
 let errorToken = false;
 let languageFlag = true;
@@ -40,22 +40,31 @@ const SecondStep = () => {
   const checkToken = useCallback(async () => {
     setLoading(true);
     const resultAction = await dispatch(
-      signUpSecond({ email, token, language: lang })
+      forgotSecond({ email, token, language: lang })
     );
 
-    if (signUpSecond.fulfilled.match(resultAction)) {
-      console.log(resultAction.payload);
-      if (resultAction.payload.message === 'registrationUserNotExists') {
-        navigate('/404');
-      } else if (resultAction.payload.message === 'expiredRegistrationLink') {
-        setWarningAlert('signUp.errorTitle', 'signUp.expiredRegistrationLink');
-        errorToken = true;
-      } else if (resultAction.payload.message === 'userExists') {
-        setErrorAlert('signUp.errorTitle', 'signUp.userExists');
-        errorToken = true;
+    if (forgotSecond.fulfilled.match(resultAction)) {
+      switch (resultAction.payload.message) {
+        case 'existingAndValid':
+          break;
+        case 'forgotUserNotExists':
+          navigate('/404');
+          break;
+        case 'userNotExists':
+          setErrorAlert('global.error', 'auth.userNotExists');
+          errorToken = true;
+          break;
+        case 'expiredRegistrationLink':
+          setWarningAlert('global.warning', 'auth.expiredLink');
+          errorToken = true;
+          break;
+        default:
+          setErrorAlert('global.error', 'global.connectionError');
+          errorToken = true;
+          break;
       }
     } else {
-      setErrorAlert('signUp.errorTitle', 'signUp.connectionError');
+      setErrorAlert('global.error', 'global.connectionError');
       errorToken = true;
     }
 
@@ -75,7 +84,7 @@ const SecondStep = () => {
       )}
       {!loading && !errorToken && (
         <>
-          <Header header={'signUp.title2'} subHeader={'signUp.enterDetails'} />
+          <Header header={'auth.title2'} subHeader={'auth.enterDetails'} />
           <SecondStepForm
             email={email}
             token={token}

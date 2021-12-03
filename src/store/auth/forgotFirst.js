@@ -1,15 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-const signUpSecond = createAsyncThunk(
-  'auth/signUpSecond',
+const forgotFirst = createAsyncThunk(
+  'auth/forgotFirst',
   async (data, { rejectWithValue }) => {
-    const url = 'http://java.ts4ever.pl/signup/secondstep';
+    const url = 'http://java.ts4ever.pl/forgotpassword/firststep';
     const method = 'POST';
 
     try {
       const response = await fetch(url, {
         method: method,
-        body: JSON.stringify(data), // email, token, language
+        body: JSON.stringify(data), // email, langugage
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
@@ -32,4 +32,4 @@ const signUpSecond = createAsyncThunk(
   }
 );
 
-export default signUpSecond;
+export default forgotFirst;

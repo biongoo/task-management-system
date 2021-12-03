@@ -6,6 +6,7 @@ const initialState = {
   color: localStorage.getItem('color')
     ? localStorage.getItem('color')
     : purple[500],
+  snackbar: { message: '', variant: 'success', time: 6000, show: false },
 };
 
 const paletteSlice = createSlice({
@@ -18,9 +19,17 @@ const paletteSlice = createSlice({
     changeColor: (state, action) => {
       state.color = action.payload;
     },
+    showSnackbar: (state, action) => {
+      const { message, variant = 'success', time = 6000 } = action.payload;
+      state.snackbar = { message, variant, time, show: true };
+    },
+    hideSnackbar: (state) => {
+      state.snackbar = { ...state.snackbar, show: false };
+    },
   },
 });
 
-export const { changeMode, changeColor } = paletteSlice.actions;
+export const { changeMode, changeColor, showSnackbar, hideSnackbar } =
+  paletteSlice.actions;
 
 export default paletteSlice.reducer;

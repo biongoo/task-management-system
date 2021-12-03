@@ -3,13 +3,13 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Stack } from '@mui/material';
 
-import useInput from '../../hooks/use-input.js';
-import { useAlert, wait } from '../../hooks/use-alert.js';
-import FilledAlert from '../UI/Alerts/FilledAlert.js';
-import signUpFirst from '../../store/auth/signUpFirst.js';
-import Input100Width from '../UI/Inputs/Input100Width.js';
-import LoadingButton100Width from '../UI/Buttons/LoadingButton100Width.js';
-import Header from './Header.js';
+import useInput from '../../../hooks/use-input.js';
+import { useAlert, wait } from '../../../hooks/use-alert.js';
+import FilledAlert from '../../UI/Alerts/FilledAlert.js';
+import registerFirst from '../../../store/auth/registerFirst.js';
+import Input100Width from '../../UI/Inputs/Input100Width.js';
+import LoadingButton100Width from '../../UI/Buttons/LoadingButton100Width.js';
+import Header from '../Header.js';
 
 const FirstStep = () => {
   const dispatch = useDispatch();
@@ -49,57 +49,53 @@ const FirstStep = () => {
     }
 
     const resultAction = await dispatch(
-      signUpFirst({ email, language: i18n.language })
+      registerFirst({ email, language: i18n.language })
     );
 
     setLoading(false);
     emailReset();
 
-    if (signUpFirst.fulfilled.match(resultAction)) {
+    if (registerFirst.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
         case 'registrationUserAdded':
-          setSuccessAlert(
-            'signUp.successTitle',
-            'signUp.registrationUserAdded'
-          );
+          setSuccessAlert('global.success', 'register.registrationUserAdded');
           break;
         case 'registrationUserExists':
-          setWarningAlert('signUp.errorTitle', 'signUp.registrationUserExists');
+          setWarningAlert('global.warning', 'register.registrationUserExists');
           break;
         case 'invalidEmail':
+          setErrorAlert('global.error', 'auth.invalidEmail');
+          break;
         case 'userExists':
-          setErrorAlert(
-            'signUp.errorTitle',
-            `signUp.${resultAction.payload.message}`
-          );
+          setErrorAlert('global.error', 'register.userExists');
           break;
         default:
-          setErrorAlert('signUp.errorTitle', 'signUp.connectionError');
+          setErrorAlert('global.error', 'global.connectionError');
           break;
       }
     } else {
-      setErrorAlert('signUp.errorTitle', 'signUp.connectionError');
+      setErrorAlert('global.error', 'global.connectionError');
     }
   };
 
   return (
     <>
-      <Header header={'signUp.title'} subHeader={'signUp.enterEmail'} />
+      <Header header={'register.title'} subHeader={'auth.enterEmail'} />
 
       <Stack spacing={2} pt={1} mb={2}>
         <Input100Width
           id="email"
-          label={t('signUp.email')}
+          label={t('global.email')}
           value={email}
           onChange={emailChangeHandler}
           onBlur={emailTouchHandler}
           error={emailHasError}
-          helperText={emailHasError && t('signUp.incorrectEntry')}
+          helperText={emailHasError && t('global.incorrectEntry')}
           disabled={loading}
         />
 
         <LoadingButton100Width onClick={signUpHandler} loading={loading}>
-          {t('signUp.signUp')}
+          {t('auth.signUp')}
         </LoadingButton100Width>
       </Stack>
 

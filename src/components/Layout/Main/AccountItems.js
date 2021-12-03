@@ -1,25 +1,27 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { useDispatch } from 'react-redux';
 import { MenuItem, ListItemIcon, Box, Button } from '@mui/material';
 
 import { logout } from '../../../store/auth-slice';
 
 const MENU_OPTIONS = [
   {
-    label: 'Home',
+    label: 'layout.home',
     icon: <HomeIcon />,
     linkTo: '/dashboard',
   },
   {
-    label: 'Settings',
+    label: 'layout.settings',
     icon: <SettingsIcon />,
     linkTo: '/dashboard/settings',
   },
 ];
 
 const AccountItems = ({ handleClose }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
@@ -33,7 +35,7 @@ const AccountItems = ({ handleClose }) => {
           <ListItemIcon sx={{ color: 'primary.light' }}>
             {item.icon}
           </ListItemIcon>
-          {item.label}
+          {t(item.label)}
         </MenuItem>
       ))}
       <Box sx={{ px: 2, pt: 1 }}>
@@ -44,7 +46,7 @@ const AccountItems = ({ handleClose }) => {
           variant="outlined"
           onClick={logoutHandler}
         >
-          Logout
+          {t('layout.logout')}
         </Button>
       </Box>
     </>

@@ -1,6 +1,7 @@
 import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import RefreshIcon from '@mui/icons-material/Refresh';
+import { Link as RouterLink } from 'react-router-dom';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { IconButton, Collapse, Alert, AlertTitle } from '@mui/material';
 
 const FilledAlert = ({ show, severity, title, message, onCloseAlert }) => {
@@ -19,7 +20,11 @@ const FilledAlert = ({ show, severity, title, message, onCloseAlert }) => {
             }
           >
             {onCloseAlert && <CloseIcon fontSize="inherit" />}
-            {!onCloseAlert && <RefreshIcon fontSize="inherit" />}
+            {!onCloseAlert && (
+              <IconButton component={RouterLink} to="/signup" color="inherit">
+                <ArrowBackIcon />
+              </IconButton>
+            )}
           </IconButton>
         }
         sx={{ mb: 2 }}

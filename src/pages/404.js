@@ -24,9 +24,9 @@ const NotFound = () => {
     >
       <Lottie animationData={animation404} style={{ width: '400px' }} />
       <Typography variant="h6">
-        {t('layout.back')}{' '}
+        {t('layout.back404')}{' '}
         <Link component={RouterLink} to="/" variant="h6" color="secondary">
-          {t('layout.homepage')}
+          {t('layout.homepage404')}
         </Link>
         .
       </Typography>

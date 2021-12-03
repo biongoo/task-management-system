@@ -6,6 +6,7 @@ import { Outlet, Navigate } from 'react-router-dom';
 import Languages from '../Languages';
 import Palette from '../Palette';
 import Animation from './Animation';
+import Snackbar from '../Snackbar';
 
 const minLogoWidth = 350;
 const drawerWidth = 240;
@@ -24,6 +25,7 @@ const AuthLayout = () => {
         height: '100vh',
       }}
     >
+      <Snackbar />
       <Box
         sx={{
           display: { xs: 'none', md: 'flex' },
@@ -50,7 +52,15 @@ const AuthLayout = () => {
         </Paper>
       </Box>
 
-      <Box p={2} sx={{ height: '100%', flexGrow: 1 }}>
+      <Box
+        p={2}
+        sx={{
+          display: 'flex',
+          height: '100%',
+          flexGrow: 1,
+          flexDirection: 'column',
+        }}
+      >
         <Box
           sx={{
             display: 'flex',
@@ -65,8 +75,8 @@ const AuthLayout = () => {
         </Box>
         <Box
           sx={{
-            height: `calc(100% - ${heightNavbar}px)`,
             display: 'flex',
+            flexGrow: 1,
             flexDirection: 'column',
             flexWrap: 'wrap',
             alignContent: 'center',
@@ -77,6 +87,7 @@ const AuthLayout = () => {
             {!isLoggedIn ? <Outlet /> : <Navigate to="/dashboard" />}
           </Box>
         </Box>
+        <Box sx={{ height: heightNavbar }}></Box>
       </Box>
     </Box>
   );

@@ -16,11 +16,11 @@ import {
   Radio,
 } from '@mui/material';
 
-import { wait } from '../../hooks/use-alert.js';
-import useInput from '../../hooks/use-input.js';
-import Input100Width from '../UI/Inputs/Input100Width';
-import signUpThird from '../../store/auth/signUpThird.js';
-import LoadingButton100Width from '../UI/Buttons/LoadingButton100Width.js';
+import { wait } from '../../../hooks/use-alert.js';
+import useInput from '../../../hooks/use-input.js';
+import Input100Width from '../../UI/Inputs/Input100Width';
+import registerThird from '../../../store/auth/registerThird.js';
+import LoadingButton100Width from '../../UI/Buttons/LoadingButton100Width.js';
 
 const SecondStepForm = ({
   email,
@@ -57,32 +57,35 @@ const SecondStepForm = ({
     }
 
     const resultAction = await dispatch(
-      signUpThird({ email, token, password, type: +type })
+      registerThird({ email, token, password, type: +type })
     );
 
     setLoading(false);
     passwordReset();
 
-    if (signUpThird.fulfilled.match(resultAction)) {
+    if (registerThird.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
         case 'userAdded':
           navigate('/signup/thirdstep');
           break;
         case 'registrationUserNotExists':
+          setErrorAlert('global.error', 'register.registrationUserNotExists');
+          break;
         case 'invalidPassword':
+          setErrorAlert('global.error', 'global.invalidPassword');
+          break;
         case 'invalidType':
+          setErrorAlert('global.error', 'register.invalidType');
+          break;
         case 'userExists':
-          setErrorAlert(
-            'signUp.errorTitle',
-            `signUp.${resultAction.payload.message}`
-          );
+          setErrorAlert('global.error', 'register.userExists');
           break;
         default:
-          setErrorAlert('signUp.errorTitle', 'signUp.connectionError');
+          setErrorAlert('global.error', 'global.connectionError');
           break;
       }
     } else {
-      setErrorAlert('signUp.errorTitle', 'signUp.connectionError');
+      setErrorAlert('global.error', 'global.connectionError');
     }
   };
 
@@ -91,7 +94,7 @@ const SecondStepForm = ({
       <Stack spacing={2} pt={1} mb={2}>
         <Input100Width
           id="email"
-          label={t('signUp.email')}
+          label={t('global.email')}
           value={email}
           onChange={() => {}}
           onBlur={() => {}}
@@ -100,13 +103,13 @@ const SecondStepForm = ({
 
         <Input100Width
           id="password"
-          label={t('signIn.password')}
+          label={t('global.password')}
           type={showPassword ? 'text' : 'password'}
           value={password}
           onChange={passwordChangeHandler}
           onBlur={passwordTouchHandler}
           error={passwordHasError}
-          helperText={passwordHasError && t('signIn.weakPassword')}
+          helperText={passwordHasError && t('global.invalidPassword6')}
           disabled={loading}
           InputProps={{
             endAdornment: (
@@ -129,7 +132,7 @@ const SecondStepForm = ({
             component="legend"
             sx={{ '&.Mui-focused': { color: 'secondary.main' } }}
           >
-            {t('signUp.type')}
+            {t('register.type')}
           </FormLabel>
           <RadioGroup
             row
@@ -139,18 +142,18 @@ const SecondStepForm = ({
             <FormControlLabel
               value="1"
               control={<Radio color="secondary" />}
-              label={t('signUp.student')}
+              label={t('register.student')}
             />
             <FormControlLabel
               value="2"
               control={<Radio color="secondary" />}
-              label={t('signUp.teacher')}
+              label={t('register.teacher')}
             />
           </RadioGroup>
         </FormControl>
 
         <LoadingButton100Width onClick={signUpHandler} loading={loading}>
-          {t('signUp.signUp')}
+          {t('auth.signUp')}
         </LoadingButton100Width>
       </Stack>
     </Box>

@@ -13,13 +13,14 @@ import {
   Divider,
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import signIn from '../store/auth/signIn.js';
+import loginAsync from '../store/auth/login.js';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { login } from '../store/auth-slice';
 import useInput from '../hooks/use-input.js';
 import { useAlert, wait } from '../hooks/use-alert';
+import { showSnackbar } from '../store/palette-slice.js';
 import FilledAlert from '../components/UI/Alerts/FilledAlert';
 import Input100Width from '../components/UI/Inputs/Input100Width.js';
 import LinkButton100Width from '../components/UI/Buttons/LinkButton100Width.js';
@@ -79,71 +80,64 @@ const Login = () => {
       await wait(250);
     }
 
-    const resultAction = await dispatch(signIn({ email, password }));
+    const resultAction = await dispatch(loginAsync({ email, password }));
 
     setLoading(false);
     emailReset();
     passwordReset();
 
-    if (signIn.fulfilled.match(resultAction)) {
+    if (loginAsync.fulfilled.match(resultAction)) {
+      const { email, token } = resultAction.payload;
+
       switch (resultAction.payload.message) {
         case 'userLoggedIn':
-          console.log(rememberPassword);
-          //localStorage.setItem('color', color);
-          dispatch(
-            login({
-              email: resultAction.payload.email,
-              token: resultAction.payload.token,
-              rememberPassword,
-            })
-          );
+          dispatch(login({ email, token, rememberPassword }));
+          dispatch(showSnackbar({ message: t('login.successLogin'), time: 3000 }));
           break;
         case 'userNotExists':
+          setErrorAlert('global.error', 'auth.userNotExists');
+          break;
         case 'wrongPassword':
-          setErrorAlert(
-            'signUp.errorTitle',
-            `signIn.${resultAction.payload.message}`
-          );
+          setErrorAlert('global.error', 'global.invalidPassword');
           break;
         default:
-          setErrorAlert('signUp.errorTitle', 'signUp.connectionError');
+          setErrorAlert('global.error', 'global.connectionError');
           break;
       }
     } else {
-      setErrorAlert('signUp.errorTitle', 'signUp.connectionError');
+      setErrorAlert('global.error', 'global.connectionError');
     }
   };
 
   return (
     <>
-      {rememberPassword} {/* //TODO */}
       <Stack spacing={1}>
-        <Typography variant="h5">{t('signIn.title')}</Typography>
+        <Typography variant="h5">{t('login.title')}</Typography>
         <Typography variant="body2" color="primary.light">
-          {t('signIn.enterDetails')}
+          {t('auth.enterDetails')}
         </Typography>
       </Stack>
       <Box pt={1}>
         <Input100Width
           id="email"
-          label={t('signIn.email')}
+          label={t('global.email')}
           value={email}
           onChange={emailChangeHandler}
           onBlur={emailTouchHandler}
           error={emailHasError}
-          helperText={emailHasError && t('signIn.incorrectEntry')}
+          helperText={emailHasError && t('global.incorrectEntry')}
           disabled={loading}
         />
 
         <Input100Width
           id="password"
-          label={t('signIn.password')}
+          label={t('global.password')}
           type={showPassword ? 'text' : 'password'}
           value={password}
           onChange={passwordChangeHandler}
           onBlur={passwordTouchHandler}
           error={passwordHasError}
-          helperText={passwordHasError && t('signIn.incorrectEntry')}
+          helperText={passwordHasError && t('global.incorrectEntry')}
           disabled={loading}
           InputProps={{
             endAdornment: (
@@ -168,18 +162,18 @@ const Login = () => {
         sx={{ my: 1 }}
       >
         <FormControlLabel
-          label={t('signIn.rememberMe')}
+          label={t('login.rememberMe')}
           control={<Checkbox defaultChecked color="secondary" />}
           onChange={(event) => setRememberPassword(event.target.checked)}
         />
 
         <Link
           component={RouterLink}
-          to="/reset-passwd"
+          to="/forgot"
           variant="subtitle2"
           color="secondary"
         >
-          {t('signIn.forgot')}
+          {t('login.forgot')}
         </Link>
       </Stack>
       <FilledAlert
@@ -191,18 +185,16 @@ const Login = () => {
       />
       <Stack spacing={2} mt={1}>
         <LoadingButton100Width onClick={signInHandler} loading={loading}>
-          {t('signIn.signIn')}
+          {t('auth.signIn')}
         </LoadingButton100Width>
 
         <Divider
           sx={{ '&::before,&::after': { borderColor: 'primary.light' } }}
         >
-          {t('signIn.or')}
+          {t('global.or')}
         </Divider>
 
-        <LinkButton100Width to="/signup">
-          {t('signIn.signUp')}
-        </LinkButton100Width>
+        <LinkButton100Width to="/signup">{t('auth.signUp')}</LinkButton100Width>
       </Stack>
     </>
   );

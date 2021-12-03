@@ -5,6 +5,7 @@ import { Outlet, Navigate } from 'react-router-dom';
 
 import MainLayoutTop from './MainLayoutTop';
 import MainLayoutLeft from './MainLayoutLeft';
+import Snackbar from '../Snackbar';
 
 const drawerWidth = 240;
 
@@ -29,6 +30,8 @@ const MainLayout = () => {
         mobileOpen={mobileOpen}
         drawerToggleHandler={drawerToggleHandler}
       />
+
+      <Snackbar />
 
       <Box
         component="main"

@@ -16,3 +16,7 @@
 ::-webkit-scrollbar-thumb:active {
   background: rgba(145, 158, 171, 0.9);
 }
+
+html {
+  touch-action: pan-y;
+}

@@ -43,7 +43,6 @@ const colors = [
 
 const PaletteContentColor = () => {
   const { t } = useTranslation();
-
   const dispatch = useDispatch();
   const paletteColor = useSelector((state) => state.palette.color);
 

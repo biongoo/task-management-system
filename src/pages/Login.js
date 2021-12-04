@@ -87,11 +87,11 @@ const Login = () => {
     passwordReset();
 
     if (loginAsync.fulfilled.match(resultAction)) {
-      const { email, token } = resultAction.payload;
+      const { email, token, type } = resultAction.payload;
 
       switch (resultAction.payload.message) {
         case 'userLoggedIn':
-          dispatch(login({ email, token, rememberPassword }));
+          dispatch(login({ email, token, type, rememberPassword }));
           dispatch(showSnackbar({ message: t('login.successLogin'), time: 3000 }));
           break;
         case 'userNotExists':

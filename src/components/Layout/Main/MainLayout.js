@@ -15,7 +15,7 @@ const MainLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const drawerToggleHandler = () => {
-    setMobileOpen(!mobileOpen);
+    setMobileOpen((prevState) => !prevState);
   };
 
   return (

@@ -10,7 +10,8 @@
     "or": "OR",
     "password": "Password",
     "success": "Success",
-    "warning": "Warning"
+    "warning": "Warning",
+    "teachers": "Teachers"
   },
   "layout": {
     "back404": "Go back to ",

@@ -1,14 +1,25 @@
 {
   "global": {
+    "add": "Add",
+    "alphabetically": "Alphabetically",
     "back": "Back",
+    "cancel": "Cancel",
     "connectionError": "Cannot connect to server.",
+    "dateAdded": "Date added",
+    "delete": "Delete",
+    "edit": "Edit",
     "email": "E-mail",
     "error": "Error",
+    "expiredSession": "Your session has expired.",
     "incorrectEntry": "Incorrect data.",
+    "incorrectEntryChar": "Incorrect data ({{min}} to {{max}} characters).",
     "invalidPassword": "The password is incorrect.",
     "invalidPassword6": "The password is incorrect (minimum 6 characters).",
+    "notFound": "Not found",
+    "notFoundDesc": "No results found for \"{{search}}\".",
     "or": "OR",
     "password": "Password",
+    "search": "Szukaj",
     "success": "Success",
     "warning": "Warning",
     "teachers": "Teachers"
@@ -29,7 +40,7 @@
     "enterDetails": "Enter your details below.",
     "enterEmail": "Enter your email below.",
     "expiredLink": "Your link has expired. Don't worry, we have sent a new e-mail with the current link.",
-    "invalidEmail": "Your email is incorrect.",
+    "invalidEmail": "Email is incorrect.",
     "signIn": "Sign in",
     "signUp": "Sign up",
     "step1": "Enter email",
@@ -67,5 +78,15 @@
     "title": "Reset your password.",
     "title3": "Password successfully changed.",
     "userExists": "The confirmation e-mail of the first step of password recovery has already been sent. Don't worry, we sent it again and extended the time for confirmation."
+  },
+  "teachers": {
+    "academicTitle": "Academic title",
+    "addTeacher": "Add teacher",
+    "deleteBody": "Are you sure you want to delete \"{{teacher}}\"?",
+    "deleteTeacher": "Delete teacher",
+    "editTeacher": "Edit teacher",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "letsAdd": "Let's add your teacher!"
   }
 }

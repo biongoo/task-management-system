@@ -20,7 +20,7 @@ const initialState = {
         : sessionStorage.getItem('type')
       : '',
   isLoggedIn:
-    localStorage.getItem('token') || sessionStorage.getItem('token')
+    localStorage.getItem('email') || sessionStorage.getItem('email')
       ? true
       : false,
 };
@@ -63,9 +63,12 @@ const authSlice = createSlice({
       state.token = '';
       state.isLoggedIn = false;
     },
+    setTeachers: (state, action) => {
+      state.teachers = action.payload;
+    },
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, setTeachers } = authSlice.actions;
 
 export default authSlice.reducer;

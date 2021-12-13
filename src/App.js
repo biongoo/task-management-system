@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
+import useInit from './hooks/use-init';
 import Theme from './theme/Theme';
 import MainLayout from './components/Layout/Main/MainLayout';
 import AuthLayout from './components/Layout/Auth/AuthLayout';
@@ -15,6 +16,8 @@ import NotFound from './pages/404.js';
 import './App.css';
 
 function App() {
+  useInit();
+
   return (
     <Theme>
       <Routes>

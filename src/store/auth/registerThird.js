@@ -14,7 +14,6 @@ const registerThird = createAsyncThunk(
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
         },
-        cors: 'no-cors',
       });
 
       const dataRes = await response.json();

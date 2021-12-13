@@ -6,6 +6,7 @@ import { NavLink } from 'react-router-dom';
 import SchoolIcon from '@mui/icons-material/School';
 import {
   Box,
+  Drawer,
   SwipeableDrawer,
   Toolbar,
   List,
@@ -80,6 +81,7 @@ const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
               '&.active': {
                 bgcolor: (theme) => alpha(theme.palette.secondary.main, 0.15),
                 color: 'secondary.main',
+                borderRight: '4px solid',
                 '& .MuiSvgIcon-root': {
                   color: 'secondary.main',
                 },
@@ -124,7 +126,7 @@ const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
         {drawer}
       </SwipeableDrawer>
 
-      <SwipeableDrawer
+      <Drawer
         variant="permanent"
         sx={{
           display: { xs: 'none', md: 'block' },
@@ -139,7 +141,7 @@ const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
         open
       >
         {drawer}
-      </SwipeableDrawer>
+      </Drawer>
     </Box>
   );
 };

@@ -36,9 +36,10 @@ const MainLayout = () => {
       <Box
         component="main"
         sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { md: `calc(100% - ${drawerWidth}px)` },
+          margin: 'auto',
+          py: { xs: 2, sm: 4 },
+          px: { xs: 0, sm: 2 },
+          width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
         }}
       >
         <Toolbar />

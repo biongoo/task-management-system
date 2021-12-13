@@ -5,7 +5,7 @@ const registerFirst = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     const url = 'http://java.ts4ever.pl/signup/firststep';
     const method = 'POST';
-    
+
     try {
       const response = await fetch(url, {
         method: method,
@@ -14,7 +14,6 @@ const registerFirst = createAsyncThunk(
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
         },
-        cors: 'no-cors',
       });
 
       const dataRes = await response.json();

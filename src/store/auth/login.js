@@ -12,8 +12,8 @@ const login = createAsyncThunk(
         body: JSON.stringify(data), // email, password
         headers: {
           'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
         },
-        mode: 'cors',
       });
 
       const dataRes = await response.json();

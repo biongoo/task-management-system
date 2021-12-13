@@ -1,14 +1,25 @@
 {
   "global": {
+    "add": "Dodaj",
+    "alphabetically": "Alfabetycznie",
     "back": "Wróć",
+    "cancel": "Anuluj",
     "connectionError": "Nie można połączyć się z serwerem.",
+    "dateAdded": "Data dodania",
+    "delete": "Usuń",
+    "edit": "Zmień",
     "email": "E-mail",
     "error": "Błąd",
+    "expiredSession": "Twoja sesja wygasła.",
     "incorrectEntry": "Nieprawidłowe dane.",
+    "incorrectEntryChar": "Nieprawidłowe dane (od {{min}} do {{max}} znaków).",
     "invalidPassword": "Błędne hasło.",
     "invalidPassword6": "Błędne hasło (przynajmniej 6 znaków).",
+    "notFound": "Nie znaleziono",
+    "notFoundDesc": "Brak wyników dla \"{{search}}\".",
     "or": "Lub",
     "password": "Hasło",
+    "search": "Szukaj",
     "success": "Sukces",
     "warning": "Ostrzeżenie",
     "teachers": "Nauczyciele"
@@ -29,7 +40,7 @@
     "enterDetails": "Wpisz poniżej swoje dane.",
     "enterEmail": "Wpisz poniżej swój email.",
     "expiredLink": "Twój link wygasł. Bez obaw, wysłaliśmy nowego maila z aktualnym linkiem na Twoją skrzynkę.",
-    "invalidEmail": "Twój email jest nieprawidłowy.",
+    "invalidEmail": "Email jest nieprawidłowy.",
     "signIn": "Zaloguj się",
     "signUp": "Zarejestruj się",
     "step1": "Wprowadź email",
@@ -67,5 +78,15 @@
     "title": "Zresetuj swoje hasło",
     "title3": "Hasło zostało zmienione pomyślnie.",
     "userExists": "Mail potwierdzający pierwszy etap przywracania hasła został już wysłany. Bez obaw, wysłaliśmy go jeszcze raz oraz przedłużyliśmy czas na potwierdzenie."
+  },
+  "teachers": {
+    "academicTitle": "Tytuł naukowy",
+    "addTeacher": "Dodaj nauczyciela",
+    "deleteBody": "Czy aby na pewno chcesz usunąć \"{{teacher}}\"?",
+    "deleteTeacher": "Usuń nauczyciela",
+    "editTeacher": "Edytuj nauczyciela",
+    "firstName": "Imię",
+    "lastName": "Nazwisko",
+    "letsAdd": "Dodaj swojego nauczyciela!"
   }
 }

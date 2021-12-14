@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { Box } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
+import React, { useState, useEffect, useCallback } from 'react';
 
+import SecondStepForm from './SecondStepForm';
 import { useAlert } from '../../../hooks/use-alert.js';
 import FilledAlert from '../../UI/Alerts/FilledAlert.js';
 import registerSecond from '../../../store/auth/registerSecond';
-import SecondStepForm from './SecondStepForm';
-import Header from '../Header';
 
 let errorToken = false;
 let languageFlag = true;
@@ -83,24 +82,23 @@ const SecondStep = () => {
         </Box>
       )}
       {!loading && !errorToken && (
-        <>
-          <Header header={'auth.title2'} subHeader={'auth.enterDetails'} />
-          <SecondStepForm
-            email={email}
-            token={token}
-            showAlert={showAlert}
-            closeAlert={closeAlert}
-            setErrorAlert={setErrorAlert}
-          />
-        </>
+        <SecondStepForm
+          email={email}
+          token={token}
+          showAlert={showAlert}
+          closeAlert={closeAlert}
+          setErrorAlert={setErrorAlert}
+        />
       )}
-      <FilledAlert
-        show={showAlert}
-        severity={alertType}
-        title={t(alertTitle)}
-        message={t(alertMessage)}
-        onCloseAlert={!errorToken && closeAlert}
-      />
+      <Box>
+        <FilledAlert
+          show={showAlert}
+          severity={alertType}
+          title={t(alertTitle)}
+          message={t(alertMessage)}
+          onCloseAlert={!errorToken && closeAlert}
+        />
+      </Box>
     </>
   );
 };

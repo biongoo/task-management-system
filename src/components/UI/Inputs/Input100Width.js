@@ -2,7 +2,6 @@ import { styled } from '@mui/system';
 import { TextField } from '@mui/material';
 
 const StyledInput = styled(TextField)(({ theme }) => ({
-  marginTop: 16,
   width: '100%',
   '& label.Mui-focused': {
     color: theme.palette.secondary.main,

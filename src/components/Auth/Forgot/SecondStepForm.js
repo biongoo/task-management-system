@@ -4,8 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Box, Stack, InputAdornment, IconButton } from '@mui/material';
+import { Tooltip, Stack, InputAdornment, IconButton } from '@mui/material';
 
+import Header from '../Header';
 import { wait } from '../../../hooks/use-alert.js';
 import useInput from '../../../hooks/use-input.js';
 import Input100Width from '../../UI/Inputs/Input100Width';
@@ -76,21 +77,30 @@ const SecondStepForm = ({
   };
 
   return (
-    <Box component="form" noValidate autoComplete="off">
-      <Stack spacing={2} pt={1} mb={2}>
-        <Input100Width
-          id="password"
-          label={t('global.password')}
-          type={showPassword ? 'text' : 'password'}
-          value={newPassword}
-          onChange={newPasswordChangeHandler}
-          onBlur={newPasswordTouchHandler}
-          error={newPasswordHasError}
-          helperText={newPasswordHasError && t('global.invalidPassword6')}
-          disabled={loading}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
+    <Stack spacing={2} mb={2}>
+      <Header header={'auth.title2'} subHeader={'auth.enterDetails'} />
+
+      <Input100Width
+        id="password"
+        label={t('global.password')}
+        type={showPassword ? 'text' : 'password'}
+        value={newPassword}
+        onChange={newPasswordChangeHandler}
+        onBlur={newPasswordTouchHandler}
+        error={newPasswordHasError}
+        helperText={newPasswordHasError && t('global.invalidPassword6')}
+        disabled={loading}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <Tooltip
+                title={
+                  showPassword
+                    ? t('global.hidePassword')
+                    : t('global.showPassword')
+                }
+                arrow
+              >
                 <IconButton
                   onClick={() => setShowPassword((prevState) => !prevState)}
                   onMouseDown={(e) => e.preventDefault()}
@@ -99,16 +109,16 @@ const SecondStepForm = ({
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+              </Tooltip>
+            </InputAdornment>
+          ),
+        }}
+      />
 
-        <LoadingButton100Width onClick={forgotHandler} loading={loading}>
-          {t('forgot.forgot')}
-        </LoadingButton100Width>
-      </Stack>
-    </Box>
+      <LoadingButton100Width onClick={forgotHandler} loading={loading}>
+        {t('forgot.forgot')}
+      </LoadingButton100Width>
+    </Stack>
   );
 };
 

@@ -36,7 +36,7 @@ const Delete = ({ deleting, onClose }) => {
     const time1 = new Date().getTime();
 
     const resultAction = await dispatch(
-      deleteTeacher({ teacherId: deleting.teacherId })
+      deleteTeacher({ id: deleting.id })
     );
 
     const time2 = new Date().getTime();

@@ -1,16 +1,9 @@
 import React from 'react';
-import { alpha } from '@mui/material/styles';
-import {
-  IconButton,
-  Modal,
-  Backdrop,
-  Fade,
-  Box,
-  Typography,
-  Divider,
-  Stack,
-} from '@mui/material';
+import { Modal, Backdrop, Fade, Box, Typography, Stack } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+
+import Divider from '../Dividers/Divider';
+import IconButton from '../Buttons/IconButton';
 
 const styleModal = {
   position: 'absolute',
@@ -52,51 +45,31 @@ const MainModal = ({ open, handleClose, title, body, buttons }) => {
           >
             <Typography variant="h5">{title}</Typography>
 
-            <IconButton
-              onClick={handleClose}
-              color="secondary"
-              sx={{
-                padding: 0,
-                width: 44,
-                height: 44,
-              }}
-            >
-              <CloseIcon
-                sx={{
-                  width: 28,
-                  height: 28,
-                  color: 'primary.light',
-                }}
-              />
-            </IconButton>
+            <IconButton onClick={handleClose} Icon={CloseIcon} />
           </Stack>
 
-          <Divider
-            sx={{
-              borderColor: (theme) => alpha(theme.palette.primary.light, 0.4),
-            }}
-          />
+          <Divider />
 
           <Box my={2} mx={2.5}>
             {body}
           </Box>
 
-          <Divider
-            sx={{
-              borderColor: (theme) => alpha(theme.palette.primary.light, 0.4),
-            }}
-          />
+          {buttons && (
+            <>
+              <Divider />
 
-          <Stack
-            direction="row"
-            justifyContent="flex-end"
-            alignItems="center"
-            spacing={2}
-            my={2}
-            mx={2.5}
-          >
-            {buttons}
-          </Stack>
+              <Stack
+                direction="row"
+                justifyContent="flex-end"
+                alignItems="center"
+                spacing={2}
+                my={2}
+                mx={2.5}
+              >
+                {buttons}
+              </Stack>
+            </>
+          )}
         </Box>
       </Fade>
     </Modal>

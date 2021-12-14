@@ -6,14 +6,14 @@ const deleteTeacher = createAsyncThunk(
     const url = 'http://java.ts4ever.pl/teachers/delete';
     const method = 'POST';
 
-    const { teacherId } = data;
+    const { id } = data;
     const { email: userEmail, token: userToken } = getState().auth;
 
     try {
       const response = await fetch(url, {
         method: method,
         body: JSON.stringify({
-          teacherId,
+          id,
           userEmail,
           userToken,
         }),
@@ -27,7 +27,7 @@ const deleteTeacher = createAsyncThunk(
 
       return {
         ...dataRes,
-        teacherId,
+        id,
       };
     } catch (err) {
       let error = err; // cast the error for access

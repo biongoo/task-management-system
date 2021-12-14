@@ -48,10 +48,10 @@ const TeachersList = ({ teachersList, search, loading }) => {
     <Box>
       <TransitionGroup>
         {teachersList.map((teacher) => (
-          <Collapse key={teacher.teacherId}>
+          <Collapse key={teacher.id}>
             <Accordion
-              expanded={expanded === teacher.teacherId}
-              onChange={handleChange(teacher.teacherId)}
+              expanded={expanded === teacher.id}
+              onChange={handleChange(teacher.id)}
             >
               <AccordionSummary>
                 <Typography variant="subtitle1">
@@ -74,7 +74,7 @@ const TeachersList = ({ teachersList, search, loading }) => {
                 >
                   <Typography
                     variant="subtitle2"
-                    sx={{ wordBreak: ' break-all' }}
+                    sx={{ wordBreak: 'break-all' }}
                   >
                     {t('global.email')}: {teacher.teacherEmail}
                   </Typography>

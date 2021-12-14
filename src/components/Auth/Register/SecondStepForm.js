@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {
-  Box,
+  Tooltip,
   Stack,
   InputAdornment,
   IconButton,
@@ -16,6 +16,7 @@ import {
   Radio,
 } from '@mui/material';
 
+import Header from '../Header';
 import { wait } from '../../../hooks/use-alert.js';
 import useInput from '../../../hooks/use-input.js';
 import Input100Width from '../../UI/Inputs/Input100Width';
@@ -90,30 +91,39 @@ const SecondStepForm = ({
   };
 
   return (
-    <Box component="form" noValidate autoComplete="off">
-      <Stack spacing={2} pt={1} mb={2}>
-        <Input100Width
-          id="email"
-          label={t('global.email')}
-          value={email}
-          onChange={() => {}}
-          onBlur={() => {}}
-          disabled={true}
-        />
+    <Stack spacing={2} mb={2}>
+      <Header header={'auth.title2'} subHeader={'auth.enterDetails'} />
 
-        <Input100Width
-          id="password"
-          label={t('global.password')}
-          type={showPassword ? 'text' : 'password'}
-          value={password}
-          onChange={passwordChangeHandler}
-          onBlur={passwordTouchHandler}
-          error={passwordHasError}
-          helperText={passwordHasError && t('global.invalidPassword6')}
-          disabled={loading}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
+      <Input100Width
+        id="email"
+        label={t('global.email')}
+        value={email}
+        onChange={() => {}}
+        onBlur={() => {}}
+        disabled={true}
+      />
+
+      <Input100Width
+        id="password"
+        label={t('global.password')}
+        type={showPassword ? 'text' : 'password'}
+        value={password}
+        onChange={passwordChangeHandler}
+        onBlur={passwordTouchHandler}
+        error={passwordHasError}
+        helperText={passwordHasError && t('global.invalidPassword6')}
+        disabled={loading}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <Tooltip
+                title={
+                  showPassword
+                    ? t('global.hidePassword')
+                    : t('global.showPassword')
+                }
+                arrow
+              >
                 <IconButton
                   onClick={() => setShowPassword((prevState) => !prevState)}
                   onMouseDown={(e) => e.preventDefault()}
@@ -122,41 +132,37 @@ const SecondStepForm = ({
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+              </Tooltip>
+            </InputAdornment>
+          ),
+        }}
+      />
 
-        <FormControl component="fieldset">
-          <FormLabel
-            component="legend"
-            sx={{ '&.Mui-focused': { color: 'secondary.main' } }}
-          >
-            {t('register.type')}
-          </FormLabel>
-          <RadioGroup
-            row
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-          >
-            <FormControlLabel
-              value="1"
-              control={<Radio color="secondary" />}
-              label={t('register.student')}
-            />
-            <FormControlLabel
-              value="2"
-              control={<Radio color="secondary" />}
-              label={t('register.teacher')}
-            />
-          </RadioGroup>
-        </FormControl>
+      <FormControl component="fieldset">
+        <FormLabel
+          component="legend"
+          sx={{ '&.Mui-focused': { color: 'secondary.main' } }}
+        >
+          {t('register.type')}
+        </FormLabel>
+        <RadioGroup row value={type} onChange={(e) => setType(e.target.value)}>
+          <FormControlLabel
+            value="1"
+            control={<Radio color="secondary" />}
+            label={t('register.student')}
+          />
+          <FormControlLabel
+            value="2"
+            control={<Radio color="secondary" />}
+            label={t('register.teacher')}
+          />
+        </RadioGroup>
+      </FormControl>
 
-        <LoadingButton100Width onClick={signUpHandler} loading={loading}>
-          {t('auth.signUp')}
-        </LoadingButton100Width>
-      </Stack>
-    </Box>
+      <LoadingButton100Width onClick={signUpHandler} loading={loading}>
+        {t('auth.signUp')}
+      </LoadingButton100Width>
+    </Stack>
   );
 };
 

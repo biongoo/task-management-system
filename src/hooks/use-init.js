@@ -6,7 +6,9 @@ import { logout } from '../store/auth-slice';
 import { showSnackbar } from '../store/palette-slice';
 import { clearError } from '../store/user-slice';
 import checkLoginAsync from '../store/auth/checkLogin';
+
 import getTeachers from '../store/teachers/getTeachers';
+import getTypes from '../store/subjects/getTypes';
 
 const useInit = () => {
   const { t } = useTranslation();
@@ -22,6 +24,7 @@ const useInit = () => {
       switch (resultAction.payload.message) {
         case 'userExists':
           dispatch(getTeachers());
+          dispatch(getTypes());
           break;
         case 'userNotExists':
         default:

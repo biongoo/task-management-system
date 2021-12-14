@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import { alpha } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import { Menu, MenuItem, IconButton, Box, Typography } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import {
+  Menu,
+  MenuItem,
+  IconButton,
+  Box,
+  Typography,
+  Tooltip,
+} from '@mui/material';
 
 const Filter = ({ selectedIndex, setSelectedIndex }) => {
   const { t } = useTranslation();
@@ -48,30 +55,32 @@ const Filter = ({ selectedIndex, setSelectedIndex }) => {
 
   return (
     <>
-      <IconButton
-        onClick={handleOpen}
-        color="secondary"
-        sx={{
-          padding: 0,
-          width: 44,
-          height: 44,
-          ...(open && {
-            bgcolor: (theme) =>
-              alpha(
-                theme.palette.secondary.main,
-                theme.palette.action.focusOpacity
-              ),
-          }),
-        }}
-      >
-        <FilterListIcon
+      <Tooltip title={t('global.sort')} arrow>
+        <IconButton
+          onClick={handleOpen}
+          color="secondary"
           sx={{
-            width: 28,
-            height: 28,
-            color: bgColorOfIcon,
+            padding: 0,
+            width: 44,
+            height: 44,
+            ...(open && {
+              bgcolor: (theme) =>
+                alpha(
+                  theme.palette.secondary.main,
+                  theme.palette.action.focusOpacity
+                ),
+            }),
           }}
-        />
-      </IconButton>
+        >
+          <FilterListIcon
+            sx={{
+              width: 28,
+              height: 28,
+              color: bgColorOfIcon,
+            }}
+          />
+        </IconButton>
+      </Tooltip>
       <Menu
         anchorEl={anchorEl}
         open={open}

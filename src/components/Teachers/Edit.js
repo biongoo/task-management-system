@@ -99,11 +99,11 @@ const Edit = ({ settings, onClose }) => {
 
     const resultAction = await dispatch(
       editTeacher({
+        id: settings.id,
+        academicTitle,
         firstName,
         lastName,
-        academicTitle,
         email,
-        teacherId: settings.teacherId,
       })
     );
 
@@ -166,7 +166,7 @@ const Edit = ({ settings, onClose }) => {
 
   const body = (
     <>
-      <Stack sx={{ mb: 4 }}>
+      <Stack sx={{ my: 3 }} spacing={2}>
         <Input100Width
           id="firstName"
           label={t('teachers.firstName')}

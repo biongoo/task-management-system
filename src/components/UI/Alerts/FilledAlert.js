@@ -6,7 +6,7 @@ import { IconButton, Collapse, Alert, AlertTitle } from '@mui/material';
 
 const FilledAlert = ({ show, severity, title, message, onCloseAlert }) => {
   return (
-    <Collapse in={show}>
+    <Collapse in={show} sx={{ '&.MuiCollapse-root': { m: 0 } }}>
       <Alert
         variant="filled"
         severity={severity}
@@ -27,7 +27,6 @@ const FilledAlert = ({ show, severity, title, message, onCloseAlert }) => {
             )}
           </IconButton>
         }
-        sx={{ mb: 2 }}
       >
         <AlertTitle>{title}</AlertTitle>
         {message}

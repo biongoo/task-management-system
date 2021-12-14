@@ -1,68 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+/* import { useNavigate } from 'react-router-dom'; */
 import { Box, Paper, Stack, Backdrop, CircularProgress } from '@mui/material';
 
-import Add from '../components/Teachers/Add';
-import Search from '../components/Teachers/Search';
-import Filter from '../components/Teachers/Filter';
-import TeachersList from '../components/Teachers/TeachersList';
-import getTeachers from '../store/teachers/getTeachers';
+import Types from '../components/Subjects/Types/Types';
+import getTypes from '../store/subjects/getTypes';
 
-const Teachers = () => {
-  const navigate = useNavigate();
+const Subjects = () => {
   const dispatch = useDispatch();
   const typeOfAccount = useSelector((state) => state.auth.type);
-  const { teachers, loading } = useSelector((state) => state.teachers);
+  const { subjects, types, loading } = useSelector((state) => state.subjects);
 
   const [search, setSearch] = useState('');
   const [selectedSortingIndex, setSelectedSortingIndex] = useState(0);
 
-  const searchHandler = (e) => {
-    setSearch(e.target.value);
-  };
-
-  let teachersList = teachers.slice();
-
-  if(+typeOfAccount !== 1) {
-    navigate('/404');
-  }
-
   useEffect(() => {
-    dispatch(getTeachers());
+    dispatch(getTypes());
   }, [dispatch]);
 
+  let subjectsList = subjects.slice();
+
   if (search) {
-    teachersList = teachersList.filter((teacher) =>
-      `${teacher.academicTitle} ${teacher.firstName} ${teacher.lastName}`
-        .toLowerCase()
-        .includes(search.toLowerCase())
+    subjectsList = subjectsList.filter((subject) =>
+      `${subject.name}`.toLowerCase().includes(search.toLowerCase())
     );
   }
 
   switch (selectedSortingIndex) {
     case 0:
-      teachersList = teachersList.sort(
-        (a, b) =>
-          a.firstName.localeCompare(b.firstName) ||
-          a.lastName.localeCompare(b.lastName)
-      );
+      subjectsList = subjectsList.sort((a, b) => a.name.localeCompare(b.name));
       break;
     case 1:
-      teachersList = teachersList.sort(
-        (a, b) =>
-          b.firstName.localeCompare(a.firstName) ||
-          b.lastName.localeCompare(a.lastName)
-      );
+      subjectsList = subjectsList.sort((a, b) => b.name.localeCompare(a.name));
       break;
     case 2:
       break;
     case 3:
-      teachersList = teachersList.reverse();
+      subjectsList = subjectsList.reverse();
       break;
     default:
       break;
   }
+
+  /* const searchHandler = (e) => {
+    setSearch(e.target.value);
+  }; */
 
   return (
     <Box
@@ -73,10 +55,11 @@ const Teachers = () => {
     >
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading && !teachersList.length}
+        open={loading && !subjectsList.length}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+
       <Paper
         sx={{
           width: { xs: '95%', md: '95%' },
@@ -95,24 +78,24 @@ const Teachers = () => {
           mx={1}
           spacing={2}
         >
-          <Search search={search} searchHandler={searchHandler} />
+          {/* <Search search={search} searchHandler={searchHandler} /> */}
           <Stack direction="row">
-            <Filter
+            {/* <Filter
               selectedIndex={selectedSortingIndex}
               setSelectedIndex={setSelectedSortingIndex}
-            />
-            <Add />
+            /> */}
+            <Types types={types} />
           </Stack>
         </Stack>
 
-        <TeachersList
-          teachersList={teachersList}
-          search={search}
-          loading={loading}
-        />
+        {/* <SubjectsList
+      teachersList={subjectsList}
+      search={search}
+      loading={loading}
+    /> */}
       </Paper>
     </Box>
   );
 };
 
-export default Teachers;
+export default Subjects;

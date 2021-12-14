@@ -12,7 +12,7 @@ const ThirdStep = () => {
 
   return (
     <>
-      <Box mb={2}>
+      <Box mb={3}>
         <Header
           header={t('register.title3')}
           subHeader={t('register.subTitle3')}
@@ -33,7 +33,7 @@ const ThirdStep = () => {
           style={{ position: 'absolute', top: -215, transform: 'scale(1.8)' }}
         />
       </Box>
-      <Box mb={3} mt={1}>
+      <Box mb={3}>
         <LinkButton100Width to="/">{t('auth.signIn')}</LinkButton100Width>
       </Box>
     </>

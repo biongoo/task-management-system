@@ -7,19 +7,23 @@
     "connectionError": "Nie można połączyć się z serwerem.",
     "dateAdded": "Data dodania",
     "delete": "Usuń",
-    "edit": "Zmień",
+    "edit": "Edytuj",
     "email": "E-mail",
     "error": "Błąd",
     "expiredSession": "Twoja sesja wygasła.",
+    "hidePassword": "Ukryj hasło",
     "incorrectEntry": "Nieprawidłowe dane.",
     "incorrectEntryChar": "Nieprawidłowe dane (od {{min}} do {{max}} znaków).",
     "invalidPassword": "Błędne hasło.",
     "invalidPassword6": "Błędne hasło (przynajmniej 6 znaków).",
+    "name": "Nazwa",
     "notFound": "Nie znaleziono",
     "notFoundDesc": "Brak wyników dla \"{{search}}\".",
     "or": "Lub",
     "password": "Hasło",
     "search": "Szukaj",
+    "showPassword": "Pokaż hasło",
+    "sort": "Szukaj",
     "success": "Sukces",
     "warning": "Ostrzeżenie",
     "teachers": "Nauczyciele"
@@ -33,6 +37,7 @@
     "mode": "Tryb",
     "settings": "Ustawienia",
     "shortTitle": "SZZ",
+    "subjects": "Przedmioty",
     "themeSettings": "Ustawienia motywu",
     "title": "System zarządzania zadaniami"
   },
@@ -88,5 +93,10 @@
     "firstName": "Imię",
     "lastName": "Nazwisko",
     "letsAdd": "Dodaj swojego nauczyciela!"
+  },
+  "subjects": {
+    "addType": "Dodaj typ",
+    "typeExists": "Podany typ już istnieje.",
+    "types": "Typy"
   }
 }

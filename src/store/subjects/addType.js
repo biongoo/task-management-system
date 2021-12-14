@@ -1,29 +1,19 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-const editTeacher = createAsyncThunk(
-  'teachers/edit',
+const addType = createAsyncThunk(
+  'subjects/types/add',
   async (data, { rejectWithValue, getState }) => {
-    const url = 'http://java.ts4ever.pl/teachers/edit';
+    const url = 'http://java.ts4ever.pl/subjects/types/add';
     const method = 'POST';
 
-    const {
-      id,
-      firstName,
-      lastName,
-      academicTitle,
-      email: teacherEmail,
-    } = data;
+    const { name } = data;
     const { email: userEmail, token: userToken } = getState().auth;
 
     try {
       const response = await fetch(url, {
         method: method,
         body: JSON.stringify({
-          id,
-          firstName,
-          lastName,
-          academicTitle,
-          teacherEmail,
+          name,
           userEmail,
           userToken,
         }),
@@ -35,14 +25,7 @@ const editTeacher = createAsyncThunk(
 
       const dataRes = await response.json();
 
-      return {
-        ...dataRes,
-        firstName,
-        lastName,
-        academicTitle,
-        teacherEmail,
-        id,
-      };
+      return { ...dataRes, name };
     } catch (err) {
       let error = err; // cast the error for access
 
@@ -55,4 +38,4 @@ const editTeacher = createAsyncThunk(
   }
 );
 
-export default editTeacher;
+export default addType;

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { alpha } from '@mui/material/styles';
 import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
-import { IconButton, Stack } from '@mui/material';
+import { IconButton, Stack, Tooltip } from '@mui/material';
 
 import useInput from '../../hooks/use-input';
 import MainModal from '../UI/Modals/MainModal';
@@ -139,7 +139,7 @@ const AddTeacher = () => {
 
   const body = (
     <>
-      <Stack sx={{ mb: 4 }}>
+      <Stack sx={{ my: 3 }} spacing={2}>
         <Input100Width
           id="firstName"
           label={t('teachers.firstName')}
@@ -205,30 +205,32 @@ const AddTeacher = () => {
 
   return (
     <>
-      <IconButton
-        onClick={handleOpen}
-        color="secondary"
-        sx={{
-          padding: 0,
-          width: 44,
-          height: 44,
-          ...(open && {
-            bgcolor: (theme) =>
-              alpha(
-                theme.palette.secondary.main,
-                theme.palette.action.focusOpacity
-              ),
-          }),
-        }}
-      >
-        <AddIcon
+      <Tooltip title={t('global.add')} arrow>
+        <IconButton
+          onClick={handleOpen}
+          color="secondary"
           sx={{
-            width: 28,
-            height: 28,
-            color: open ? 'secondary.main' : 'primary.light',
+            padding: 0,
+            width: 44,
+            height: 44,
+            ...(open && {
+              bgcolor: (theme) =>
+                alpha(
+                  theme.palette.secondary.main,
+                  theme.palette.action.focusOpacity
+                ),
+            }),
           }}
-        />
-      </IconButton>
+        >
+          <AddIcon
+            sx={{
+              width: 28,
+              height: 28,
+              color: open ? 'secondary.main' : 'primary.light',
+            }}
+          />
+        </IconButton>
+      </Tooltip>
 
       <MainModal
         open={open}

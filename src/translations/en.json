@@ -11,15 +11,19 @@
     "email": "E-mail",
     "error": "Error",
     "expiredSession": "Your session has expired.",
+    "hidePassword": "Hide password",
     "incorrectEntry": "Incorrect data.",
     "incorrectEntryChar": "Incorrect data ({{min}} to {{max}} characters).",
     "invalidPassword": "The password is incorrect.",
     "invalidPassword6": "The password is incorrect (minimum 6 characters).",
+    "name": "Name",
     "notFound": "Not found",
     "notFoundDesc": "No results found for \"{{search}}\".",
     "or": "OR",
     "password": "Password",
-    "search": "Szukaj",
+    "search": "Search",
+    "showPassword": "Show password",
+    "sort": "Sort",
     "success": "Success",
     "warning": "Warning",
     "teachers": "Teachers"
@@ -33,6 +37,7 @@
     "mode": "Mode",
     "settings": "Settings",
     "shortTitle": "TMS",
+    "subjects": "Subjects",
     "themeSettings": "Theme settings",
     "title": "Task Management System"
   },
@@ -88,5 +93,10 @@
     "firstName": "First name",
     "lastName": "Last name",
     "letsAdd": "Let's add your teacher!"
+  },
+  "subjects": {
+    "addType": "Add type",
+    "typeExists": "Type already exists.",
+    "types": "Types"
   }
 }

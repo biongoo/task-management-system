@@ -1,9 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import { alpha } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import { NavLink } from 'react-router-dom';
+import HomeIcon from '@mui/icons-material/Home';
 import SchoolIcon from '@mui/icons-material/School';
+import SubjectIcon from '@mui/icons-material/Subject';
 import {
   Box,
   Drawer,
@@ -27,20 +29,20 @@ const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
   if (+typeOfAccount === 1) {
     menuItems.push(
       {
+        text: t('layout.home'),
+        icon: <HomeIcon sx={{ color: 'primary.light' }} />,
+        path: '/dashboard/',
+      },
+      {
         text: t('global.teachers'),
         icon: <SchoolIcon sx={{ color: 'primary.light' }} />,
         path: '/dashboard/teachers',
       },
       {
-        text: 'Test1',
-        icon: <SchoolIcon sx={{ color: 'primary.light' }} />,
-        path: '/dashboard/test1',
+        text: t('layout.subjects'),
+        icon: <SubjectIcon sx={{ color: 'primary.light' }} />,
+        path: '/dashboard/subjects',
       },
-      {
-        text: 'Test2',
-        icon: <SchoolIcon sx={{ color: 'primary.light' }} />,
-        path: '/dashboard/test2',
-      }
     );
   }
 

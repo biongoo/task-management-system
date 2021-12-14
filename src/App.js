@@ -7,8 +7,7 @@ import MainLayout from './components/Layout/Main/MainLayout';
 import AuthLayout from './components/Layout/Auth/AuthLayout';
 import Dashboard from './pages/Dashboard';
 import Teachers from './pages/Teachers';
-import Test1 from './pages/Test1';
-import Test2 from './pages/Test2';
+import Subjects from './pages/Subjects';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Forgot from './pages/Forgot';
@@ -24,8 +23,7 @@ function App() {
         <Route path="/dashboard/" element={<MainLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="teachers" element={<Teachers />} />
-          <Route path="test1" element={<Test1 />} />
-          <Route path="test2" element={<Test2 />} />
+          <Route path="subjects" element={<Subjects />} />
         </Route>
 
         <Route path="/" element={<AuthLayout />}>

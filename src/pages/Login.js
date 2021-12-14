@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import loginAsync from '../store/auth/login.js';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {
-  Box,
-  Typography,
   InputAdornment,
   IconButton,
   Stack,
@@ -11,14 +13,12 @@ import {
   Checkbox,
   Link,
   Divider,
+  Tooltip,
 } from '@mui/material';
-import { useDispatch } from 'react-redux';
-import loginAsync from '../store/auth/login.js';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { login } from '../store/auth-slice';
 import useInput from '../hooks/use-input.js';
+import Header from '../components/Auth/Header.js';
 import { useAlert, wait } from '../hooks/use-alert';
 import { showSnackbar } from '../store/palette-slice.js';
 import FilledAlert from '../components/UI/Alerts/FilledAlert';
@@ -92,7 +92,9 @@ const Login = () => {
       switch (resultAction.payload.message) {
         case 'userLoggedIn':
           dispatch(login({ email, token, type, rememberPassword }));
-          dispatch(showSnackbar({ message: t('login.successLogin'), time: 3000 }));
+          dispatch(
+            showSnackbar({ message: t('login.successLogin'), time: 3000 })
+          );
           break;
         case 'userNotExists':
           setErrorAlert('global.error', 'auth.userNotExists');
@@ -110,38 +112,41 @@ const Login = () => {
   };
 
   return (
-    <>
-      <Stack spacing={1}>
-        <Typography variant="h5">{t('login.title')}</Typography>
-        <Typography variant="body2" color="primary.light">
-          {t('auth.enterDetails')}
-        </Typography>
-      </Stack>
-      <Box pt={1}>
-        <Input100Width
-          id="email"
-          label={t('global.email')}
-          value={email}
-          onChange={emailChangeHandler}
-          onBlur={emailTouchHandler}
-          error={emailHasError}
-          helperText={emailHasError && t('global.incorrectEntry')}
-          disabled={loading}
-        />
+    <Stack spacing={2}>
+      <Header header={'login.title'} subHeader={'auth.enterDetails'} noBack />
 
-        <Input100Width
-          id="password"
-          label={t('global.password')}
-          type={showPassword ? 'text' : 'password'}
-          value={password}
-          onChange={passwordChangeHandler}
-          onBlur={passwordTouchHandler}
-          error={passwordHasError}
-          helperText={passwordHasError && t('global.incorrectEntry')}
-          disabled={loading}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
+      <Input100Width
+        id="email"
+        label={t('global.email')}
+        value={email}
+        onChange={emailChangeHandler}
+        onBlur={emailTouchHandler}
+        error={emailHasError}
+        helperText={emailHasError && t('global.incorrectEntry')}
+        disabled={loading}
+      />
+
+      <Input100Width
+        id="password"
+        label={t('global.password')}
+        type={showPassword ? 'text' : 'password'}
+        value={password}
+        onChange={passwordChangeHandler}
+        onBlur={passwordTouchHandler}
+        error={passwordHasError}
+        helperText={passwordHasError && t('global.incorrectEntry')}
+        disabled={loading}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <Tooltip
+                title={
+                  showPassword
+                    ? t('global.hidePassword')
+                    : t('global.showPassword')
+                }
+                arrow
+              >
                 <IconButton
                   onClick={() => setShowPassword((prevState) => !prevState)}
                   onMouseDown={(e) => e.preventDefault()}
@@ -150,17 +155,13 @@ const Login = () => {
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Box>
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ my: 1 }}
-      >
+              </Tooltip>
+            </InputAdornment>
+          ),
+        }}
+      />
+
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
         <FormControlLabel
           label={t('login.rememberMe')}
           control={<Checkbox defaultChecked color="secondary" />}
@@ -176,6 +177,7 @@ const Login = () => {
           {t('login.forgot')}
         </Link>
       </Stack>
+
       <FilledAlert
         show={showAlert}
         severity={alertType}
@@ -183,20 +185,17 @@ const Login = () => {
         message={t(alertMessage)}
         onCloseAlert={closeAlert}
       />
-      <Stack spacing={2} mt={1}>
-        <LoadingButton100Width onClick={signInHandler} loading={loading}>
-          {t('auth.signIn')}
-        </LoadingButton100Width>
 
-        <Divider
-          sx={{ '&::before,&::after': { borderColor: 'primary.light' } }}
-        >
-          {t('global.or')}
-        </Divider>
+      <LoadingButton100Width onClick={signInHandler} loading={loading}>
+        {t('auth.signIn')}
+      </LoadingButton100Width>
 
-        <LinkButton100Width to="/signup">{t('auth.signUp')}</LinkButton100Width>
-      </Stack>
-    </>
+      <Divider sx={{ '&::before,&::after': { borderColor: 'primary.light' } }}>
+        {t('global.or')}
+      </Divider>
+
+      <LinkButton100Width to="/signup">{t('auth.signUp')}</LinkButton100Width>
+    </Stack>
   );
 };
 

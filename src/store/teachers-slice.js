@@ -11,7 +11,7 @@ const initialState = {
 };
 
 const teachersSlice = createSlice({
-  name: 'auth',
+  name: 'teachers',
   initialState,
   reducers: {},
   extraReducers: {
@@ -24,7 +24,7 @@ const teachersSlice = createSlice({
     },
     [addTeacher.fulfilled]: (state, action) => {
       const {
-        teacherId,
+        id,
         firstName,
         lastName,
         teacherEmail,
@@ -35,7 +35,7 @@ const teachersSlice = createSlice({
       if (statusCode === 409) return;
 
       state.teachers.push({
-        teacherId,
+        id,
         firstName,
         lastName,
         teacherEmail,
@@ -44,7 +44,7 @@ const teachersSlice = createSlice({
     },
     [editTeacher.fulfilled]: (state, action) => {
       const {
-        teacherId,
+        id,
         firstName,
         lastName,
         teacherEmail,
@@ -55,11 +55,11 @@ const teachersSlice = createSlice({
       if (statusCode === 409) return;
 
       const index = state.teachers.findIndex(
-        (teacher) => teacher.teacherId === teacherId
+        (teacher) => teacher.id === id
       );
 
       state.teachers[index] = {
-        teacherId,
+        id,
         firstName,
         lastName,
         teacherEmail,
@@ -67,10 +67,10 @@ const teachersSlice = createSlice({
       };
     },
     [deleteTeacher.fulfilled]: (state, action) => {
-      const { teacherId } = action.payload;
+      const { id } = action.payload;
 
       state.teachers = state.teachers.filter(
-        (teacher) => teacher.teacherId !== teacherId
+        (teacher) => teacher.id !== id
       );
     },
   },

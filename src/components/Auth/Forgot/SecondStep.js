@@ -9,7 +9,6 @@ import { useAlert } from '../../../hooks/use-alert.js';
 import FilledAlert from '../../UI/Alerts/FilledAlert.js';
 import forgotSecond from '../../../store/auth/forgotSecond';
 import SecondStepForm from './SecondStepForm';
-import Header from '../Header';
 
 let errorToken = false;
 let languageFlag = true;
@@ -83,24 +82,23 @@ const SecondStep = () => {
         </Box>
       )}
       {!loading && !errorToken && (
-        <>
-          <Header header={'auth.title2'} subHeader={'auth.enterDetails'} />
-          <SecondStepForm
-            email={email}
-            token={token}
-            showAlert={showAlert}
-            closeAlert={closeAlert}
-            setErrorAlert={setErrorAlert}
-          />
-        </>
+        <SecondStepForm
+          email={email}
+          token={token}
+          showAlert={showAlert}
+          closeAlert={closeAlert}
+          setErrorAlert={setErrorAlert}
+        />
       )}
-      <FilledAlert
-        show={showAlert}
-        severity={alertType}
-        title={t(alertTitle)}
-        message={t(alertMessage)}
-        onCloseAlert={!errorToken && closeAlert}
-      />
+      <Box>
+        <FilledAlert
+          show={showAlert}
+          severity={alertType}
+          title={t(alertTitle)}
+          message={t(alertMessage)}
+          onCloseAlert={!errorToken && closeAlert}
+        />
+      </Box>
     </>
   );
 };

@@ -7,7 +7,7 @@ import IconButton from '../Buttons/IconButton';
 
 const styleModal = {
   position: 'absolute',
-  top: '30%',
+  top: { xs: '50%', sm: '30%' },
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: { xs: '95%' },

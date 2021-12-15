@@ -3,11 +3,13 @@ import { useDispatch } from 'react-redux';
 import { alpha } from '@mui/material/styles';
 import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
-import { IconButton, Stack, Tooltip } from '@mui/material';
+import { IconButton, Stack, Tooltip, Box } from '@mui/material';
 
 import useInput from '../../hooks/use-input';
 import MainModal from '../UI/Modals/MainModal';
 import { setError } from '../../store/user-slice';
+import FilledAlert from '../UI/Alerts/FilledAlert';
+import { useAlert, wait } from '../../hooks/use-alert';
 import Input100Width from '../UI/Inputs/Input100Width';
 import { Add, Cancel } from '../UI/Buttons/FormButtons';
 import addTeacher from '../../store/teachers/addTeacher';
@@ -18,6 +20,15 @@ const AddTeacher = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const {
+    showAlert,
+    alertType,
+    alertMessage,
+    alertTitle,
+    setErrorAlert,
+    closeAlert,
+  } = useAlert();
 
   const {
     value: firstName,
@@ -85,6 +96,10 @@ const AddTeacher = () => {
 
     if (!formIsValid) return;
     setLoading(true);
+    if (showAlert) {
+      closeAlert();
+      await wait(250);
+    }
 
     const time1 = new Date().getTime();
 
@@ -93,13 +108,6 @@ const AddTeacher = () => {
     );
 
     const time2 = new Date().getTime();
-
-    setTimeout(() => {
-      handleClose();
-      setTimeout(() => {
-        setLoading(false);
-      }, 300);
-    }, 500 - (time2 - time1));
 
     if (addTeacher.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
@@ -114,15 +122,9 @@ const AddTeacher = () => {
           }, 500);
           break;
         case 'emailNotValid':
-          setTimeout(() => {
-            dispatch(
-              showSnackbar({
-                message: t('auth.invalidEmail'),
-                variant: 'error',
-              })
-            );
-          }, 500);
-          break;
+          setErrorAlert('global.error', 'auth.invalidEmail');
+          setLoading(false);
+          return;
         case 'tokenNotValid':
         case 'typeNotValid':
         case 'firstNameNotValid':
@@ -135,65 +137,80 @@ const AddTeacher = () => {
     } else {
       dispatch(setError(t('global.expiredSession')));
     }
+
+    setTimeout(() => {
+      handleClose();
+      setTimeout(() => {
+        setLoading(false);
+      }, 300);
+    }, 500 - (time2 - time1));
   };
 
   const body = (
-    <>
-      <Stack sx={{ my: 3 }} spacing={2}>
-        <Input100Width
-          id="firstName"
-          label={t('teachers.firstName')}
-          value={firstName}
-          onChange={firstNameChangeHandler}
-          onBlur={firstNameTouchHandler}
-          error={firstNameHasError}
-          helperText={
-            firstNameHasError &&
-            t('global.incorrectEntryChar', { min: 3, max: 50 })
-          }
-          disabled={loading}
-        />
+    <Stack mt={3} mb={2} spacing={2}>
+      <Input100Width
+        id="firstName"
+        label={t('teachers.firstName')}
+        value={firstName}
+        onChange={firstNameChangeHandler}
+        onBlur={firstNameTouchHandler}
+        error={firstNameHasError}
+        helperText={
+          firstNameHasError &&
+          t('global.incorrectEntryChar', { min: 3, max: 50 })
+        }
+        disabled={loading}
+      />
 
-        <Input100Width
-          id="lastName"
-          label={t('teachers.lastName')}
-          value={lastName}
-          onChange={lastNameChangeHandler}
-          onBlur={lastNameTouchHandler}
-          error={lastNameHasError}
-          helperText={
-            lastNameHasError &&
-            t('global.incorrectEntryChar', { min: 3, max: 50 })
-          }
-          disabled={loading}
-        />
+      <Input100Width
+        id="lastName"
+        label={t('teachers.lastName')}
+        value={lastName}
+        onChange={lastNameChangeHandler}
+        onBlur={lastNameTouchHandler}
+        error={lastNameHasError}
+        helperText={
+          lastNameHasError &&
+          t('global.incorrectEntryChar', { min: 3, max: 50 })
+        }
+        disabled={loading}
+      />
 
-        <Input100Width
-          id="academicTitle"
-          label={t('teachers.academicTitle')}
-          value={academicTitle}
-          onChange={academicTitleChangeHandler}
-          onBlur={academicTitleTouchHandler}
-          error={academicTitleHasError}
-          helperText={
-            academicTitleHasError &&
-            t('global.incorrectEntryChar', { min: 2, max: 50 })
-          }
-          disabled={loading}
-        />
+      <Input100Width
+        id="academicTitle"
+        label={t('teachers.academicTitle')}
+        value={academicTitle}
+        onChange={academicTitleChangeHandler}
+        onBlur={academicTitleTouchHandler}
+        error={academicTitleHasError}
+        helperText={
+          academicTitleHasError &&
+          t('global.incorrectEntryChar', { min: 2, max: 50 })
+        }
+        disabled={loading}
+      />
 
-        <Input100Width
-          id="email"
-          label={t('global.email')}
-          value={email}
-          onChange={emailChangeHandler}
-          onBlur={emailTouchHandler}
-          error={emailHasError}
-          helperText={emailHasError && t('global.incorrectEntry')}
-          disabled={loading}
+      <Input100Width
+        id="email"
+        label={t('global.email')}
+        value={email}
+        onChange={emailChangeHandler}
+        onBlur={emailTouchHandler}
+        error={emailHasError}
+        helperText={emailHasError && t('global.incorrectEntry')}
+        disabled={loading}
+      />
+
+      <Box>
+        <FilledAlert
+          show={showAlert}
+          severity={alertType}
+          title={t(alertTitle)}
+          message={t(alertMessage)}
+          onCloseAlert={closeAlert}
         />
-      </Stack>
-    </>
+      </Box>
+    </Stack>
   );
 
   const buttons = (

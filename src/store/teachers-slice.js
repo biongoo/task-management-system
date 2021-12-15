@@ -8,6 +8,7 @@ import deleteTeacher from './teachers/deleteTeacher';
 const initialState = {
   teachers: [],
   loading: false,
+  firstLoading: true,
 };
 
 const teachersSlice = createSlice({
@@ -21,6 +22,7 @@ const teachersSlice = createSlice({
     [getTeachers.fulfilled]: (state, action) => {
       state.teachers = action.payload;
       state.loading = false;
+      state.firstLoading = false;
     },
     [addTeacher.fulfilled]: (state, action) => {
       const {
@@ -54,9 +56,7 @@ const teachersSlice = createSlice({
 
       if (statusCode === 409) return;
 
-      const index = state.teachers.findIndex(
-        (teacher) => teacher.id === id
-      );
+      const index = state.teachers.findIndex((teacher) => teacher.id === id);
 
       state.teachers[index] = {
         id,
@@ -69,9 +69,7 @@ const teachersSlice = createSlice({
     [deleteTeacher.fulfilled]: (state, action) => {
       const { id } = action.payload;
 
-      state.teachers = state.teachers.filter(
-        (teacher) => teacher.id !== id
-      );
+      state.teachers = state.teachers.filter((teacher) => teacher.id !== id);
     },
   },
 });

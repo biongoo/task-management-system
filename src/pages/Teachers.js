@@ -13,7 +13,9 @@ const Teachers = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const typeOfAccount = useSelector((state) => state.auth.type);
-  const { teachers, loading } = useSelector((state) => state.teachers);
+  const { teachers, loading, firstLoading } = useSelector(
+    (state) => state.teachers
+  );
 
   const [search, setSearch] = useState('');
   const [selectedSortingIndex, setSelectedSortingIndex] = useState(0);
@@ -24,7 +26,7 @@ const Teachers = () => {
 
   let teachersList = teachers.slice();
 
-  if(+typeOfAccount !== 1) {
+  if (+typeOfAccount !== 1) {
     navigate('/404');
   }
 
@@ -73,7 +75,7 @@ const Teachers = () => {
     >
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading && !teachersList.length}
+        open={loading && firstLoading && !teachersList.length}
       >
         <CircularProgress color="inherit" />
       </Backdrop>

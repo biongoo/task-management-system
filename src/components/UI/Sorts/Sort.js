@@ -1,25 +1,17 @@
 import React, { useState } from 'react';
-import { alpha } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import {
-  Menu,
-  MenuItem,
-  IconButton,
-  Box,
-  Typography,
-  Tooltip,
-} from '@mui/material';
+import { Menu, MenuItem, Box, Typography } from '@mui/material';
 
-const Filter = ({ selectedIndex, setSelectedIndex }) => {
+import IconButton from '../Buttons/IconButton';
+
+const Sort = ({ selectedIndex, setSelectedIndex }) => {
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const open = Boolean(anchorEl);
-
-  const bgColorOfIcon = open ? 'secondary.main' : 'primary.light';
 
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -55,32 +47,12 @@ const Filter = ({ selectedIndex, setSelectedIndex }) => {
 
   return (
     <>
-      <Tooltip title={t('global.sort')} arrow>
-        <IconButton
-          onClick={handleOpen}
-          color="secondary"
-          sx={{
-            padding: 0,
-            width: 44,
-            height: 44,
-            ...(open && {
-              bgcolor: (theme) =>
-                alpha(
-                  theme.palette.secondary.main,
-                  theme.palette.action.focusOpacity
-                ),
-            }),
-          }}
-        >
-          <FilterListIcon
-            sx={{
-              width: 28,
-              height: 28,
-              color: bgColorOfIcon,
-            }}
-          />
-        </IconButton>
-      </Tooltip>
+      <IconButton
+        tooltip={t('global.add')}
+        onClick={handleOpen}
+        open={open}
+        Icon={FilterListIcon}
+      />
       <Menu
         anchorEl={anchorEl}
         open={open}
@@ -139,4 +111,4 @@ const Filter = ({ selectedIndex, setSelectedIndex }) => {
   );
 };
 
-export default Filter;
+export default Sort;

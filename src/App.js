@@ -20,7 +20,7 @@ function App() {
   return (
     <Theme>
       <Routes>
-        <Route path="/dashboard/" element={<MainLayout />}>
+        <Route path="/dashboard" element={<MainLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="teachers" element={<Teachers />} />
           <Route path="subjects" element={<Subjects />} />

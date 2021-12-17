@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-/* import { useDispatch } from 'react-redux'; */
 import Collapse from '@mui/material/Collapse';
 import { useTranslation } from 'react-i18next';
 import EditIcon from '@mui/icons-material/Edit';
@@ -10,6 +9,8 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 import Add from './Add';
+import Edit from './Edit';
+import Delete from './Delete';
 import MainModal from '../../UI/Modals/MainModal';
 import MainDivider from '../../UI/Dividers/Divider';
 import IconButton from '../../UI/Buttons/IconButton';
@@ -18,7 +19,9 @@ const Types = ({ types }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [openAdd, setOpenAdd] = useState(false);
-
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -26,13 +29,30 @@ const Types = ({ types }) => {
     setOpen(false);
     setTimeout(() => setOpenAdd(true), 250);
   };
+
   const handleCloseAdd = () => {
     setOpenAdd(false);
     setTimeout(() => setOpen(true), 250);
   };
 
-  const removeType = (id) => {
-    console.log(id);
+  const handleOpenEdit = (type) => {
+    setOpen(false);
+    setTimeout(() => setOpenEdit(type), 250);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+    setTimeout(() => setOpen(true), 250);
+  };
+
+  const handleOpenDelete = (type) => {
+    setOpen(false);
+    setTimeout(() => setOpenDelete(type), 250);
+  };
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+    setTimeout(() => setOpen(true), 250);
   };
 
   const body = (
@@ -62,14 +82,14 @@ const Types = ({ types }) => {
                 <Stack direction="row">
                   <IconButton
                     tooltip={t('global.edit')}
-                    onClick={removeType.bind(null, type.id)}
+                    onClick={handleOpenEdit.bind(null, type)}
                     open={false}
                     Icon={EditIcon}
                     defaultSize={24}
                   />
                   <IconButton
                     tooltip={t('global.delete')}
-                    onClick={removeType.bind(null, type.id)}
+                    onClick={handleOpenDelete.bind(null, type)}
                     open={false}
                     Icon={DeleteIcon}
                     defaultSize={24}
@@ -101,6 +121,8 @@ const Types = ({ types }) => {
       />
 
       <Add open={openAdd} onClose={handleCloseAdd} />
+      <Edit type={openEdit} onClose={handleCloseEdit} />
+      <Delete type={openDelete} onClose={handleCloseDelete} />
     </>
   );
 };

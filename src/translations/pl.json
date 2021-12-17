@@ -23,7 +23,7 @@
     "password": "Hasło",
     "search": "Szukaj",
     "showPassword": "Pokaż hasło",
-    "sort": "Szukaj",
+    "sort": "Sortuj",
     "success": "Sukces",
     "warning": "Ostrzeżenie",
     "teachers": "Nauczyciele"
@@ -90,12 +90,18 @@
     "deleteBody": "Czy aby na pewno chcesz usunąć \"{{teacher}}\"?",
     "deleteTeacher": "Usuń nauczyciela",
     "editTeacher": "Edytuj nauczyciela",
+    "emptyEmail": "Nie podano",
     "firstName": "Imię",
     "lastName": "Nazwisko",
     "letsAdd": "Dodaj swojego nauczyciela!"
   },
   "subjects": {
+    "addSubject": "Dodaj przedmiot",
     "addType": "Dodaj typ",
+    "deleteType": "Usuń typ",
+    "deleteTypeBody": "Czy aby na pewno chcesz usunąć \"{{type}}\"?",
+    "editType": "Edytuj typ",
+    "letsAdd": "Dodaj swoje przedmioty!",
     "typeExists": "Podany typ już istnieje.",
     "types": "Typy"
   }

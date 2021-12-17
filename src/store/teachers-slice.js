@@ -25,36 +25,24 @@ const teachersSlice = createSlice({
       state.firstLoading = false;
     },
     [addTeacher.fulfilled]: (state, action) => {
-      const {
-        id,
-        firstName,
-        lastName,
-        teacherEmail,
-        academicTitle,
-        statusCode,
-      } = action.payload;
+      const { id, firstName, lastName, email, academicTitle, statusCode } =
+        action.payload;
 
-      if (statusCode === 409) return;
+      if (statusCode !== 200) return;
 
       state.teachers.push({
         id,
         firstName,
         lastName,
-        teacherEmail,
+        email,
         academicTitle,
       });
     },
     [editTeacher.fulfilled]: (state, action) => {
-      const {
-        id,
-        firstName,
-        lastName,
-        teacherEmail,
-        academicTitle,
-        statusCode,
-      } = action.payload;
+      const { id, firstName, lastName, email, academicTitle, statusCode } =
+        action.payload;
 
-      if (statusCode === 409) return;
+      if (statusCode !== 200) return;
 
       const index = state.teachers.findIndex((teacher) => teacher.id === id);
 
@@ -62,7 +50,7 @@ const teachersSlice = createSlice({
         id,
         firstName,
         lastName,
-        teacherEmail,
+        email,
         academicTitle,
       };
     },

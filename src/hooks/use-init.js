@@ -9,6 +9,7 @@ import checkLoginAsync from '../store/auth/checkLogin';
 
 import getTeachers from '../store/teachers/getTeachers';
 import getTypes from '../store/subjects/getTypes';
+import getSubjectsUser from '../store/subjects/user/getSubjectsUser';
 
 const useInit = () => {
   const { t } = useTranslation();
@@ -16,6 +17,7 @@ const useInit = () => {
 
   const { error } = useSelector((state) => state.user);
   const { isLoggedIn } = useSelector((state) => state.auth);
+  const typeOfAccount = useSelector((state) => state.auth.type);
 
   const checkLogin = useCallback(async () => {
     const resultAction = await dispatch(checkLoginAsync());
@@ -25,12 +27,18 @@ const useInit = () => {
         case 'userExists':
           dispatch(getTeachers());
           dispatch(getTypes());
+          if (+typeOfAccount === 1) {
+            dispatch(getSubjectsUser());
+          }
           break;
-        case 'userNotExists':
+        case 'tokenNotValid':
         default:
           dispatch(logout());
           dispatch(
-            showSnackbar({ message: t('auth.userNotExists'), variant: 'error' })
+            showSnackbar({
+              message: t('global.expiredSession'),
+              variant: 'error',
+            })
           );
           break;
       }
@@ -40,7 +48,7 @@ const useInit = () => {
         showSnackbar({ message: t('global.connectionError'), variant: 'error' })
       );
     }
-  }, [dispatch, t]);
+  }, [dispatch, t, typeOfAccount]);
 
   useEffect(() => {
     if (isLoggedIn) {

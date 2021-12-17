@@ -21,17 +21,16 @@ const ThirdStep = () => {
       </Box>
       <Box
         sx={{
-          display: 'flex',
-          justifyContent: 'center',
           position: 'relative',
           width: '100%',
+          maxWidth: '100%',
+          '& > div': {
+            position: 'absolute',
+            top: { xs: -120, sm: -215 },
+          },
         }}
       >
-        <Lottie
-          animationData={win}
-          loop={false}
-          style={{ position: 'absolute', top: -215, transform: 'scale(1.8)' }}
-        />
+        <Lottie animationData={win} loop={false} />
       </Box>
       <Box mb={3}>
         <LinkButton100Width to="/">{t('auth.signIn')}</LinkButton100Width>

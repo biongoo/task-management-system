@@ -84,7 +84,7 @@ const AuthLayout = () => {
           }}
         >
           <Box sx={{ width: '100%', maxWidth: maxInputWidth }}>
-            {!isLoggedIn ? <Outlet /> : <Navigate to="/dashboard" />}
+            {!isLoggedIn ? <Outlet /> : <Navigate to="/dashboard/" />}
           </Box>
         </Box>
         <Box sx={{ height: heightNavbar }}></Box>

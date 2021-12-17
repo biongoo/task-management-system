@@ -12,12 +12,10 @@ import {
   AccordionSummary,
   AccordionDetails,
   Collapse,
-} from '../UI/Acordions/MainAccordion';
-import Edit from './Edit';
-import Delete from './Delete';
-import IconButton from '../UI/Buttons/IconButton';
+} from '../../UI/Acordions/MainAccordion';
+import IconButton from '../../UI/Buttons/IconButton';
 
-const TeachersList = ({ teachersList, search, loading }) => {
+const SubjectsList = ({ subjectsList, search, loading }) => {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const [settings, setSettings] = useState(null);
@@ -36,22 +34,23 @@ const TeachersList = ({ teachersList, search, loading }) => {
     setDeleting(teacher);
   };
 
-  const closeSettings = () => {
+  /*   const closeSettings = () => {
     setSettings(null);
   };
 
   const closeDeleting = () => {
     setDeleting(null);
   };
+ */
 
   return (
     <Box>
       <TransitionGroup>
-        {teachersList.map((teacher) => (
-          <Collapse key={teacher.id}>
+        {subjectsList.map((subject) => (
+          <Collapse key={subject.id}>
             <Accordion
-              expanded={expanded === teacher.id}
-              onChange={handleChange(teacher.id)}
+              expanded={expanded === subject.id}
+              onChange={handleChange(subject.id)}
             >
               <AccordionSummary>
                 <Typography variant="subtitle1">
@@ -61,7 +60,7 @@ const TeachersList = ({ teachersList, search, loading }) => {
                       color: paletteColor,
                       backgroundColor: 'inherit',
                     }}
-                    textToHighlight={`${teacher.academicTitle} ${teacher.firstName} ${teacher.lastName}`}
+                    textToHighlight={`${subject.name}`}
                   />
                 </Typography>
               </AccordionSummary>
@@ -72,25 +71,42 @@ const TeachersList = ({ teachersList, search, loading }) => {
                   alignItems="center"
                   spacing={2}
                 >
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ wordBreak: 'break-all' }}
-                  >
-                    {t('global.email')}:{' '}
-                    {teacher.email ? teacher.email : t('teachers.emptyEmail')}
-                  </Typography>
-
-                  <Stack direction="row" spacing={0}>
+                  <Stack direction="column" spacing={2}>
+                    {subject.teacherSubjectTypes
+                      .slice()
+                      .sort(
+                        (a, b) =>
+                          a.primaryKey.type.name.localeCompare(
+                            b.primaryKey.type.name
+                          ) ||
+                          a.primaryKey.teacher.firstName.localeCompare(
+                            b.primaryKey.teacher.firstName
+                          ) ||
+                          a.primaryKey.teacher.lastName.localeCompare(
+                            b.primaryKey.teacher.lastName
+                          )
+                      )
+                      .map((tst, index) => (
+                        <Typography
+                          variant="subtitle2"
+                          sx={{ wordBreak: 'break-all' }}
+                          key={index}
+                        >
+                          {`${tst.primaryKey.type.name}: ${tst.primaryKey.teacher.academicTitle} ${tst.primaryKey.teacher.firstName} ${tst.primaryKey.teacher.lastName}`}
+                        </Typography>
+                      ))}
+                  </Stack>
+                  <Stack direction="row">
                     <IconButton
                       tooltip={t('global.edit')}
-                      onClick={showSettings.bind(null, teacher)}
+                      onClick={showSettings.bind(null, subject)}
                       open={settings}
                       Icon={EditIcon}
                     />
 
                     <IconButton
                       tooltip={t('global.delete')}
-                      onClick={showDeleting.bind(null, teacher)}
+                      onClick={showDeleting.bind(null, subject)}
                       open={deleting}
                       Icon={DeleteIcon}
                     />
@@ -101,9 +117,9 @@ const TeachersList = ({ teachersList, search, loading }) => {
           </Collapse>
         ))}
       </TransitionGroup>
-      <Edit settings={settings} onClose={closeSettings} />
-      <Delete deleting={deleting} onClose={closeDeleting} />
-      {!teachersList.length && search && (
+      {/* <Edit settings={settings} onClose={closeSettings} />
+      <Delete deleting={deleting} onClose={closeDeleting} /> */}
+      {!subjectsList.length && search && (
         <Box sx={{ textAlign: 'center' }}>
           <Stack>
             <Typography variant="h6">{t('global.notFound')}</Typography>
@@ -113,10 +129,10 @@ const TeachersList = ({ teachersList, search, loading }) => {
           </Stack>
         </Box>
       )}
-      {!teachersList.length && !search && !loading && (
+      {!subjectsList.length && !search && !loading && (
         <Box sx={{ textAlign: 'center' }}>
           <Stack>
-            <Typography variant="h6">{t('teachers.letsAdd')}</Typography>
+            <Typography variant="h6">{t('subjects.letsAdd')}</Typography>
           </Stack>
         </Box>
       )}
@@ -124,4 +140,4 @@ const TeachersList = ({ teachersList, search, loading }) => {
   );
 };
 
-export default TeachersList;
+export default SubjectsList;

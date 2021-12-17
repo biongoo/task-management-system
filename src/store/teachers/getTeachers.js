@@ -6,12 +6,10 @@ const getTeachers = createAsyncThunk(
   async (_, { getState, dispatch }) => {
     try {
       const url = 'http://java.ts4ever.pl/teachers/get';
-      const method = 'POST';
-
       const { email, token } = getState().auth;
 
       const response = await fetch(url, {
-        method: method,
+        method: 'POST',
         body: JSON.stringify({ email, token }),
         headers: {
           'Content-Type': 'application/json',

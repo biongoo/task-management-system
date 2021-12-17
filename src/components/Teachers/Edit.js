@@ -82,8 +82,8 @@ const Edit = ({ settings, onClose }) => {
       const event = { target: { value: settings.academicTitle } };
       academicTitleChangeHandler(event);
     }
-    if (settings && settings.teacherEmail.trim().length > 0) {
-      const event = { target: { value: settings.teacherEmail } };
+    if (settings && settings.email.trim().length > 0) {
+      const event = { target: { value: settings.email } };
       emailChangeHandler(event);
     }
   }, [
@@ -170,6 +170,7 @@ const Edit = ({ settings, onClose }) => {
       lastNameReset();
       academicTitleReset();
       emailReset();
+      closeAlert();
     }, 300);
   };
 

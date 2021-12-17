@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Stack, Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -6,17 +6,19 @@ import { useTranslation } from 'react-i18next';
 import useInput from '../../../hooks/use-input';
 import MainModal from '../../UI/Modals/MainModal';
 import { setError } from '../../../store/user-slice';
-import addType from '../../../store/subjects/addType';
+import editType from '../../../store/subjects/editType';
 import Input100Width from '../../UI/Inputs/Input100Width';
 import { showSnackbar } from '../../../store/palette-slice';
-import { Add as AddBtn, Cancel } from '../../UI/Buttons/FormButtons';
+import { Edit as EditBtn, Cancel } from '../../UI/Buttons/FormButtons';
 import { useAlert, wait } from '../../../hooks/use-alert';
 import FilledAlert from '../../UI/Alerts/FilledAlert';
 
-const Add = ({ open, onClose }) => {
+const Edit = ({ type, onClose }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+
+  const open = !!type;
 
   const {
     showAlert,
@@ -36,9 +38,16 @@ const Add = ({ open, onClose }) => {
     reset: nameReset,
   } = useInput((value) => value.trim().length >= 2 && value.trim().length < 50);
 
+  useEffect(() => {
+    if (type && type.name.trim().length > 0) {
+      const event = { target: { value: type.name } };
+      nameChangeHandler(event);
+    }
+  }, [type, nameChangeHandler]);
+
   const formIsValid = nameIsValid;
 
-  const handleAdd = async () => {
+  const handleEdit = async () => {
     nameTouchHandler();
 
     if (!formIsValid) return;
@@ -49,12 +58,12 @@ const Add = ({ open, onClose }) => {
     }
 
     const time1 = new Date().getTime();
-    const resultAction = await dispatch(addType({ name }));
+    const resultAction = await dispatch(editType({ id: type.id, name }));
     const time2 = new Date().getTime();
 
-    if (addType.fulfilled.match(resultAction)) {
+    if (editType.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
-        case 'typeAdded':
+        case 'typeEdited':
           setTimeout(() => {
             dispatch(
               showSnackbar({
@@ -69,6 +78,7 @@ const Add = ({ open, onClose }) => {
           setLoading(false);
           return;
         case 'tokenNotValid':
+        case 'typeNotExists':
         case 'nameNotValid':
         default:
           dispatch(setError(t('global.expiredSession')));
@@ -126,7 +136,7 @@ const Add = ({ open, onClose }) => {
   const buttons = (
     <>
       <Cancel onClick={handleClose} disabled={loading} />
-      <AddBtn onClick={handleAdd} loading={loading} />
+      <EditBtn onClick={handleEdit} loading={loading} />
     </>
   );
 
@@ -134,11 +144,11 @@ const Add = ({ open, onClose }) => {
     <MainModal
       open={open}
       handleClose={handleClose}
-      title={t('subjects.addType')}
+      title={t('subjects.editType')}
       body={body}
       buttons={buttons}
     />
   );
 };
 
-export default Add;
+export default Edit;

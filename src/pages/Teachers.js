@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Paper, Stack, Backdrop, CircularProgress } from '@mui/material';
 
 import Add from '../components/Teachers/Add';
-import Search from '../components/Teachers/Search';
-import Filter from '../components/Teachers/Filter';
+import Search from '../components/UI/Inputs/Search';
+import Sort from '../components/UI/Sorts/Sort';
 import TeachersList from '../components/Teachers/TeachersList';
 import getTeachers from '../store/teachers/getTeachers';
 
@@ -99,7 +99,7 @@ const Teachers = () => {
         >
           <Search search={search} searchHandler={searchHandler} />
           <Stack direction="row">
-            <Filter
+            <Sort
               selectedIndex={selectedSortingIndex}
               setSelectedIndex={setSelectedSortingIndex}
             />

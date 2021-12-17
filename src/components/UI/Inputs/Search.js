@@ -3,7 +3,7 @@ import { InputAdornment } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import SearchIcon from '@mui/icons-material/Search';
 
-import MainInput from '../UI/Inputs/MainInput';
+import MainInput from './MainInput';
 
 const Search = ({ search, searchHandler }) => {
   const { t } = useTranslation();

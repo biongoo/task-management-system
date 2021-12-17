@@ -90,12 +90,18 @@
     "deleteBody": "Are you sure you want to delete \"{{teacher}}\"?",
     "deleteTeacher": "Delete teacher",
     "editTeacher": "Edit teacher",
+    "emptyEmail": "Not given",
     "firstName": "First name",
     "lastName": "Last name",
     "letsAdd": "Let's add your teacher!"
   },
   "subjects": {
+    "addSubject": "Add subject",
     "addType": "Add type",
+    "deleteType": "Delete type",
+    "deleteTypeBody": "Are you sure you want to delete \"{{type}}\"?",
+    "editType": "Edit type",
+    "letsAdd": "Let's add your subjects!",
     "typeExists": "Type already exists.",
     "types": "Types"
   }

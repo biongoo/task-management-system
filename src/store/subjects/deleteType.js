@@ -1,9 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-const deleteTeacher = createAsyncThunk(
-  'teachers/delete',
+const deleteType = createAsyncThunk(
+  'subjects/types/delete',
   async (data, { rejectWithValue, getState }) => {
-    const url = 'http://java.ts4ever.pl/teachers/delete';
+    const url = 'http://java.ts4ever.pl/subjects/types/delete';
     const { email: userEmail, token: userToken } = getState().auth;
 
     try {
@@ -22,10 +22,7 @@ const deleteTeacher = createAsyncThunk(
 
       const dataRes = await response.json();
 
-      return {
-        ...dataRes,
-        ...data,
-      };
+      return { ...dataRes, ...data };
     } catch (err) {
       if (!err.response) throw err;
       return rejectWithValue(err.response.data);
@@ -33,4 +30,4 @@ const deleteTeacher = createAsyncThunk(
   }
 );
 
-export default deleteTeacher;
+export default deleteType;

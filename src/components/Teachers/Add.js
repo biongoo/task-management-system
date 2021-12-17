@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { alpha } from '@mui/material/styles';
 import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
-import { IconButton, Stack, Tooltip, Box } from '@mui/material';
+import { Stack, Box } from '@mui/material';
 
 import useInput from '../../hooks/use-input';
 import MainModal from '../UI/Modals/MainModal';
 import { setError } from '../../store/user-slice';
+import IconButton from '../UI/Buttons/IconButton';
 import FilledAlert from '../UI/Alerts/FilledAlert';
 import { useAlert, wait } from '../../hooks/use-alert';
 import Input100Width from '../UI/Inputs/Input100Width';
@@ -85,6 +85,7 @@ const AddTeacher = () => {
       lastNameReset();
       academicTitleReset();
       emailReset();
+      closeAlert();
     }, 300);
   };
 
@@ -222,32 +223,12 @@ const AddTeacher = () => {
 
   return (
     <>
-      <Tooltip title={t('global.add')} arrow>
-        <IconButton
-          onClick={handleOpen}
-          color="secondary"
-          sx={{
-            padding: 0,
-            width: 44,
-            height: 44,
-            ...(open && {
-              bgcolor: (theme) =>
-                alpha(
-                  theme.palette.secondary.main,
-                  theme.palette.action.focusOpacity
-                ),
-            }),
-          }}
-        >
-          <AddIcon
-            sx={{
-              width: 28,
-              height: 28,
-              color: open ? 'secondary.main' : 'primary.light',
-            }}
-          />
-        </IconButton>
-      </Tooltip>
+      <IconButton
+        tooltip={t('global.add')}
+        onClick={handleOpen}
+        open={open}
+        Icon={AddIcon}
+      />
 
       <MainModal
         open={open}

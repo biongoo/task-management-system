@@ -30,11 +30,15 @@
   },
   "layout": {
     "back404": "Go back to ",
+    "clear": "Clear",
+    "close": "Close",
     "color": "Color",
     "home": "Home",
     "homepage404": "home page",
     "logout": "Logout",
     "mode": "Mode",
+    "noOptions": "No options",
+    "open": "Open",
     "settings": "Settings",
     "shortTitle": "TMS",
     "subjects": "Subjects",
@@ -98,11 +102,20 @@
   "subjects": {
     "addSubject": "Add subject",
     "addType": "Add type",
+    "deleteSubject": "Delete subject",
+    "deleteSubjectBody": "Are you sure you want to delete \"{{subject}}\"?",
     "deleteType": "Delete type",
     "deleteTypeBody": "Are you sure you want to delete \"{{type}}\"?",
     "editType": "Edit type",
+    "editSubject": "Edit subject",
+    "emptyGroups": "No division into groups.",
+    "group": "Group",
+    "groupError": "Group {{number}} is not fully completed.",
     "letsAdd": "Let's add your subjects!",
+    "subjectExists": "Subject already exists.",
+    "teacher": "Teacher",
     "typeExists": "Type already exists.",
+    "type": "Type",
     "types": "Types"
   }
 }

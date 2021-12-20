@@ -1,7 +1,9 @@
 import { useState, useCallback } from 'react';
 
-const useInput = (validateValue) => {
-  const [enteredValue, setEnteredValue] = useState('');
+const useInput = (validateValue, defaultValue) => {
+  const [enteredValue, setEnteredValue] = useState(
+    defaultValue ? defaultValue.value : ''
+  );
   const [isTouched, setIsTouched] = useState(false);
 
   const valueIsValid = validateValue(enteredValue);
@@ -16,7 +18,7 @@ const useInput = (validateValue) => {
   }, []);
 
   const reset = () => {
-    setEnteredValue('');
+    setEnteredValue(defaultValue ? defaultValue.value : '');
     setIsTouched(false);
   };
 

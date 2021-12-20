@@ -15,12 +15,9 @@ const getTypes = createAsyncThunk(
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
         },
+      }).catch(() => {
+        dispatch(setError(`Error: Connection lost`));
       });
-
-      if (!response.ok) {
-        dispatch(setError(`Error: ${response.status}`));
-        throw new Error(response.status);
-      }
 
       const dataRes = await response.json();
 

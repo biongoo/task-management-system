@@ -13,12 +13,14 @@ import {
   AccordionDetails,
   Collapse,
 } from '../../UI/Acordions/MainAccordion';
+import EditSubject from './Edit';
+import DeleteSubject from './Delete';
 import IconButton from '../../UI/Buttons/IconButton';
 
 const SubjectsList = ({ subjectsList, search, loading }) => {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
-  const [settings, setSettings] = useState(null);
+  const [editing, setEditing] = useState(null);
   const [deleting, setDeleting] = useState(null);
   const paletteColor = useSelector((state) => state.palette.color);
 
@@ -26,22 +28,21 @@ const SubjectsList = ({ subjectsList, search, loading }) => {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const showSettings = (teacher) => {
-    setSettings(teacher);
+  const showEditing = (teacher) => {
+    setEditing(teacher);
   };
 
   const showDeleting = (teacher) => {
     setDeleting(teacher);
   };
 
-  /*   const closeSettings = () => {
-    setSettings(null);
+  const closeEditing = () => {
+    setEditing(null);
   };
 
   const closeDeleting = () => {
     setDeleting(null);
   };
- */
 
   return (
     <Box>
@@ -72,38 +73,46 @@ const SubjectsList = ({ subjectsList, search, loading }) => {
                   spacing={2}
                 >
                   <Stack direction="column" spacing={2}>
-                    {subject.teacherSubjectTypes
-                      .slice()
-                      .sort(
-                        (a, b) =>
-                          a.primaryKey.type.name.localeCompare(
-                            b.primaryKey.type.name
-                          ) ||
-                          a.primaryKey.teacher.firstName.localeCompare(
-                            b.primaryKey.teacher.firstName
-                          ) ||
-                          a.primaryKey.teacher.lastName.localeCompare(
-                            b.primaryKey.teacher.lastName
-                          )
-                      )
-                      .map((tst, index) => (
-                        <Typography
-                          variant="subtitle2"
-                          sx={{ wordBreak: 'break-all' }}
-                          key={index}
-                        >
-                          {`${tst.primaryKey.type.name}: ${tst.primaryKey.teacher.academicTitle} ${tst.primaryKey.teacher.firstName} ${tst.primaryKey.teacher.lastName}`}
-                        </Typography>
-                      ))}
+                    {subject.teacherSubjectTypes.length ? (
+                      subject.teacherSubjectTypes
+                        .slice()
+                        .sort(
+                          (a, b) =>
+                            a.primaryKey.type.name.localeCompare(
+                              b.primaryKey.type.name
+                            ) ||
+                            a.primaryKey.teacher.firstName.localeCompare(
+                              b.primaryKey.teacher.firstName
+                            ) ||
+                            a.primaryKey.teacher.lastName.localeCompare(
+                              b.primaryKey.teacher.lastName
+                            )
+                        )
+                        .map((tst, index) => (
+                          <Typography
+                            variant="subtitle2"
+                            sx={{ wordBreak: 'break-all' }}
+                            key={index}
+                          >
+                            {`${tst.primaryKey.type.name}: ${tst.primaryKey.teacher.academicTitle} ${tst.primaryKey.teacher.firstName} ${tst.primaryKey.teacher.lastName}`}
+                          </Typography>
+                        ))
+                    ) : (
+                      <Typography
+                        variant="subtitle2"
+                        sx={{ wordBreak: 'break-all' }}
+                      >
+                        {t('subjects.emptyGroups')}
+                      </Typography>
+                    )}
                   </Stack>
                   <Stack direction="row">
                     <IconButton
                       tooltip={t('global.edit')}
-                      onClick={showSettings.bind(null, subject)}
-                      open={settings}
+                      onClick={showEditing.bind(null, subject)}
+                      open={editing}
                       Icon={EditIcon}
                     />
-
                     <IconButton
                       tooltip={t('global.delete')}
                       onClick={showDeleting.bind(null, subject)}
@@ -117,8 +126,8 @@ const SubjectsList = ({ subjectsList, search, loading }) => {
           </Collapse>
         ))}
       </TransitionGroup>
-      {/* <Edit settings={settings} onClose={closeSettings} />
-      <Delete deleting={deleting} onClose={closeDeleting} /> */}
+      <EditSubject editing={editing} onClose={closeEditing} />
+      <DeleteSubject deleting={deleting} onClose={closeDeleting} />
       {!subjectsList.length && search && (
         <Box sx={{ textAlign: 'center' }}>
           <Stack>

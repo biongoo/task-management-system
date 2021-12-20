@@ -6,7 +6,7 @@ import Sort from '../components/UI/Sorts/Sort';
 import getTypes from '../store/subjects/getTypes';
 import Search from '../components/UI/Inputs/Search';
 import Types from '../components/Subjects/Types/Types';
-import AddSubjectS from '../components/Subjects/Student/Add';
+import AddSubject from '../components/Subjects/Student/Add';
 import StudentSL from '../components/Subjects/Student/SubjectsList';
 import getSubjectsUser from '../store/subjects/user/getSubjectsUser';
 
@@ -95,7 +95,7 @@ const Subjects = () => {
               setSelectedIndex={setSelectedSortingIndex}
             />
             <Types types={types} />
-            {+typeOfAccount === 1 && <AddSubjectS />}
+            {+typeOfAccount === 1 && <AddSubject />}
           </Stack>
         </Stack>
 

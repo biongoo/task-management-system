@@ -30,11 +30,15 @@
   },
   "layout": {
     "back404": "Wróć do ",
+    "clear": "Wyczyść",
+    "close": "Zamknij",
     "color": "Kolor",
     "home": "Strona główna",
     "homepage404": "strony głównej",
     "logout": "Wyloguj",
     "mode": "Tryb",
+    "noOptions": "Brak opcji",
+    "open": "Otwórz",
     "settings": "Ustawienia",
     "shortTitle": "SZZ",
     "subjects": "Przedmioty",
@@ -98,11 +102,20 @@
   "subjects": {
     "addSubject": "Dodaj przedmiot",
     "addType": "Dodaj typ",
+    "deleteSubject": "Usuń przedmiot",
+    "deleteSubjectBody": "Czy aby na pewno chcesz usunąć \"{{subject}}\"?",
     "deleteType": "Usuń typ",
     "deleteTypeBody": "Czy aby na pewno chcesz usunąć \"{{type}}\"?",
     "editType": "Edytuj typ",
+    "editSubject": "Edytuj przedmiot",
+    "emptyGroups": "Brak podziału na grupy.",
+    "group": "Grupa",
+    "groupError": "Grupa {{number}} nie jest w pełni uzupełniona.",
     "letsAdd": "Dodaj swoje przedmioty!",
+    "subjectExists": "Podany przedmiot już istnieje.",
+    "teacher": "Nauczyciel",
     "typeExists": "Podany typ już istnieje.",
+    "type": "Typ",
     "types": "Typy"
   }
 }

@@ -4,7 +4,10 @@ import addType from './subjects/addType';
 import editType from './subjects/editType';
 import getTypes from './subjects/getTypes';
 import deleteType from './subjects/deleteType';
+import addSubjectUser from './subjects/user/addSubjectUser';
 import getSubjectsUser from './subjects/user/getSubjectsUser';
+import editSubjectUser from './subjects/user/editSubjectUser';
+import deleteSubjectUser from './subjects/user/deleteSubjectUser';
 
 const initialState = {
   subjects: [],
@@ -31,7 +34,6 @@ const subjectsSlice = createSlice({
     },
     [addType.fulfilled]: (state, action) => {
       const { id, name, statusCode } = action.payload;
-
       if (statusCode !== 200) return;
 
       state.types.push({
@@ -50,9 +52,37 @@ const subjectsSlice = createSlice({
       };
     },
     [deleteType.fulfilled]: (state, action) => {
-      const { id } = action.payload;
+      const { id, statusCode } = action.payload;
+      if (statusCode !== 200) return;
 
       state.types = state.types.filter((type) => type.id !== id);
+    },
+    [addSubjectUser.fulfilled]: (state, action) => {
+      const { id, name, teacherTypeOriginal, statusCode } = action.payload;
+      if (statusCode !== 200) return;
+
+      state.subjects.push({
+        id,
+        name,
+        teacherSubjectTypes: teacherTypeOriginal,
+      });
+    },
+    [editSubjectUser.fulfilled]: (state, action) => {
+      const { id, name, teacherTypeOriginal, statusCode } = action.payload;
+      if (statusCode !== 200) return;
+
+      const index = state.subjects.findIndex((subject) => subject.id === id);
+      state.subjects[index] = {
+        id,
+        name,
+        teacherSubjectTypes: teacherTypeOriginal,
+      };
+    },
+    [deleteSubjectUser.fulfilled]: (state, action) => {
+      const { id, statusCode } = action.payload;
+      if (statusCode !== 200) return;
+
+      state.subjects = state.subjects.filter((type) => type.id !== id);
     },
   },
 });

@@ -48,7 +48,7 @@ const Sort = ({ selectedIndex, setSelectedIndex }) => {
   return (
     <>
       <IconButton
-        tooltip={t('global.add')}
+        tooltip={t('global.sort')}
         onClick={handleOpen}
         open={open}
         Icon={FilterListIcon}

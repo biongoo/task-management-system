@@ -1,21 +1,19 @@
 import { Box } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
-import React, { useState, useReducer } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useReducer, useEffect } from 'react';
 
 import Tabs from '../../UI/Tabs/Tabs';
 import useInput from '../../../hooks/use-input';
 import MainModal from '../../UI/Modals/MainModal';
 import { setError } from '../../../store/user-slice';
-import IconButton from '../../UI/Buttons/IconButton';
 import FilledAlert from '../../UI/Alerts/FilledAlert';
 import Autocomplete from '../../UI/Inputs/Autocomplete';
 import { useAlert, wait } from '../../../hooks/use-alert';
 import Input100Width from '../../UI/Inputs/Input100Width';
-import { Add, Cancel } from '../../UI/Buttons/FormButtons';
+import { Edit, Cancel } from '../../UI/Buttons/FormButtons';
 import { showSnackbar } from '../../../store/palette-slice';
-import addSubjectUser from '../../../store/subjects/user/addSubjectUser';
+import editSubjectUser from '../../../store/subjects/user/editSubjectUser';
 
 const reducer = (state, action) => {
   let newState = [...state];
@@ -26,6 +24,10 @@ const reducer = (state, action) => {
       return newState;
     case 'CHANGE_TYPE':
       newState[action.index].type = action.value;
+      return newState;
+    case 'CHANGE':
+      newState[action.index].teacher = action.teacher;
+      newState[action.index].type = action.type2;
       return newState;
     case 'RESET':
       return [
@@ -40,11 +42,12 @@ const reducer = (state, action) => {
   }
 };
 
-const AddSubject = () => {
+const EditSubject = ({ editing, onClose }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const open = !!editing;
 
   const [state, dispatchState] = useReducer(reducer, [
     { type: null, teacher: null },
@@ -71,8 +74,29 @@ const AddSubject = () => {
     inputTouchHandler: nameTouchHandler,
     reset: nameReset,
   } = useInput(
-    (value) => value.trim().length >= 2 && value.trim().length < 100
+    (value) => value.trim().length >= 2 && value.trim().length <= 100
   );
+
+  useEffect(() => {
+    if (editing && editing.name.trim().length > 0) {
+      const event = { target: { value: editing.name } };
+      nameChangeHandler(event);
+
+      let primaryKey;
+      for (const index in editing.teacherSubjectTypes) {
+        primaryKey = editing.teacherSubjectTypes[index].primaryKey;
+        dispatchState({
+          type: 'CHANGE',
+          index: index,
+          teacher: {
+            label: `${primaryKey.teacher.academicTitle} ${primaryKey.teacher.firstName} ${primaryKey.teacher.lastName}`,
+            id: primaryKey.teacher.id,
+          },
+          type2: { label: primaryKey.type.name, id: primaryKey.type.id },
+        });
+      }
+    }
+  }, [editing, nameChangeHandler]);
 
   const {
     showAlert,
@@ -83,7 +107,7 @@ const AddSubject = () => {
     closeAlert,
   } = useAlert();
 
-  const handleAdd = async () => {
+  const handleEdit = async () => {
     nameTouchHandler();
 
     const teacherType = [];
@@ -125,13 +149,18 @@ const AddSubject = () => {
 
     const time1 = new Date().getTime();
     const resultAction = await dispatch(
-      addSubjectUser({ name, teacherType, teacherTypeOriginal })
+      editSubjectUser({
+        id: editing.id,
+        name,
+        teacherType,
+        teacherTypeOriginal,
+      })
     );
     const time2 = new Date().getTime();
 
-    if (addSubjectUser.fulfilled.match(resultAction)) {
+    if (editSubjectUser.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
-        case 'subjectAdded':
+        case 'subjectEdited':
           setTimeout(() => {
             dispatch(
               showSnackbar({
@@ -149,6 +178,7 @@ const AddSubject = () => {
         case 'typeNotExists':
         case 'teacherNotExists':
         case 'nameNotValid':
+        case 'subjectNotExists':
         default:
           dispatch(setError(t('global.expiredSession')));
           break;
@@ -165,11 +195,9 @@ const AddSubject = () => {
     }, 500 - (time2 - time1));
   };
 
-  const handleOpen = () => setOpen(true);
-
   const handleClose = () => {
     if (loading) return;
-    setOpen(false);
+    onClose();
 
     setTimeout(() => {
       nameReset();
@@ -248,23 +276,16 @@ const AddSubject = () => {
   const buttons = (
     <>
       <Cancel onClick={handleClose} disabled={loading} />
-      <Add onClick={handleAdd} loading={loading} />
+      <Edit onClick={handleEdit} loading={loading} />
     </>
   );
 
   return (
     <>
-      <IconButton
-        tooltip={t('global.add')}
-        onClick={handleOpen}
-        open={open}
-        Icon={AddIcon}
-      />
-
       <MainModal
         open={open}
         handleClose={handleClose}
-        title={t('subjects.addSubject')}
+        title={t('subjects.editSubject')}
         body={body}
         buttons={buttons}
       />
@@ -272,4 +293,4 @@ const AddSubject = () => {
   );
 };
 
-export default AddSubject;
+export default EditSubject;

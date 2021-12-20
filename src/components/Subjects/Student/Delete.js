@@ -5,22 +5,22 @@ import { useTranslation } from 'react-i18next';
 import MainModal from '../../UI/Modals/MainModal';
 import { setError } from '../../../store/user-slice';
 import { showSnackbar } from '../../../store/palette-slice';
-import deleteType from '../../../store/subjects/deleteType';
 import { Cancel, Delete as DeleteBtn } from '../../UI/Buttons/FormButtons';
+import deleteSubjectUser from '../../../store/subjects/user/deleteSubjectUser';
 
-const Delete = ({ type, onClose }) => {
+const DeleteSubject = ({ deleting, onClose }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const open = !!type;
+  const open = !!deleting;
 
   useEffect(() => {
-    if (type && type.name.trim().length > 0) {
-      setName(type.name);
+    if (deleting && deleting.name.trim().length > 0) {
+      setName(deleting.name);
     }
-  }, [type]);
+  }, [deleting]);
 
   const handleClose = () => {
     if (loading) return;
@@ -32,14 +32,12 @@ const Delete = ({ type, onClose }) => {
     setLoading(true);
 
     const time1 = new Date().getTime();
-
-    const resultAction = await dispatch(deleteType({ id: type.id }));
-
+    const resultAction = await dispatch(deleteSubjectUser({ id: deleting.id }));
     const time2 = new Date().getTime();
 
-    if (deleteType.fulfilled.match(resultAction)) {
+    if (deleteSubjectUser.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
-        case 'typeDeleted':
+        case 'subjectDeleted':
           setTimeout(() => {
             dispatch(
               showSnackbar({
@@ -50,7 +48,7 @@ const Delete = ({ type, onClose }) => {
           }, 500);
           break;
         case 'tokenNotValid':
-        case 'typeNotExists':
+        case 'subjectNotExists':
         default:
           dispatch(setError(t('global.expiredSession')));
           break;
@@ -67,7 +65,7 @@ const Delete = ({ type, onClose }) => {
     }, 500 - (time2 - time1));
   };
 
-  const body = t('subjects.deleteTypeBody', { type: name });
+  const body = t('subjects.deleteSubjectBody', { subject: name });
 
   const buttons = (
     <>
@@ -80,11 +78,11 @@ const Delete = ({ type, onClose }) => {
     <MainModal
       open={open}
       handleClose={handleClose}
-      title={t('subjects.deleteType')}
+      title={t('subjects.deleteSubject')}
       body={body}
       buttons={buttons}
     />
   );
 };
 
-export default Delete;
+export default DeleteSubject;

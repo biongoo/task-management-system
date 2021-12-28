@@ -13,7 +13,14 @@ import { useAlert, wait } from '../../../hooks/use-alert';
 import Input100Width from '../../UI/Inputs/Input100Width';
 import { Edit, Cancel } from '../../UI/Buttons/FormButtons';
 import { showSnackbar } from '../../../store/palette-slice';
+import getSubjectsUser from '../../../store/subjects/user/getSubjectsUser';
 import editSubjectUser from '../../../store/subjects/user/editSubjectUser';
+
+function isDuplicate(entry, arr) {
+  return arr.some(
+    (x) => entry.typeId === x.typeId && entry.teacherId === x.teacherId
+  );
+}
 
 const reducer = (state, action) => {
   let newState = [...state];
@@ -26,16 +33,17 @@ const reducer = (state, action) => {
       newState[action.index].type = action.value;
       return newState;
     case 'CHANGE':
+      newState[action.index].id = action.id;
       newState[action.index].teacher = action.teacher;
       newState[action.index].type = action.type2;
       return newState;
     case 'RESET':
       return [
-        { type: null, teacher: null },
-        { type: null, teacher: null },
-        { type: null, teacher: null },
-        { type: null, teacher: null },
-        { type: null, teacher: null },
+        { id: null, type: null, teacher: null },
+        { id: null, type: null, teacher: null },
+        { id: null, type: null, teacher: null },
+        { id: null, type: null, teacher: null },
+        { id: null, type: null, teacher: null },
       ];
     default:
       throw new Error();
@@ -50,11 +58,11 @@ const EditSubject = ({ editing, onClose }) => {
   const open = !!editing;
 
   const [state, dispatchState] = useReducer(reducer, [
-    { type: null, teacher: null },
-    { type: null, teacher: null },
-    { type: null, teacher: null },
-    { type: null, teacher: null },
-    { type: null, teacher: null },
+    { id: null, type: null, teacher: null },
+    { id: null, type: null, teacher: null },
+    { id: null, type: null, teacher: null },
+    { id: null, type: null, teacher: null },
+    { id: null, type: null, teacher: null },
   ]);
 
   const types = useSelector((state) => state.subjects.types);
@@ -84,10 +92,11 @@ const EditSubject = ({ editing, onClose }) => {
 
       let primaryKey;
       for (const index in editing.teacherSubjectTypes) {
-        primaryKey = editing.teacherSubjectTypes[index].primaryKey;
+        primaryKey = editing.teacherSubjectTypes[index];
         dispatchState({
           type: 'CHANGE',
           index: index,
+          id: primaryKey.id,
           teacher: {
             label: `${primaryKey.teacher.academicTitle} ${primaryKey.teacher.firstName} ${primaryKey.teacher.lastName}`,
             id: primaryKey.teacher.id,
@@ -111,7 +120,6 @@ const EditSubject = ({ editing, onClose }) => {
     nameTouchHandler();
 
     const teacherType = [];
-    const teacherTypeOriginal = [];
 
     if (!nameIsValid) return;
     for (const index in state) {
@@ -126,20 +134,25 @@ const EditSubject = ({ editing, onClose }) => {
         return;
       }
       if (state[index].type !== null && state[index].teacher !== null) {
-        teacherType.push({
+        const entry = {
+          id: state[index].id,
           typeId: state[index].type.id,
           teacherId: state[index].teacher.id,
-        });
-        teacherTypeOriginal.push({
-          primaryKey: {
-            teacher: teachers.find(
-              (teacher) => teacher.id === state[index].teacher.id
-            ),
-            type: types.find((type) => type.id === state[index].type.id),
-          },
-        });
+        };
+
+        if (!isDuplicate(entry, teacherType)) {
+          teacherType.push(entry);
+        } else {
+          setErrorAlert(
+            'global.error',
+            t('subjects.groupErrorDuplicate', { number: +index + 1 })
+          );
+          return;
+        }
       }
     }
+
+    console.log(teacherType);
 
     setLoading(true);
     if (showAlert) {
@@ -153,7 +166,6 @@ const EditSubject = ({ editing, onClose }) => {
         id: editing.id,
         name,
         teacherType,
-        teacherTypeOriginal,
       })
     );
     const time2 = new Date().getTime();
@@ -162,6 +174,7 @@ const EditSubject = ({ editing, onClose }) => {
       switch (resultAction.payload.message) {
         case 'subjectEdited':
           setTimeout(() => {
+            dispatch(getSubjectsUser());
             dispatch(
               showSnackbar({
                 message: t('global.success'),
@@ -192,7 +205,7 @@ const EditSubject = ({ editing, onClose }) => {
       setTimeout(() => {
         setLoading(false);
       }, 300);
-    }, 500 - (time2 - time1));
+    }, 1000 - (time2 - time1));
   };
 
   const handleClose = () => {

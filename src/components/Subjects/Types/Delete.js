@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import MainModal from '../../UI/Modals/MainModal';
@@ -7,12 +7,14 @@ import { setError } from '../../../store/user-slice';
 import { showSnackbar } from '../../../store/palette-slice';
 import deleteType from '../../../store/subjects/deleteType';
 import { Cancel, Delete as DeleteBtn } from '../../UI/Buttons/FormButtons';
+import getSubjectsUser from '../../../store/subjects/user/getSubjectsUser';
 
 const Delete = ({ type, onClose }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
+  const typeOfAccount = useSelector((state) => state.auth.type);
 
   const open = !!type;
 
@@ -48,6 +50,9 @@ const Delete = ({ type, onClose }) => {
               })
             );
           }, 500);
+          if (+typeOfAccount === 1) {
+            dispatch(getSubjectsUser());
+          }
           break;
         case 'tokenNotValid':
         case 'typeNotExists':

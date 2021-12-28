@@ -72,10 +72,7 @@ const TeachersList = ({ teachersList, search, loading }) => {
                   alignItems="center"
                   spacing={2}
                 >
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ wordBreak: 'break-all' }}
-                  >
+                  <Typography variant="body2" sx={{ wordBreak: 'break-all' }}>
                     {t('global.email')}:{' '}
                     {teacher.email ? teacher.email : t('teachers.emptyEmail')}
                   </Typography>

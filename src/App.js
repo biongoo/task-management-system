@@ -1,18 +1,20 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import useInit from './hooks/use-init';
+import './App.css';
 import Theme from './theme/Theme';
-import MainLayout from './components/Layout/Main/MainLayout';
-import AuthLayout from './components/Layout/Auth/AuthLayout';
-import Dashboard from './pages/Dashboard';
-import Teachers from './pages/Teachers';
-import Subjects from './pages/Subjects';
+import useInit from './hooks/use-init';
+
+import Plan from './pages/Plan';
 import Login from './pages/Login';
-import Register from './pages/Register';
 import Forgot from './pages/Forgot';
 import NotFound from './pages/404.js';
-import './App.css';
+import Teachers from './pages/Teachers';
+import Subjects from './pages/Subjects';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import MainLayout from './components/Layout/Main/MainLayout';
+import AuthLayout from './components/Layout/Auth/AuthLayout';
 
 function App() {
   useInit();
@@ -24,6 +26,7 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="teachers" element={<Teachers />} />
           <Route path="subjects" element={<Subjects />} />
+          <Route path="plan" element={<Plan />} />
         </Route>
 
         <Route path="/" element={<AuthLayout />}>

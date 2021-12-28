@@ -17,6 +17,12 @@ import { Add, Cancel } from '../../UI/Buttons/FormButtons';
 import { showSnackbar } from '../../../store/palette-slice';
 import addSubjectUser from '../../../store/subjects/user/addSubjectUser';
 
+function isDuplicate(entry, arr) {
+  return arr.some(
+    (x) => entry.typeId === x.typeId && entry.teacherId === x.teacherId
+  );
+}
+
 const reducer = (state, action) => {
   let newState = [...state];
 
@@ -102,18 +108,26 @@ const AddSubject = () => {
         return;
       }
       if (state[index].type !== null && state[index].teacher !== null) {
-        teacherType.push({
+        const entry = {
           typeId: state[index].type.id,
           teacherId: state[index].teacher.id,
-        });
-        teacherTypeOriginal.push({
-          primaryKey: {
+        };
+
+        if (!isDuplicate(entry, teacherType)) {
+          teacherType.push(entry);
+          teacherTypeOriginal.push({
             teacher: teachers.find(
               (teacher) => teacher.id === state[index].teacher.id
             ),
             type: types.find((type) => type.id === state[index].type.id),
-          },
-        });
+          });
+        } else {
+          setErrorAlert(
+            'global.error',
+            t('subjects.groupErrorDuplicate', { number: +index + 1 })
+          );
+          return;
+        }
       }
     }
 

@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import HomeIcon from '@mui/icons-material/Home';
 import SchoolIcon from '@mui/icons-material/School';
 import SubjectIcon from '@mui/icons-material/Subject';
+import ScheduleIcon from '@mui/icons-material/Schedule';
 import {
   Box,
   Drawer,
@@ -43,6 +44,11 @@ const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
         icon: <SubjectIcon sx={{ color: 'primary.light' }} />,
         path: '/dashboard/subjects',
       },
+      {
+        text: t('layout.plan'),
+        icon: <ScheduleIcon sx={{ color: 'primary.light' }} />,
+        path: '/dashboard/plan',
+      }
     );
   }
 

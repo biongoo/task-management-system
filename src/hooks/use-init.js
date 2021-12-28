@@ -1,5 +1,5 @@
-import { useTranslation } from 'react-i18next';
 import { useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { logout } from '../store/auth-slice';
@@ -7,8 +7,9 @@ import { showSnackbar } from '../store/palette-slice';
 import { clearError } from '../store/user-slice';
 import checkLoginAsync from '../store/auth/checkLogin';
 
-import getTeachers from '../store/teachers/getTeachers';
+import getPlan from '../store/plan/getPlan';
 import getTypes from '../store/subjects/getTypes';
+import getTeachers from '../store/teachers/getTeachers';
 import getSubjectsUser from '../store/subjects/user/getSubjectsUser';
 
 const useInit = () => {
@@ -30,6 +31,7 @@ const useInit = () => {
           if (+typeOfAccount === 1) {
             dispatch(getSubjectsUser());
           }
+          dispatch(getPlan());
           break;
         case 'tokenNotValid':
         default:

@@ -72,29 +72,21 @@ const SubjectsList = ({ subjectsList, search, loading }) => {
                   alignItems="center"
                   spacing={2}
                 >
-                  <Stack direction="column" spacing={2}>
+                  <Stack direction="column" spacing={1.5}>
                     {subject.teacherSubjectTypes.length ? (
                       subject.teacherSubjectTypes
                         .slice()
                         .sort(
                           (a, b) =>
-                            a.primaryKey.type.name.localeCompare(
-                              b.primaryKey.type.name
+                            a.type.name.localeCompare(b.type.name) ||
+                            a.teacher.firstName.localeCompare(
+                              b.teacher.firstName
                             ) ||
-                            a.primaryKey.teacher.firstName.localeCompare(
-                              b.primaryKey.teacher.firstName
-                            ) ||
-                            a.primaryKey.teacher.lastName.localeCompare(
-                              b.primaryKey.teacher.lastName
-                            )
+                            a.teacher.lastName.localeCompare(b.teacher.lastName)
                         )
                         .map((tst, index) => (
-                          <Typography
-                            variant="subtitle2"
-                            sx={{ wordBreak: 'break-all' }}
-                            key={index}
-                          >
-                            {`${tst.primaryKey.type.name}: ${tst.primaryKey.teacher.academicTitle} ${tst.primaryKey.teacher.firstName} ${tst.primaryKey.teacher.lastName}`}
+                          <Typography variant="body2" key={index}>
+                            {`${tst.type.name}: ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`}
                           </Typography>
                         ))
                     ) : (

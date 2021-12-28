@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Stack, Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import useInput from '../../../hooks/use-input';
 import MainModal from '../../UI/Modals/MainModal';
 import { setError } from '../../../store/user-slice';
+import FilledAlert from '../../UI/Alerts/FilledAlert';
 import editType from '../../../store/subjects/editType';
 import Input100Width from '../../UI/Inputs/Input100Width';
+import { useAlert, wait } from '../../../hooks/use-alert';
 import { showSnackbar } from '../../../store/palette-slice';
 import { Edit as EditBtn, Cancel } from '../../UI/Buttons/FormButtons';
-import { useAlert, wait } from '../../../hooks/use-alert';
-import FilledAlert from '../../UI/Alerts/FilledAlert';
+import getSubjectsUser from '../../../store/subjects/user/getSubjectsUser';
 
 const Edit = ({ type, onClose }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const typeOfAccount = useSelector((state) => state.auth.type);
 
   const open = !!type;
 
@@ -72,6 +74,9 @@ const Edit = ({ type, onClose }) => {
               })
             );
           }, 500);
+          if (+typeOfAccount === 1) {
+            dispatch(getSubjectsUser());
+          }
           break;
         case 'typeExists':
           setErrorAlert('global.error', 'subjects.typeExists');

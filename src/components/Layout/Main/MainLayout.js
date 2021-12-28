@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Box, Toolbar } from '@mui/material';
-import { Outlet, Navigate } from 'react-router-dom';
+import { Outlet, Navigate, useLocation } from 'react-router-dom';
 
 import MainLayoutTop from './MainLayoutTop';
 import MainLayoutLeft from './MainLayoutLeft';
@@ -10,6 +10,7 @@ import Snackbar from '../Snackbar';
 const drawerWidth = 240;
 
 const MainLayout = () => {
+  let location = useLocation();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -43,6 +44,7 @@ const MainLayout = () => {
         }}
       >
         <Toolbar />
+        {location.pathname === '/dashboard' && <Navigate to="/" />}
         {isLoggedIn ? <Outlet /> : <Navigate to="/" />}
       </Box>
     </Box>

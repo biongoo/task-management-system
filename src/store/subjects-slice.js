@@ -6,7 +6,6 @@ import getTypes from './subjects/getTypes';
 import deleteType from './subjects/deleteType';
 import addSubjectUser from './subjects/user/addSubjectUser';
 import getSubjectsUser from './subjects/user/getSubjectsUser';
-import editSubjectUser from './subjects/user/editSubjectUser';
 import deleteSubjectUser from './subjects/user/deleteSubjectUser';
 
 const initialState = {
@@ -66,17 +65,6 @@ const subjectsSlice = createSlice({
         name,
         teacherSubjectTypes: teacherTypeOriginal,
       });
-    },
-    [editSubjectUser.fulfilled]: (state, action) => {
-      const { id, name, teacherTypeOriginal, statusCode } = action.payload;
-      if (statusCode !== 200) return;
-
-      const index = state.subjects.findIndex((subject) => subject.id === id);
-      state.subjects[index] = {
-        id,
-        name,
-        teacherSubjectTypes: teacherTypeOriginal,
-      };
     },
     [deleteSubjectUser.fulfilled]: (state, action) => {
       const { id, statusCode } = action.payload;

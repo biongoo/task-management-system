@@ -29,6 +29,7 @@
     "teachers": "Teachers"
   },
   "layout": {
+    "attach": "Attach",
     "back404": "Go back to ",
     "clear": "Clear",
     "close": "Close",
@@ -36,6 +37,7 @@
     "home": "Home",
     "homepage404": "home page",
     "logout": "Logout",
+    "materials": "Materials",
     "mode": "Mode",
     "noOptions": "No options",
     "open": "Open",
@@ -142,5 +144,12 @@
     "week0": "Weekly",
     "week1": "Every odd week",
     "week2": "Even weekly"
+  },
+  "materials": {
+    "attachments": "Attachments",
+    "date": "Date",
+    "description": "Description",
+    "name": "Name",
+    "type": "Type"
   }
 }

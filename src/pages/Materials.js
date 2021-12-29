@@ -3,57 +3,75 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, Paper, Stack, Backdrop, CircularProgress } from '@mui/material';
 
 import Sort from '../components/UI/Sorts/Sort';
-import getTypes from '../store/subjects/getTypes';
 import Search from '../components/UI/Inputs/Search';
-import Types from '../components/Subjects/Types/Types';
-import AddSubject from '../components/Subjects/Student/Add';
-import StudentSL from '../components/Subjects/Student/SubjectsList';
-import getSubjectsUser from '../store/subjects/user/getSubjectsUser';
+import getMaterials from '../store/materials/getMaterials';
+import AddMaterial from '../components/Materials/AddMaterial';
+import MaterialsList from '../components/Materials/MaterialsList';
 
-const Subjects = () => {
+function groupItemBy(array, property) {
+  var hash = {},
+    props = property.split('.');
+  for (var i = 0; i < array.length; i++) {
+    var key = props.reduce(function (acc, prop) {
+      return acc && acc[prop];
+    }, array[i]);
+    if (!hash[key]) hash[key] = [];
+    hash[key].push(array[i]);
+  }
+  return hash;
+}
+
+const Materials = () => {
   const dispatch = useDispatch();
-  const typeOfAccount = useSelector((state) => state.auth.type);
-  const { subjects, types, loading, firstLoading } = useSelector(
-    (state) => state.subjects
-  );
-
   const [search, setSearch] = useState('');
   const [selectedSortingIndex, setSelectedSortingIndex] = useState(0);
+  const { materials, loading, firstLoading } = useSelector(
+    (state) => state.materials
+  );
 
   useEffect(() => {
-    dispatch(getTypes());
-    if (+typeOfAccount === 1) {
-      dispatch(getSubjectsUser());
-    }
-  }, [dispatch, typeOfAccount]);
+    dispatch(getMaterials());
+  }, [dispatch]);
 
   const searchHandler = (e) => {
     setSearch(e.target.value);
   };
 
-  let subjectsList = subjects.slice();
+  let materialsList = materials.slice();
 
   if (search) {
-    subjectsList = subjectsList.filter((subject) =>
-      `${subject.name}`.toLowerCase().includes(search.toLowerCase())
+    materialsList = materialsList.filter((material) =>
+      `${material.teacherSubjectType.subject.name}`
+        .toLowerCase()
+        .includes(search.toLowerCase())
     );
   }
 
   switch (selectedSortingIndex) {
     case 0:
-      subjectsList = subjectsList.sort((a, b) => a.name.localeCompare(b.name));
+      materialsList = materialsList.sort((a, b) =>
+        a.teacherSubjectType.subject.name.localeCompare(
+          b.teacherSubjectType.subject.name
+        )
+      );
       break;
     case 1:
-      subjectsList = subjectsList.sort((a, b) => b.name.localeCompare(a.name));
+      materialsList = materialsList.sort((a, b) =>
+        b.teacherSubjectType.subject.name.localeCompare(
+          a.teacherSubjectType.subject.name
+        )
+      );
       break;
     case 2:
       break;
     case 3:
-      subjectsList = subjectsList.reverse();
+      materialsList = materialsList.reverse();
       break;
     default:
       break;
   }
+
+  materialsList = groupItemBy(materialsList, 'teacherSubjectType.subject.name');
 
   return (
     <Box
@@ -64,7 +82,7 @@ const Subjects = () => {
     >
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading && firstLoading && !subjectsList.length}
+        open={loading && firstLoading && !materialsList.length}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -92,22 +110,20 @@ const Subjects = () => {
             <Sort
               selectedIndex={selectedSortingIndex}
               setSelectedIndex={setSelectedSortingIndex}
+              alphabeticOnly={true}
             />
-            <Types types={types} />
-            {+typeOfAccount === 1 && <AddSubject />}
+            <AddMaterial />
           </Stack>
         </Stack>
 
-        {+typeOfAccount === 1 && (
-          <StudentSL
-            subjectsList={subjectsList}
-            search={search}
-            loading={loading}
-          />
-        )}
+        <MaterialsList
+          materials={materialsList}
+          search={search}
+          loading={loading}
+        />
       </Paper>
     </Box>
   );
 };
 
-export default Subjects;
+export default Materials;

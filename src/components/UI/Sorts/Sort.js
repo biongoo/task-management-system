@@ -7,7 +7,7 @@ import { Menu, MenuItem, Box, Typography } from '@mui/material';
 
 import IconButton from '../Buttons/IconButton';
 
-const Sort = ({ selectedIndex, setSelectedIndex }) => {
+const Sort = ({ selectedIndex, setSelectedIndex, alphabeticOnly }) => {
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -26,24 +26,39 @@ const Sort = ({ selectedIndex, setSelectedIndex }) => {
     setAnchorEl(null);
   };
 
-  const options = [
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', alignContent: 'center' }}>
-      <ArrowDropUpIcon />
-      <Typography sx={{ pl: 1 }}>{t('global.alphabetically')}</Typography>
-    </Box>,
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', alignContent: 'center' }}>
-      <ArrowDropDownIcon />
-      <Typography sx={{ pl: 1 }}>{t('global.alphabetically')}</Typography>
-    </Box>,
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', alignContent: 'center' }}>
-      <ArrowDropUpIcon />
-      <Typography sx={{ pl: 1 }}>{t('global.dateAdded')}</Typography>
-    </Box>,
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', alignContent: 'center' }}>
-      <ArrowDropDownIcon />
-      <Typography sx={{ pl: 1 }}>{t('global.dateAdded')}</Typography>
-    </Box>,
-  ];
+  let options = [];
+
+  if (!alphabeticOnly) {
+    options = [
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', alignContent: 'center' }}>
+        <ArrowDropUpIcon />
+        <Typography sx={{ pl: 1 }}>{t('global.alphabetically')}</Typography>
+      </Box>,
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', alignContent: 'center' }}>
+        <ArrowDropDownIcon />
+        <Typography sx={{ pl: 1 }}>{t('global.alphabetically')}</Typography>
+      </Box>,
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', alignContent: 'center' }}>
+        <ArrowDropUpIcon />
+        <Typography sx={{ pl: 1 }}>{t('global.dateAdded')}</Typography>
+      </Box>,
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', alignContent: 'center' }}>
+        <ArrowDropDownIcon />
+        <Typography sx={{ pl: 1 }}>{t('global.dateAdded')}</Typography>
+      </Box>,
+    ];
+  } else {
+    options = [
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', alignContent: 'center' }}>
+        <ArrowDropUpIcon />
+        <Typography sx={{ pl: 1 }}>{t('global.alphabetically')}</Typography>
+      </Box>,
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', alignContent: 'center' }}>
+        <ArrowDropDownIcon />
+        <Typography sx={{ pl: 1 }}>{t('global.alphabetically')}</Typography>
+      </Box>,
+    ];
+  }
 
   return (
     <>

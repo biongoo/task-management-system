@@ -29,6 +29,7 @@
     "teachers": "Nauczyciele"
   },
   "layout": {
+    "attach": "Załącz",
     "back404": "Wróć do ",
     "clear": "Wyczyść",
     "close": "Zamknij",
@@ -36,12 +37,13 @@
     "home": "Strona główna",
     "homepage404": "strony głównej",
     "logout": "Wyloguj",
+    "materials": "Materiały",
     "mode": "Tryb",
     "noOptions": "Brak opcji",
     "open": "Otwórz",
     "plan": "Plan stały",
     "settings": "Ustawienia",
-    "shortTitle": "SZZ",
+    "shortTitle": "TMS",
     "subjects": "Przedmioty",
     "themeSettings": "Ustawienia motywu",
     "title": "System zarządzania zadaniami"
@@ -142,5 +144,12 @@
     "week0": "Co tydzień",
     "week1": "Tydzień nieparzysty",
     "week2": "Tydzień parzysty"
+  },
+  "materials": {
+    "attachments": "Załączniki",
+    "date": "Data",
+    "description": "Opis",
+    "name": "Nazwa",
+    "type": "Typ"
   }
 }

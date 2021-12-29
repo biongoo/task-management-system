@@ -10,6 +10,7 @@ import checkLoginAsync from '../store/auth/checkLogin';
 import getPlan from '../store/plan/getPlan';
 import getTypes from '../store/subjects/getTypes';
 import getTeachers from '../store/teachers/getTeachers';
+import getMaterials from '../store/materials/getMaterials';
 import getSubjectsUser from '../store/subjects/user/getSubjectsUser';
 
 const useInit = () => {
@@ -32,6 +33,7 @@ const useInit = () => {
             dispatch(getSubjectsUser());
           }
           dispatch(getPlan());
+          dispatch(getMaterials());
           break;
         case 'tokenNotValid':
         default:

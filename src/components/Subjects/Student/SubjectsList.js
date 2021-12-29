@@ -61,7 +61,7 @@ const SubjectsList = ({ subjectsList, search, loading }) => {
                       color: paletteColor,
                       backgroundColor: 'inherit',
                     }}
-                    textToHighlight={`${subject.name}`}
+                    textToHighlight={subject.name}
                   />
                 </Typography>
               </AccordionSummary>

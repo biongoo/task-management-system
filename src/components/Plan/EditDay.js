@@ -41,7 +41,8 @@ const EditDay = ({ openDay, onClose }) => {
   };
 
   const handleCloseAdd = (item) => {
-    if (item) {
+    if (item && item !== 'backdropClick') {
+      console.log(item);
       let flag = false;
 
       for (const [index, element] of openDay.day.entries()) {
@@ -67,7 +68,7 @@ const EditDay = ({ openDay, onClose }) => {
   };
 
   const handleCloseEdit = (item) => {
-    if (item) {
+    if (item && item !== 'backdropClick') {
       const index = openDay.day.findIndex((element) => element.id === item.id);
       openDay.day[index] = item;
     }
@@ -82,7 +83,7 @@ const EditDay = ({ openDay, onClose }) => {
   };
 
   const handleCloseDelete = (id) => {
-    if (id) {
+    if (id && id !== 'backdropClick') {
       openDay.day.splice(
         openDay.day.findIndex((element) => element.id === id),
         1

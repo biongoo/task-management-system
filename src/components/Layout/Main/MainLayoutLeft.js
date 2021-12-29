@@ -7,13 +7,13 @@ import HomeIcon from '@mui/icons-material/Home';
 import SchoolIcon from '@mui/icons-material/School';
 import SubjectIcon from '@mui/icons-material/Subject';
 import ScheduleIcon from '@mui/icons-material/Schedule';
+import AttachmentIcon from '@mui/icons-material/Attachment';
 import {
   Box,
   Drawer,
   SwipeableDrawer,
   Toolbar,
   List,
-  ListSubheader,
   ListItem,
   ListItemIcon,
   ListItemText,
@@ -45,6 +45,11 @@ const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
         path: '/dashboard/subjects',
       },
       {
+        text: t('layout.materials'),
+        icon: <AttachmentIcon sx={{ color: 'primary.light' }} />,
+        path: '/dashboard/materials',
+      },
+      {
         text: t('layout.plan'),
         icon: <ScheduleIcon sx={{ color: 'primary.light' }} />,
         path: '/dashboard/plan',
@@ -69,16 +74,6 @@ const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
         </Typography>
       </Toolbar>
       <List>
-        <ListSubheader
-          component="div"
-          sx={{
-            bgcolor: 'primary.dark',
-            fontSize: 18,
-            color: 'text.secondary',
-          }}
-        >
-          General
-        </ListSubheader>
         {menuItems.map((item) => (
           <ListItem
             component={NavLink}

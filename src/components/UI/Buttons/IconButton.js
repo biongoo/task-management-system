@@ -2,17 +2,26 @@ import React from 'react';
 import { alpha } from '@mui/material/styles';
 import { IconButton as MuiIconButton, Tooltip } from '@mui/material';
 
-const IconButton = ({ tooltip, onClick, open, Icon, defaultSize }) => {
+const IconButton = ({
+  tooltip,
+  onClick,
+  open,
+  Icon,
+  defaultSize,
+  circleSize,
+  edge,
+}) => {
   const size = defaultSize ? defaultSize : 28;
 
   const body = (
     <MuiIconButton
       onClick={onClick}
       color="secondary"
+      edge={edge}
       sx={{
         padding: 0,
-        width: 44,
-        height: 44,
+        width: circleSize ? circleSize : 44,
+        height: circleSize ? circleSize : 44,
         ...(open && {
           bgcolor: (theme) =>
             alpha(

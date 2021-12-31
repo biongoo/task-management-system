@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import addMaterial from './materials/addMaterial';
 import editMaterial from './materials/editMaterial';
 import getMaterials from './materials/getMaterials';
+import deleteMaterial from './materials/deleteMaterial';
 
 const initialState = {
   materials: [],
@@ -33,17 +34,17 @@ const materialsSlice = createSlice({
       const { statusCode, material } = action.payload;
       if (statusCode !== 200) return;
 
-      console.log(action.payload);
-
-      /* const index = state.plan.findIndex((item) => item.id === material.id);
-      state.plan[index] = material; */
+      const index = state.materials.findIndex(
+        (item) => item.id === material.id
+      );
+      state.materials[index] = material;
     },
-    /* [deletePlan.fulfilled]: (state, action) => {
+    [deleteMaterial.fulfilled]: (state, action) => {
       const { id, statusCode } = action.payload;
       if (statusCode !== 200) return;
 
-      state.plan = state.plan.filter((item) => item.id !== id);
-    }, */
+      state.materials = state.materials.filter((item) => item.id !== id);
+    },
   },
 });
 

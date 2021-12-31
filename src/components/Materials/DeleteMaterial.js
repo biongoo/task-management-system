@@ -1,56 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import MainModal from '../UI/Modals/MainModal';
 import { setError } from '../../store/user-slice';
 import { showSnackbar } from '../../store/palette-slice';
-import deleteTeacher from '../../store/teachers/deleteTeacher';
-import { Cancel, Delete as DeleteBtn } from '../UI/Buttons/FormButtons';
+import { Cancel, Delete } from '../UI/Buttons/FormButtons';
+import deleteMaterial from '../../store/materials/deleteMaterial';
 
-const Delete = ({ deleting, onClose }) => {
+const DeleteMaterial = ({ deleting, onBack, onExit }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
 
   const open = !!deleting;
-
-  useEffect(() => {
-    if (deleting && deleting.firstName.trim().length > 0) {
-      setName(
-        `${deleting.academicTitle} ${deleting.firstName} ${deleting.lastName}`
-      );
-    }
-  }, [deleting]);
-
-  const handleClose = () => {
-    if (loading) return;
-
-    onClose();
-  };
 
   const handleDelete = async () => {
     setLoading(true);
 
     const time1 = new Date().getTime();
-
-    const resultAction = await dispatch(
-      deleteTeacher({ id: deleting.id })
-    );
-
+    const resultAction = await dispatch(deleteMaterial({ id: deleting.id }));
     const time2 = new Date().getTime();
 
-    setTimeout(() => {
-      handleClose();
-      setTimeout(() => {
-        setLoading(false);
-      }, 300);
-    }, 500 - (time2 - time1));
-
-    if (deleteTeacher.fulfilled.match(resultAction)) {
+    if (deleteMaterial.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
-        case 'teacherDeleted':
+        case 'materialDeleted':
           setTimeout(() => {
             dispatch(
               showSnackbar({
@@ -60,8 +34,6 @@ const Delete = ({ deleting, onClose }) => {
             );
           }, 500);
           break;
-        case 'tokenNotValid':
-        case 'teacherNotExists':
         default:
           dispatch(setError(t('global.expiredSession')));
           break;
@@ -69,16 +41,27 @@ const Delete = ({ deleting, onClose }) => {
     } else {
       dispatch(setError(t('global.expiredSession')));
     }
+
+    setTimeout(() => {
+      onExit();
+      setTimeout(() => {
+        setLoading(false);
+      }, 300);
+    }, 200 - (time2 - time1));
   };
 
-  const body = t('teachers.deleteBody', {
-    teacher: name,
-  });
+  const handleClose = () => {
+    if (loading) return;
+
+    onBack();
+  };
+
+  const body = t('plan.deleteElementBody');
 
   const buttons = (
     <>
       <Cancel onClick={handleClose} disabled={loading} />
-      <DeleteBtn onClick={handleDelete} loading={loading} />
+      <Delete onClick={handleDelete} loading={loading} />
     </>
   );
 
@@ -86,11 +69,11 @@ const Delete = ({ deleting, onClose }) => {
     <MainModal
       open={open}
       handleClose={handleClose}
-      title={t('teachers.deleteTeacher')}
+      title={t('materials.deleteMaterial')}
       body={body}
       buttons={buttons}
     />
   );
 };
 
-export default Delete;
+export default DeleteMaterial;

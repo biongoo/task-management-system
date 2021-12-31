@@ -7,17 +7,17 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { TransitionGroup } from 'react-transition-group';
 import { Typography, Box, Stack } from '@mui/material';
 
+import IconButton from '../../UI/Buttons/IconButton';
+import EditStudentSubject from './EditStudentSubject';
+import DeleteStudentSubject from './DeleteStudentSubject';
 import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Collapse,
 } from '../../UI/Acordions/MainAccordion';
-import EditSubject from './Edit';
-import DeleteSubject from './Delete';
-import IconButton from '../../UI/Buttons/IconButton';
 
-const SubjectsList = ({ subjectsList, search, loading }) => {
+const StudentSubjectsList = ({ subjectsList, search, loading }) => {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const [editing, setEditing] = useState(null);
@@ -118,8 +118,8 @@ const SubjectsList = ({ subjectsList, search, loading }) => {
           </Collapse>
         ))}
       </TransitionGroup>
-      <EditSubject editing={editing} onClose={closeEditing} />
-      <DeleteSubject deleting={deleting} onClose={closeDeleting} />
+      <EditStudentSubject editing={editing} onClose={closeEditing} />
+      <DeleteStudentSubject deleting={deleting} onClose={closeDeleting} />
       {!subjectsList.length && search && (
         <Box sx={{ textAlign: 'center' }}>
           <Stack>
@@ -141,4 +141,4 @@ const SubjectsList = ({ subjectsList, search, loading }) => {
   );
 };
 
-export default SubjectsList;
+export default StudentSubjectsList;

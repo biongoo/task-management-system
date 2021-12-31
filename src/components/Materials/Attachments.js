@@ -19,7 +19,11 @@ const Attachments = ({ attachments, handleClose }) => {
   const [descAtach, setdescAtach] = useState({ files: [], description: '' });
 
   useEffect(() => {
-    if (attachments && Object.keys(attachments).length > 0) {
+    if (
+      attachments &&
+      Object.keys(attachments).length > 0 &&
+      attachments.open
+    ) {
       setdescAtach(attachments);
     }
   }, [attachments, setdescAtach]);

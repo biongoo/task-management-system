@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Box, Paper, Stack, Backdrop, CircularProgress } from '@mui/material';
 
-import Add from '../components/Teachers/Add';
+import AddTeacher from '../components/Teachers/AddTeacher';
 import Search from '../components/UI/Inputs/Search';
 import Sort from '../components/UI/Sorts/Sort';
 import TeachersList from '../components/Teachers/TeachersList';
@@ -103,7 +103,7 @@ const Teachers = () => {
               selectedIndex={selectedSortingIndex}
               setSelectedIndex={setSelectedSortingIndex}
             />
-            <Add />
+            <AddTeacher />
           </Stack>
         </Stack>
 

@@ -8,9 +8,9 @@ import { TransitionGroup } from 'react-transition-group';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
-import Add from './Add';
-import Edit from './Edit';
-import Delete from './Delete';
+import AddType from './AddType';
+import EditType from './EditType';
+import DeleteType from './DeleteType';
 import MainModal from '../../UI/Modals/MainModal';
 import MainDivider from '../../UI/Dividers/Divider';
 import IconButton from '../../UI/Buttons/IconButton';
@@ -120,9 +120,9 @@ const Types = ({ types }) => {
         body={body}
       />
 
-      <Add open={openAdd} onClose={handleCloseAdd} />
-      <Edit type={openEdit} onClose={handleCloseEdit} />
-      <Delete type={openDelete} onClose={handleCloseDelete} />
+      <AddType open={openAdd} onClose={handleCloseAdd} />
+      <EditType type={openEdit} onClose={handleCloseEdit} />
+      <DeleteType type={openDelete} onClose={handleCloseDelete} />
     </>
   );
 };

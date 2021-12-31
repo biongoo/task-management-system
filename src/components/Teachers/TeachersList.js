@@ -4,18 +4,18 @@ import { useTranslation } from 'react-i18next';
 import EditIcon from '@mui/icons-material/Edit';
 import Highlighter from 'react-highlight-words';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { TransitionGroup } from 'react-transition-group';
 import { Typography, Box, Stack } from '@mui/material';
+import { TransitionGroup } from 'react-transition-group';
 
+import Edit from './EditTeacher';
+import Delete from './DeleteTeacher';
+import IconButton from '../UI/Buttons/IconButton';
 import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Collapse,
 } from '../UI/Acordions/MainAccordion';
-import Edit from './Edit';
-import Delete from './Delete';
-import IconButton from '../UI/Buttons/IconButton';
 
 const TeachersList = ({ teachersList, search, loading }) => {
   const { t } = useTranslation();

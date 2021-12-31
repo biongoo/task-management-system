@@ -1,24 +1,21 @@
-import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import AddIcon from '@mui/icons-material/Add';
-import { useTranslation } from 'react-i18next';
 import { Stack, Box } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect } from 'react';
 
 import useInput from '../../hooks/use-input';
 import MainModal from '../UI/Modals/MainModal';
 import { setError } from '../../store/user-slice';
-import IconButton from '../UI/Buttons/IconButton';
 import FilledAlert from '../UI/Alerts/FilledAlert';
 import { useAlert, wait } from '../../hooks/use-alert';
 import Input100Width from '../UI/Inputs/Input100Width';
-import { Add, Cancel } from '../UI/Buttons/FormButtons';
-import addTeacher from '../../store/teachers/addTeacher';
 import { showSnackbar } from '../../store/palette-slice';
+import editTeacher from '../../store/teachers/editTeacher';
+import { Cancel, Edit as EditBtn } from '../UI/Buttons/FormButtons';
 
-const AddTeacher = () => {
+const EditTeacher = ({ settings, onClose }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const {
@@ -29,6 +26,8 @@ const AddTeacher = () => {
     setErrorAlert,
     closeAlert,
   } = useAlert();
+
+  const open = !!settings;
 
   const {
     value: firstName,
@@ -70,26 +69,35 @@ const AddTeacher = () => {
       : /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value.trim())
   );
 
+  useEffect(() => {
+    if (settings && settings.firstName.trim().length > 0) {
+      const event = { target: { value: settings.firstName } };
+      firstNameChangeHandler(event);
+    }
+    if (settings && settings.lastName.trim().length > 0) {
+      const event = { target: { value: settings.lastName } };
+      lastNameChangeHandler(event);
+    }
+    if (settings && settings.academicTitle.trim().length > 0) {
+      const event = { target: { value: settings.academicTitle } };
+      academicTitleChangeHandler(event);
+    }
+    if (settings && settings.email.trim().length > 0) {
+      const event = { target: { value: settings.email } };
+      emailChangeHandler(event);
+    }
+  }, [
+    settings,
+    firstNameChangeHandler,
+    lastNameChangeHandler,
+    academicTitleChangeHandler,
+    emailChangeHandler,
+  ]);
+
   const formIsValid =
     firstNameIsValid && lastNameIsValid && academicTitleIsValid && emailIsValid;
 
-  const handleOpen = () => setOpen(true);
-
-  const handleClose = () => {
-    if (loading) return;
-
-    setOpen(false);
-
-    setTimeout(() => {
-      firstNameReset();
-      lastNameReset();
-      academicTitleReset();
-      emailReset();
-      closeAlert();
-    }, 300);
-  };
-
-  const handleAdd = async () => {
+  const handleEdit = async () => {
     firstNameTouchHandler();
     lastNameTouchHandler();
     academicTitleTouchHandler();
@@ -105,14 +113,20 @@ const AddTeacher = () => {
     const time1 = new Date().getTime();
 
     const resultAction = await dispatch(
-      addTeacher({ firstName, lastName, academicTitle, email })
+      editTeacher({
+        id: settings.id,
+        academicTitle,
+        firstName,
+        lastName,
+        email,
+      })
     );
 
     const time2 = new Date().getTime();
 
-    if (addTeacher.fulfilled.match(resultAction)) {
+    if (editTeacher.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
-        case 'teacherAdded':
+        case 'teacherEdited':
           setTimeout(() => {
             dispatch(
               showSnackbar({
@@ -127,7 +141,7 @@ const AddTeacher = () => {
           setLoading(false);
           return;
         case 'tokenNotValid':
-        case 'typeNotValid':
+        case 'teacherNotExists':
         case 'firstNameNotValid':
         case 'lastNameNotValid':
         case 'academicTitleNotValid':
@@ -145,6 +159,19 @@ const AddTeacher = () => {
         setLoading(false);
       }, 300);
     }, 500 - (time2 - time1));
+  };
+
+  const handleClose = () => {
+    if (loading) return;
+
+    onClose();
+    setTimeout(() => {
+      firstNameReset();
+      lastNameReset();
+      academicTitleReset();
+      emailReset();
+      closeAlert();
+    }, 300);
   };
 
   const body = (
@@ -217,28 +244,19 @@ const AddTeacher = () => {
   const buttons = (
     <>
       <Cancel onClick={handleClose} disabled={loading} />
-      <Add onClick={handleAdd} loading={loading} />
+      <EditBtn onClick={handleEdit} loading={loading} />
     </>
   );
 
   return (
-    <>
-      <IconButton
-        tooltip={t('global.add')}
-        onClick={handleOpen}
-        open={open}
-        Icon={AddIcon}
-      />
-
-      <MainModal
-        open={open}
-        handleClose={handleClose}
-        title={t('teachers.addTeacher')}
-        body={body}
-        buttons={buttons}
-      />
-    </>
+    <MainModal
+      open={open}
+      handleClose={handleClose}
+      title={t('teachers.editTeacher')}
+      body={body}
+      buttons={buttons}
+    />
   );
 };
 
-export default AddTeacher;
+export default EditTeacher;

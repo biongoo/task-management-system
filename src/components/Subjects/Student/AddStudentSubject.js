@@ -46,7 +46,7 @@ const reducer = (state, action) => {
   }
 };
 
-const AddSubject = () => {
+const AddStudentSubject = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -286,4 +286,4 @@ const AddSubject = () => {
   );
 };
 
-export default AddSubject;
+export default AddStudentSubject;

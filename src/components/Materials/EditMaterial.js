@@ -18,6 +18,7 @@ import {
 import Dialog from '../UI/Modals/Dialog';
 import DateInput from '../UI/Inputs/Date';
 import useInput from '../../hooks/use-input';
+import DeleteMaterial from './DeleteMaterial';
 import { setError } from '../../store/user-slice';
 import IconButton from '../UI/Buttons/IconButton';
 import Attachment from '../UI/Buttons/Attachment';
@@ -33,9 +34,10 @@ const EditMaterial = ({ editing, onClose }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [files, setFiles] = useState([]);
-  const [oldFiles, setOldFiles] = useState([]);
   const [open, setOpen] = useState(false);
+  const [oldFiles, setOldFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [deleting, setDeleting] = useState(null);
   const [typesLabel, setTypesLabel] = useState([]);
 
   const subjects = useSelector((state) => state.subjects.subjects);
@@ -101,7 +103,7 @@ const EditMaterial = ({ editing, onClose }) => {
   } = useInput((value) => value.trim().length < 2048);
 
   useEffect(() => {
-    if (editing && editing.name.trim().length > 0) {
+    if (editing && editing.name.trim().length > 0 && !deleting) {
       const nameTmp = { target: { value: editing.name } };
 
       const subjectNameTmp = {
@@ -155,6 +157,7 @@ const EditMaterial = ({ editing, onClose }) => {
   }, [
     editing,
     subjects,
+    deleting,
     nameChangeHandler,
     subjectNameChangeHandler,
     setTypesLabel,
@@ -204,7 +207,7 @@ const EditMaterial = ({ editing, onClose }) => {
     }
 
     for (const oldFile of oldFiles) {
-      formData.append('oldFiles', oldFile.name);
+      formData.append('oldFiles', oldFile.id);
       filesSize += oldFile.size;
     }
 
@@ -220,13 +223,11 @@ const EditMaterial = ({ editing, onClose }) => {
       return;
     }
 
-    console.log(editing);
-
     const time1 = new Date().getTime();
     const resultAction = await dispatch(editMaterial(formData));
     const time2 = new Date().getTime();
 
-    /* if (editMaterial.fulfilled.match(resultAction)) {
+    if (editMaterial.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
         case 'materialEdited':
           setTimeout(() => {
@@ -244,10 +245,10 @@ const EditMaterial = ({ editing, onClose }) => {
       }
     } else {
       dispatch(setError(t('global.expiredSession')));
-    } */
+    }
 
     setTimeout(() => {
-      handleExit();
+      handleClose();
       setTimeout(() => {
         setLoading(false);
       }, 300);
@@ -316,11 +317,30 @@ const EditMaterial = ({ editing, onClose }) => {
     setOldFiles((prevState) => prevState.filter((item) => item.id !== id));
   };
 
-  const handleOpen = () => setOpen(true);
+  const handleOpenDelete = () => {
+    setOpen(false);
+    setTimeout(() => {
+      setDeleting(editing);
+    }, 300);
+  };
+
+  const handleCloseDelete = () => {
+    setDeleting(null);
+
+    setTimeout(() => {
+      setOpen(true);
+    }, 300);
+  };
+
+  const handleExitDelete = () => {
+    setDeleting(null);
+    handleClose();
+  };
 
   const handleClose = () => {
     if (loading) return;
 
+    onClose();
     setOpen(false);
 
     setTimeout(() => {
@@ -332,11 +352,6 @@ const EditMaterial = ({ editing, onClose }) => {
       descriptionReset();
       setFiles([]);
     }, 300);
-  };
-
-  const handleExit = () => {
-    onClose();
-    handleClose();
   };
 
   const body = (
@@ -453,17 +468,22 @@ const EditMaterial = ({ editing, onClose }) => {
 
   const buttons = (
     <>
-      <Cancel onClick={handleExit} disabled={loading} />
-      <Delete /* onClick={handleEdit} */ loading={loading} />
+      <Cancel onClick={handleClose} disabled={loading} />
+      <Delete onClick={handleOpenDelete} loading={loading} />
       <Edit onClick={handleEdit} loading={loading} />
     </>
   );
 
   return (
     <>
+      <DeleteMaterial
+        deleting={deleting}
+        onBack={handleCloseDelete}
+        onExit={handleExitDelete}
+      />
       <Dialog
         open={open}
-        handleClose={handleExit}
+        handleClose={handleClose}
         title={t('materials.editMaterial')}
         body={body}
         buttons={buttons}

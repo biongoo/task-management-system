@@ -1,6 +1,6 @@
+import { useTranslation } from 'react-i18next';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 
 import MainModal from '../../UI/Modals/MainModal';
 import { setError } from '../../../store/user-slice';

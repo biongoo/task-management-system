@@ -6,9 +6,9 @@ import Sort from '../components/UI/Sorts/Sort';
 import getTypes from '../store/subjects/getTypes';
 import Search from '../components/UI/Inputs/Search';
 import Types from '../components/Subjects/Types/Types';
-import AddSubject from '../components/Subjects/Student/Add';
-import StudentSL from '../components/Subjects/Student/SubjectsList';
 import getSubjectsUser from '../store/subjects/user/getSubjectsUser';
+import AddStudentSubject from '../components/Subjects/Student/AddStudentSubject';
+import StudentSubjectsList from '../components/Subjects/Student/StudentSubjectsList';
 
 const Subjects = () => {
   const dispatch = useDispatch();
@@ -94,12 +94,12 @@ const Subjects = () => {
               setSelectedIndex={setSelectedSortingIndex}
             />
             <Types types={types} />
-            {+typeOfAccount === 1 && <AddSubject />}
+            {+typeOfAccount === 1 && <AddStudentSubject />}
           </Stack>
         </Stack>
 
         {+typeOfAccount === 1 && (
-          <StudentSL
+          <StudentSubjectsList
             subjectsList={subjectsList}
             search={search}
             loading={loading}

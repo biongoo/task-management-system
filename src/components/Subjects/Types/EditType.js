@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Stack, Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import useInput from '../../../hooks/use-input';
 import MainModal from '../../UI/Modals/MainModal';

@@ -6,14 +6,14 @@ import { useTranslation } from 'react-i18next';
 import useInput from '../../../hooks/use-input';
 import MainModal from '../../UI/Modals/MainModal';
 import { setError } from '../../../store/user-slice';
+import FilledAlert from '../../UI/Alerts/FilledAlert';
 import addType from '../../../store/subjects/addType';
 import Input100Width from '../../UI/Inputs/Input100Width';
+import { useAlert, wait } from '../../../hooks/use-alert';
 import { showSnackbar } from '../../../store/palette-slice';
 import { Add as AddBtn, Cancel } from '../../UI/Buttons/FormButtons';
-import { useAlert, wait } from '../../../hooks/use-alert';
-import FilledAlert from '../../UI/Alerts/FilledAlert';
 
-const Add = ({ open, onClose }) => {
+const AddType = ({ open, onClose }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -141,4 +141,4 @@ const Add = ({ open, onClose }) => {
   );
 };
 
-export default Add;
+export default AddType;

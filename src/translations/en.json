@@ -22,6 +22,7 @@
     "or": "OR",
     "password": "Password",
     "search": "Search",
+    "sizeError": "The total size of the files is greater than 40MB.",
     "showPassword": "Show password",
     "sort": "Sort",
     "success": "Success",
@@ -146,9 +147,14 @@
     "week2": "Even weekly"
   },
   "materials": {
+    "addMaterial": "Add material",
     "attachments": "Attachments",
     "date": "Date",
+    "deleteMaterial": "Delete material",
     "description": "Description",
+    "editMaterial": "Edit material",
+    "empty": "There cannot be material without description or file(s).",
+    "letsAdd": "Let's add your materials!",
     "name": "Name",
     "type": "Type"
   }

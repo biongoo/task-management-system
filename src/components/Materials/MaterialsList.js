@@ -7,33 +7,55 @@ import { Typography, Box, Stack } from '@mui/material';
 import { TransitionGroup } from 'react-transition-group';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
+import Attachments from './Attachments';
+import EditMaterial from './EditMaterial';
+import Divider from '../UI/Dividers/Divider';
+import IconButton from '../UI/Buttons/IconButton';
 import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Collapse,
 } from '../UI/Acordions/MainAccordion';
-/* import EditSubject from './Edit';
-import DeleteSubject from './Delete'; */
-import IconButton from '../UI/Buttons/IconButton';
-import Divider from '../UI/Dividers/Divider';
+
+const initAttachments = {
+  files: [],
+  description: '',
+  open: false,
+};
 
 const MaterialsList = ({ materials, search, loading }) => {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
-  /* const [editing, setEditing] = useState(null);
-  const [deleting, setDeleting] = useState(null); */
+  const [editing, setEditing] = useState(null);
+  const [attachments, setAttachments] = useState(initAttachments);
   const paletteColor = useSelector((state) => state.palette.color);
 
   const handleChange = (panel) => (_, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
+  const handleOpenAttachments = (attachments) => {
+    setAttachments({ ...attachments, open: true });
+  };
+
+  const handleCloseAttachments = () => {
+    setAttachments(initAttachments);
+  };
+
+  const handleOpenEdit = (material) => {
+    setEditing(material);
+  };
+
+  const handleCloseEdit = () => {
+    setEditing(null);
+  };
+
   return (
     <Box>
       <TransitionGroup>
-        {Object.keys(materials).map((key, index) => (
-          <Collapse key={index}>
+        {Object.keys(materials).map((key) => (
+          <Collapse key={key}>
             <Accordion expanded={expanded === key} onChange={handleChange(key)}>
               <AccordionSummary>
                 <Typography variant="subtitle1">
@@ -62,7 +84,6 @@ const MaterialsList = ({ materials, search, loading }) => {
                       type += material.teacherSubjectType.teacher.firstName;
                       type += ' ';
                       type += material.teacherSubjectType.teacher.lastName;
-                      /* console.log(material); */
                       return (
                         <Collapse key={material.id}>
                           <Stack
@@ -86,16 +107,23 @@ const MaterialsList = ({ materials, search, loading }) => {
                             <Stack>
                               <IconButton
                                 tooltip={t('materials.attachments')}
-                                /* onClick={handleOpenEdit.bind(null, item)} */
-                                open={false}
+                                onClick={handleOpenAttachments.bind(null, {
+                                  files: material.files,
+                                  description: material.description,
+                                })}
+                                open={
+                                  attachments.files === material.files &&
+                                  attachments.description ===
+                                    material.description
+                                }
                                 Icon={AttachFileIcon}
                                 defaultSize={24}
                                 circleSize={34}
                               />
                               <IconButton
                                 tooltip={t('global.edit')}
-                                /* onClick={handleOpenEdit.bind(null, item)} */
-                                open={false}
+                                onClick={handleOpenEdit.bind(null, material)}
+                                open={editing === material}
                                 Icon={EditIcon}
                                 defaultSize={24}
                                 circleSize={34}
@@ -106,50 +134,34 @@ const MaterialsList = ({ materials, search, loading }) => {
                         </Collapse>
                       );
                     })}
-                  {/* {subject.teacherSubjectTypes.length ? (
-                      subject.teacherSubjectTypes
-                        .slice()
-                        .sort(
-                          (a, b) =>
-                            a.type.name.localeCompare(b.type.name) ||
-                            a.teacher.firstName.localeCompare(
-                              b.teacher.firstName
-                            ) ||
-                            a.teacher.lastName.localeCompare(b.teacher.lastName)
-                        )
-                        .map((tst, index) => (
-                          <Typography variant="body2" key={index}>
-                            {`${tst.type.name}: ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`}
-                          </Typography>
-                        ))
-                    ) : (
-                      <Typography
-                        variant="subtitle2"
-                        sx={{ wordBreak: 'break-all' }}
-                      >
-                        {t('subjects.emptyGroups')}
-                      </Typography>
-                    )} */}
                 </Stack>
-                {/* <Stack direction="row">
-                <IconButton
-                  tooltip={t('global.edit')}
-                  onClick={showEditing.bind(null, subject)}
-                  open={editing}
-                  Icon={EditIcon}
-                />
-                <IconButton
-                  tooltip={t('global.delete')}
-                  onClick={showDeleting.bind(null, subject)}
-                  open={deleting}
-                  Icon={DeleteIcon}
-                />
-              </Stack> */}
               </AccordionDetails>
             </Accordion>
           </Collapse>
         ))}
       </TransitionGroup>
+      <Attachments
+        attachments={attachments}
+        handleClose={handleCloseAttachments}
+      />
+      <EditMaterial editing={editing} onClose={handleCloseEdit} />
+      {!Object.keys(materials).length && search && (
+        <Box sx={{ textAlign: 'center' }}>
+          <Stack>
+            <Typography variant="h6">{t('global.notFound')}</Typography>
+            <Typography>
+              {t('global.notFoundDesc', { search: search })}
+            </Typography>
+          </Stack>
+        </Box>
+      )}
+      {!Object.keys(materials).length && !search && !loading && (
+        <Box sx={{ textAlign: 'center' }}>
+          <Stack>
+            <Typography variant="h6">{t('materials.letsAdd')}</Typography>
+          </Stack>
+        </Box>
+      )}
     </Box>
   );
 };

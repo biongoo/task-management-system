@@ -1,10 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import addMaterial from './materials/addMaterial';
+import editMaterial from './materials/editMaterial';
 import getMaterials from './materials/getMaterials';
-/*
-import addPlan from './plan/addPlan';
-import editPlan from './plan/editPlan';
-import deletePlan from './plan/deletePlan'; */
 
 const initialState = {
   materials: [],
@@ -25,51 +23,22 @@ const materialsSlice = createSlice({
       state.loading = false;
       state.firstLoading = false;
     },
-    /* [addPlan.fulfilled]: (state, action) => {
-      const {
-        id,
-        day,
-        startTime,
-        endTime,
-        repetition,
-        teacherSubjectType,
-        statusCode,
-      } = action.payload;
-
+    [addMaterial.fulfilled]: (state, action) => {
+      const { statusCode, material } = action.payload;
       if (statusCode !== 200) return;
 
-      state.plan.push({
-        id,
-        day,
-        startTime,
-        endTime,
-        teacherSubjectType,
-        repetition,
-      });
+      state.materials.push(material);
     },
-    [editPlan.fulfilled]: (state, action) => {
-      const {
-        id,
-        day,
-        startTime,
-        endTime,
-        repetition,
-        teacherSubjectType,
-        statusCode,
-      } = action.payload;
+    [editMaterial.fulfilled]: (state, action) => {
+      const { statusCode, material } = action.payload;
       if (statusCode !== 200) return;
 
-      const index = state.plan.findIndex((item) => item.id === id);
-      state.plan[index] = {
-        id,
-        day,
-        startTime,
-        endTime,
-        teacherSubjectType,
-        repetition,
-      };
+      console.log(action.payload);
+
+      /* const index = state.plan.findIndex((item) => item.id === material.id);
+      state.plan[index] = material; */
     },
-    [deletePlan.fulfilled]: (state, action) => {
+    /* [deletePlan.fulfilled]: (state, action) => {
       const { id, statusCode } = action.payload;
       if (statusCode !== 200) return;
 

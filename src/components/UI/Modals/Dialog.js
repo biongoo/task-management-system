@@ -45,9 +45,7 @@ const Dialog = ({ open, handleClose, title, body, buttons }) => {
 
       <Divider />
 
-      <DialogContent
-        sx={{ wordBreak: 'break-all', p: 0, my: 2, mx: { xs: 1.5, sm: 2.5 } }}
-      >
+      <DialogContent sx={{ p: 0, my: 2, mx: { xs: 1.5, sm: 2.5 } }}>
         {body}
       </DialogContent>
 

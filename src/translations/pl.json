@@ -22,6 +22,7 @@
     "or": "Lub",
     "password": "Hasło",
     "search": "Szukaj",
+    "sizeError": "Łączny rozmiar plików jest większy niż 40MB.",
     "showPassword": "Pokaż hasło",
     "sort": "Sortuj",
     "success": "Sukces",
@@ -146,9 +147,14 @@
     "week2": "Tydzień parzysty"
   },
   "materials": {
+    "addMaterial": "Dodaj materiał",
     "attachments": "Załączniki",
     "date": "Data",
+    "deleteMaterial": "Usuń materiał",
     "description": "Opis",
+    "editMaterial": "Edytuj materiał",
+    "empty": "Nie może istnieć materiał bez opisu lub pliku/ów.",
+    "letsAdd": "Dodaj swoje materiały!",
     "name": "Nazwa",
     "type": "Typ"
   }

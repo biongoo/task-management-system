@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import AddIcon from '@mui/icons-material/Add';
 import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSelector, useDispatch } from 'react-redux';
 import { TransitionGroup } from 'react-transition-group';
@@ -26,14 +25,15 @@ import FilledAlert from '../UI/Alerts/FilledAlert';
 import Autocomplete from '../UI/Inputs/Autocomplete';
 import { useAlert, wait } from '../../hooks/use-alert';
 import Input100Width from '../UI/Inputs/Input100Width';
-import { Add, Cancel } from '../UI/Buttons/FormButtons';
 import { showSnackbar } from '../../store/palette-slice';
-import addMaterial from '../../store/materials/addMaterial';
+import editMaterial from '../../store/materials/editMaterial';
+import { Edit, Delete, Cancel } from '../UI/Buttons/FormButtons';
 
-const AddMaterial = () => {
+const EditMaterial = ({ editing, onClose }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [files, setFiles] = useState([]);
+  const [oldFiles, setOldFiles] = useState([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [typesLabel, setTypesLabel] = useState([]);
@@ -100,6 +100,69 @@ const AddMaterial = () => {
     reset: descriptionReset,
   } = useInput((value) => value.trim().length < 2048);
 
+  useEffect(() => {
+    if (editing && editing.name.trim().length > 0) {
+      const nameTmp = { target: { value: editing.name } };
+
+      const subjectNameTmp = {
+        target: {
+          value: {
+            label: editing.teacherSubjectType.subject.name,
+            id: editing.teacherSubjectType.subject.id,
+          },
+        },
+      };
+
+      const { teacherSubjectTypes } = subjects.find(
+        (item) => item.id === editing.teacherSubjectType.subject.id
+      );
+
+      const subjectTypeTmp = {
+        target: {
+          value: {
+            label: `${editing.teacherSubjectType.type.name} - ${editing.teacherSubjectType.teacher.academicTitle} ${editing.teacherSubjectType.teacher.firstName} ${editing.teacherSubjectType.teacher.lastName}`,
+            id: editing.teacherSubjectType.id,
+          },
+        },
+      };
+
+      const dateTmp = {
+        target: {
+          value: new Date(editing.date),
+        },
+      };
+
+      const descriptionTmp = {
+        target: {
+          value: editing.description,
+        },
+      };
+
+      nameChangeHandler(nameTmp);
+      subjectNameChangeHandler(subjectNameTmp);
+      setTypesLabel(
+        teacherSubjectTypes.map((tst) => ({
+          label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
+          id: tst.id,
+        }))
+      );
+      subjectTypeChangeHandler(subjectTypeTmp);
+      dateChangeHandler(dateTmp);
+      descriptionChangeHandler(descriptionTmp);
+      setOldFiles(editing.files);
+      setOpen(true);
+    }
+  }, [
+    editing,
+    subjects,
+    nameChangeHandler,
+    subjectNameChangeHandler,
+    setTypesLabel,
+    subjectTypeChangeHandler,
+    dateChangeHandler,
+    descriptionChangeHandler,
+  ]);
+
   const formIsValid =
     nameIsValid &&
     subjectNameIsValid &&
@@ -107,7 +170,7 @@ const AddMaterial = () => {
     dateIsValid &&
     descriptionIsValid;
 
-  const handleAdd = async () => {
+  const handleEdit = async () => {
     nameTouchHandler();
     subjectNameTouchHandler();
     subjectTypeTouchHandler();
@@ -125,6 +188,7 @@ const AddMaterial = () => {
 
     const formData = new FormData();
 
+    formData.append('id', editing.id);
     formData.append('name', name);
     formData.append('description', description);
     formData.append('day', date.getDate());
@@ -139,6 +203,11 @@ const AddMaterial = () => {
       filesSize += file.size;
     }
 
+    for (const oldFile of oldFiles) {
+      formData.append('oldFiles', oldFile.name);
+      filesSize += oldFile.size;
+    }
+
     if (description.trim().length === 0 && filesSize === 0) {
       setErrorAlert('global.error', t('materials.empty'));
       setLoading(false);
@@ -151,13 +220,15 @@ const AddMaterial = () => {
       return;
     }
 
+    console.log(editing);
+
     const time1 = new Date().getTime();
-    const resultAction = await dispatch(addMaterial(formData));
+    const resultAction = await dispatch(editMaterial(formData));
     const time2 = new Date().getTime();
 
-    if (addMaterial.fulfilled.match(resultAction)) {
+    /* if (editMaterial.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
-        case 'materialAdded':
+        case 'materialEdited':
           setTimeout(() => {
             dispatch(
               showSnackbar({
@@ -173,10 +244,10 @@ const AddMaterial = () => {
       }
     } else {
       dispatch(setError(t('global.expiredSession')));
-    }
+    } */
 
     setTimeout(() => {
-      handleClose();
+      handleExit();
       setTimeout(() => {
         setLoading(false);
       }, 300);
@@ -214,6 +285,11 @@ const AddMaterial = () => {
               e.name === event.target.files[i].name &&
               e.size === event.target.files[i].size &&
               e.lastModified === event.target.files[i].lastModified
+          ) === -1 &&
+          oldFiles.findIndex(
+            (e) =>
+              e.name === event.target.files[i].name &&
+              e.size === event.target.files[i].size
           ) === -1
         )
           dt.items.add(event.target.files[i]);
@@ -236,6 +312,10 @@ const AddMaterial = () => {
     setFiles(dt.files);
   };
 
+  const deleteOldFileHandler = (id) => {
+    setOldFiles((prevState) => prevState.filter((item) => item.id !== id));
+  };
+
   const handleOpen = () => setOpen(true);
 
   const handleClose = () => {
@@ -252,6 +332,11 @@ const AddMaterial = () => {
       descriptionReset();
       setFiles([]);
     }, 300);
+  };
+
+  const handleExit = () => {
+    onClose();
+    handleClose();
   };
 
   const body = (
@@ -322,28 +407,34 @@ const AddMaterial = () => {
         <Box>
           <List sx={{ py: 0 }}>
             <TransitionGroup>
-              {Array.from(files).map((item, index) => (
-                <Collapse key={item.name + item.size}>
-                  <ListItem
-                    secondaryAction={
-                      <IconButton
-                        tooltip={t('global.delete')}
-                        edge="end"
-                        Icon={DeleteIcon}
-                        defaultSize={26}
-                        onClick={deleteFileHandler.bind(null, +index)}
-                      />
-                    }
-                  >
-                    <ListItemAvatar>
-                      <Avatar sx={{ bgcolor: 'primary.dark' }}>
-                        <FilePresentIcon sx={{ color: 'primary.light' }} />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary={item.name} />
-                  </ListItem>
-                </Collapse>
-              ))}
+              {Array.from(files)
+                .concat(oldFiles)
+                .map((item, index) => (
+                  <Collapse key={item.name + item.size}>
+                    <ListItem
+                      secondaryAction={
+                        <IconButton
+                          tooltip={t('global.delete')}
+                          edge="end"
+                          Icon={DeleteIcon}
+                          defaultSize={26}
+                          onClick={
+                            index < Object.keys(files).length
+                              ? deleteFileHandler.bind(null, +index)
+                              : deleteOldFileHandler.bind(null, item.id)
+                          }
+                        />
+                      }
+                    >
+                      <ListItemAvatar>
+                        <Avatar sx={{ bgcolor: 'primary.dark' }}>
+                          <FilePresentIcon sx={{ color: 'primary.light' }} />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary={item.name} />
+                    </ListItem>
+                  </Collapse>
+                ))}
             </TransitionGroup>
           </List>
         </Box>
@@ -362,23 +453,18 @@ const AddMaterial = () => {
 
   const buttons = (
     <>
-      <Cancel onClick={handleClose} disabled={loading} />
-      <Add onClick={handleAdd} loading={loading} />
+      <Cancel onClick={handleExit} disabled={loading} />
+      <Delete /* onClick={handleEdit} */ loading={loading} />
+      <Edit onClick={handleEdit} loading={loading} />
     </>
   );
 
   return (
     <>
-      <IconButton
-        tooltip={t('global.add')}
-        onClick={handleOpen}
-        open={open}
-        Icon={AddIcon}
-      />
       <Dialog
         open={open}
-        handleClose={handleClose}
-        title={t('materials.addMaterial')}
+        handleClose={handleExit}
+        title={t('materials.editMaterial')}
         body={body}
         buttons={buttons}
       />
@@ -386,4 +472,4 @@ const AddMaterial = () => {
   );
 };
 
-export default AddMaterial;
+export default EditMaterial;

@@ -19,7 +19,7 @@ export const Add = ({ onClick, loading }) => {
   );
 };
 
-export const Delete = ({ onClick, loading }) => {
+export const Delete = ({ onClick, loading, disabled }) => {
   const { t } = useTranslation();
 
   return (
@@ -29,6 +29,7 @@ export const Delete = ({ onClick, loading }) => {
       sx={{ filter: 'brightness(110%)' }}
       onClick={onClick}
       loading={loading}
+      disabled={disabled}
     >
       {t('global.delete')}
     </LoadingButton>

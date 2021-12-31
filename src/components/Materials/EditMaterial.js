@@ -469,7 +469,7 @@ const EditMaterial = ({ editing, onClose }) => {
   const buttons = (
     <>
       <Cancel onClick={handleClose} disabled={loading} />
-      <Delete onClick={handleOpenDelete} loading={loading} />
+      <Delete onClick={handleOpenDelete} disabled={loading} />
       <Edit onClick={handleEdit} loading={loading} />
     </>
   );

@@ -3,12 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Box,
+  Tab,
+  Tabs,
   Stack,
-  FormControl,
+  Radio,
   FormLabel,
   RadioGroup,
+  FormControl,
   FormControlLabel,
-  Radio,
 } from '@mui/material';
 
 import Time from '../UI/Inputs/Time';
@@ -18,13 +20,28 @@ import addPlan from '../../store/plan/addPlan';
 import { setError } from '../../store/user-slice';
 import FilledAlert from '../UI/Alerts/FilledAlert';
 import Autocomplete from '../UI/Inputs/Autocomplete';
+import Input100Width from '../UI/Inputs/Input100Width';
 import { useAlert, wait } from '../../hooks/use-alert';
 import { Add, Cancel } from '../UI/Buttons/FormButtons';
 import { showSnackbar } from '../../store/palette-slice';
 
+function TabPanel({ children, value, index, ...other }) {
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`tabpanel-${index}`}
+      {...other}
+    >
+      {value === index && children}
+    </div>
+  );
+}
+
 const AddItem = ({ open, onClose, number }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [tab, setTab] = useState(0);
   const [loading, setLoading] = useState(false);
   const [frequency, setFrequency] = useState('0');
   const [typesLabel, setTypesLabel] = useState([]);
@@ -43,6 +60,15 @@ const AddItem = ({ open, onClose, number }) => {
     setErrorAlert,
     closeAlert,
   } = useAlert();
+
+  const {
+    value: name,
+    isValid: nameIsValid,
+    hasError: nameHasError,
+    valueChangeHandler: nameChangeHandler,
+    inputTouchHandler: nameTouchHandler,
+    reset: nameReset,
+  } = useInput((value) => value.trim());
 
   const {
     value: subjectName,
@@ -84,19 +110,26 @@ const AddItem = ({ open, onClose, number }) => {
     value: null,
   });
 
-  const formIsValid =
+  const subjectFormIsValid =
     subjectNameIsValid &&
     subjectTypeIsValid &&
     startTimeIsValid &&
     endTimeIsValid;
 
+  const otherFormIsValid = nameIsValid && startTimeIsValid && endTimeIsValid;
+
   const handleAdd = async () => {
+    nameTouchHandler();
     subjectNameTouchHandler();
     subjectTypeTouchHandler();
     startTimeTouchHandler();
     endTimeTouchHandler();
 
-    if (!formIsValid) return;
+    if (tab === 0) {
+      if (!subjectFormIsValid) return;
+    } else {
+      if (!otherFormIsValid) return;
+    }
 
     if (showAlert) {
       closeAlert();
@@ -143,10 +176,11 @@ const AddItem = ({ open, onClose, number }) => {
     const time1 = new Date().getTime();
     const resultAction = await dispatch(
       addPlan({
+        name: name.trim() ? name : null,
         day,
         startTime: start,
         endTime: end,
-        tstId: subjectType.id,
+        tstId: subjectType ? subjectType.id : null,
         repetition: +frequency,
       })
     );
@@ -174,12 +208,13 @@ const AddItem = ({ open, onClose, number }) => {
 
     setTimeout(() => {
       handleClose(null, {
-        id: resultAction.payload.id,
+        id: resultAction.payload.planElement.id,
+        name,
         day,
         startTime: start,
         endTime: end,
         repetition: +frequency,
-        teacherSubjectType: resultAction.payload.teacherSubjectType,
+        teacherSubjectType: resultAction.payload.planElement.teacherSubjectType,
       });
 
       setTimeout(() => {
@@ -214,39 +249,79 @@ const AddItem = ({ open, onClose, number }) => {
     }
 
     setTimeout(() => {
+      nameReset();
       subjectNameReset();
       subjectTypeReset();
+      setTypesLabel([]);
       startTimeReset();
       endTimeReset();
       setFrequency('0');
+      setTab(0);
     }, 300);
+  };
+
+  const handleChangeTab = (_, newValue) => {
+    nameReset();
+    subjectNameReset();
+    subjectTypeReset();
+    setTypesLabel([]);
+    setTab(newValue);
   };
 
   const body = (
     <>
       <Stack p={1} spacing={2}>
-        <Autocomplete
-          id="subjectName"
-          label={t('plan.subject')}
-          value={subjectName}
-          onChange={changeSubjectHandler}
-          onBlur={subjectNameTouchHandler}
-          error={subjectNameHasError}
-          helperText={subjectNameHasError && t('global.incorrectEntry')}
-          disabled={loading}
-          options={subjectsLabel}
-        />
-        <Autocomplete
-          id="subjectType"
-          label={t('plan.type')}
-          value={subjectType}
-          onChange={subjectTypeChangeHandler}
-          onBlur={subjectTypeTouchHandler}
-          error={subjectTypeHasError}
-          helperText={subjectTypeHasError && t('global.incorrectEntry')}
-          disabled={loading}
-          options={typesLabel}
-        />
+        <Tabs
+          value={tab}
+          onChange={handleChangeTab}
+          textColor="secondary"
+          indicatorColor="secondary"
+          centered
+        >
+          <Tab label={t('plan.subject')} />
+          <Tab label={t('plan.other')} />
+        </Tabs>
+        <TabPanel value={tab} index={0}>
+          <Stack spacing={2}>
+            <Autocomplete
+              id="subjectName"
+              label={t('plan.subject')}
+              value={subjectName}
+              onChange={changeSubjectHandler}
+              onBlur={subjectNameTouchHandler}
+              error={subjectNameHasError}
+              helperText={subjectNameHasError && t('global.incorrectEntry')}
+              disabled={loading}
+              options={subjectsLabel}
+            />
+            <Autocomplete
+              id="subjectType"
+              label={t('plan.type')}
+              value={subjectType}
+              onChange={subjectTypeChangeHandler}
+              onBlur={subjectTypeTouchHandler}
+              error={subjectTypeHasError}
+              helperText={subjectTypeHasError && t('global.incorrectEntry')}
+              disabled={loading}
+              options={typesLabel}
+            />
+          </Stack>
+        </TabPanel>
+        <TabPanel value={tab} index={1}>
+          <Input100Width
+            id="name"
+            label={t('global.name')}
+            value={name}
+            onChange={nameChangeHandler}
+            onBlur={nameTouchHandler}
+            error={nameHasError}
+            helperText={
+              nameHasError &&
+              t('global.incorrectEntryChar', { min: 1, max: 100 })
+            }
+            disabled={loading}
+          />
+        </TabPanel>
         <Time
           id="startTime"
           label={t('plan.timeStart')}

@@ -42,7 +42,6 @@ const EditDay = ({ openDay, onClose }) => {
 
   const handleCloseAdd = (item) => {
     if (item && item !== 'backdropClick') {
-      console.log(item);
       let flag = false;
 
       for (const [index, element] of openDay.day.entries()) {
@@ -111,8 +110,6 @@ const EditDay = ({ openDay, onClose }) => {
             time += ' - ';
             time += item.endTime.slice(0, 5);
 
-            let subject = item.teacherSubjectType.subject.name;
-
             let repetition = '';
             if (item.repetition !== 0) {
               repetition += ' (';
@@ -121,13 +118,23 @@ const EditDay = ({ openDay, onClose }) => {
             }
 
             let teacher = '';
-            teacher += item.teacherSubjectType.teacher.academicTitle;
-            teacher += ' ';
-            teacher += item.teacherSubjectType.teacher.firstName;
-            teacher += ' ';
-            teacher += item.teacherSubjectType.teacher.lastName;
+            let subject = '';
+            let type = '';
+            let name = '';
 
-            let type = item.teacherSubjectType.type.name;
+            if (item.teacherSubjectType) {
+              subject += item.teacherSubjectType.subject.name;
+              teacher += item.teacherSubjectType.teacher.academicTitle;
+              teacher += ' ';
+              teacher += item.teacherSubjectType.teacher.firstName;
+              teacher += ' ';
+              teacher += item.teacherSubjectType.teacher.lastName;
+              type += item.teacherSubjectType.type.name;
+            }
+
+            if (item.name) {
+              name += item.name;
+            }
 
             return (
               <Collapse key={idx}>
@@ -137,7 +144,8 @@ const EditDay = ({ openDay, onClose }) => {
                   alignItems="center"
                   pl={{ xs: 0, sm: 1.5 }}
                   spacing={{ xs: 0.5, md: 2 }}
-                  py={0.5}
+                  pt={0.5}
+                  pb={1}
                 >
                   <Box mt={1} sx={{ wordBreak: 'normal' }}>
                     <Typography variant="body1" sx={{ display: 'inline' }}>
@@ -148,6 +156,9 @@ const EditDay = ({ openDay, onClose }) => {
                     </Typography>
                     <Typography variant="body1" color="text.secondary">
                       {subject}
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                      {name}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       {teacher}

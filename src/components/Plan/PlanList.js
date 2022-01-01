@@ -87,16 +87,24 @@ const PlanList = ({ planList }) => {
                     repetition += ')';
                   }
 
-                  let subject = item.teacherSubjectType.subject.name;
-
                   let teacher = '';
-                  teacher += item.teacherSubjectType.teacher.academicTitle;
-                  teacher += ' ';
-                  teacher += item.teacherSubjectType.teacher.firstName;
-                  teacher += ' ';
-                  teacher += item.teacherSubjectType.teacher.lastName;
+                  let subject = '';
+                  let type = '';
+                  let name = '';
 
-                  let type = item.teacherSubjectType.type.name;
+                  if (item.teacherSubjectType) {
+                    subject += item.teacherSubjectType.subject.name;
+                    teacher += item.teacherSubjectType.teacher.academicTitle;
+                    teacher += ' ';
+                    teacher += item.teacherSubjectType.teacher.firstName;
+                    teacher += ' ';
+                    teacher += item.teacherSubjectType.teacher.lastName;
+                    type += item.teacherSubjectType.type.name;
+                  }
+
+                  if (item.name) {
+                    name += item.name;
+                  }
 
                   return (
                     <Collapse key={idx}>
@@ -110,6 +118,9 @@ const PlanList = ({ planList }) => {
                         <Box pl={1}>
                           <Typography variant="body1" color="text.secondary">
                             {subject}
+                          </Typography>
+                          <Typography variant="body1" color="text.secondary">
+                            {name}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
                             {teacher}

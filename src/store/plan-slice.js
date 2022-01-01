@@ -25,48 +25,17 @@ const planSlice = createSlice({
       state.firstLoading = false;
     },
     [addPlan.fulfilled]: (state, action) => {
-      const {
-        id,
-        day,
-        startTime,
-        endTime,
-        repetition,
-        teacherSubjectType,
-        statusCode,
-      } = action.payload;
-
+      const { planElement, statusCode } = action.payload;
       if (statusCode !== 200) return;
 
-      state.plan.push({
-        id,
-        day,
-        startTime,
-        endTime,
-        teacherSubjectType,
-        repetition,
-      });
+      state.plan.push(planElement);
     },
     [editPlan.fulfilled]: (state, action) => {
-      const {
-        id,
-        day,
-        startTime,
-        endTime,
-        repetition,
-        teacherSubjectType,
-        statusCode,
-      } = action.payload;
+      const { planElement, statusCode } = action.payload;
       if (statusCode !== 200) return;
 
-      const index = state.plan.findIndex((item) => item.id === id);
-      state.plan[index] = {
-        id,
-        day,
-        startTime,
-        endTime,
-        teacherSubjectType,
-        repetition,
-      };
+      const index = state.plan.findIndex((item) => item.id === planElement.id);
+      state.plan[index] = planElement;
     },
     [deletePlan.fulfilled]: (state, action) => {
       const { id, statusCode } = action.payload;

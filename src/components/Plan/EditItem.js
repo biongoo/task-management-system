@@ -3,12 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Box,
+  Tab,
+  Tabs,
   Stack,
-  FormControl,
+  Radio,
   FormLabel,
   RadioGroup,
+  FormControl,
   FormControlLabel,
-  Radio,
 } from '@mui/material';
 
 import Time from '../UI/Inputs/Time';
@@ -18,13 +20,28 @@ import editPlan from '../../store/plan/editPlan';
 import { setError } from '../../store/user-slice';
 import FilledAlert from '../UI/Alerts/FilledAlert';
 import Autocomplete from '../UI/Inputs/Autocomplete';
+import Input100Width from '../UI/Inputs/Input100Width';
 import { useAlert, wait } from '../../hooks/use-alert';
 import { Edit, Cancel } from '../UI/Buttons/FormButtons';
 import { showSnackbar } from '../../store/palette-slice';
 
+function TabPanel({ children, value, index, ...other }) {
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`tabpanel-${index}`}
+      {...other}
+    >
+      {value === index && children}
+    </div>
+  );
+}
+
 const AddItem = ({ editing, onClose }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [tab, setTab] = useState(0);
   const [loading, setLoading] = useState(false);
   const [frequency, setFrequency] = useState('0');
   const [typesLabel, setTypesLabel] = useState([]);
@@ -45,6 +62,15 @@ const AddItem = ({ editing, onClose }) => {
     setErrorAlert,
     closeAlert,
   } = useAlert();
+
+  const {
+    value: name,
+    isValid: nameIsValid,
+    hasError: nameHasError,
+    valueChangeHandler: nameChangeHandler,
+    inputTouchHandler: nameTouchHandler,
+    reset: nameReset,
+  } = useInput((value) => value.trim());
 
   const {
     value: subjectName,
@@ -86,29 +112,47 @@ const AddItem = ({ editing, onClose }) => {
     value: null,
   });
 
+  console.log(editing);
+
   useEffect(() => {
-    if (editing && editing.id > 0) {
-      const subjectNameTmp = {
-        target: {
-          value: {
-            label: editing.teacherSubjectType.subject.name,
-            id: editing.teacherSubjectType.subject.id,
+    if (editing) {
+      if (editing.teacherSubjectType) {
+        const subjectNameTmp = {
+          target: {
+            value: {
+              label: editing.teacherSubjectType.subject.name,
+              id: editing.teacherSubjectType.subject.id,
+            },
           },
-        },
-      };
+        };
 
-      const { teacherSubjectTypes } = subjects.find(
-        (item) => item.id === editing.teacherSubjectType.subject.id
-      );
+        const { teacherSubjectTypes } = subjects.find(
+          (item) => item.id === editing.teacherSubjectType.subject.id
+        );
 
-      const subjectTypeTmp = {
-        target: {
-          value: {
-            label: `${editing.teacherSubjectType.type.name} - ${editing.teacherSubjectType.teacher.academicTitle} ${editing.teacherSubjectType.teacher.firstName} ${editing.teacherSubjectType.teacher.lastName}`,
-            id: editing.teacherSubjectType.id,
+        const subjectTypeTmp = {
+          target: {
+            value: {
+              label: `${editing.teacherSubjectType.type.name} - ${editing.teacherSubjectType.teacher.academicTitle} ${editing.teacherSubjectType.teacher.firstName} ${editing.teacherSubjectType.teacher.lastName}`,
+              id: editing.teacherSubjectType.id,
+            },
           },
-        },
-      };
+        };
+
+        subjectTypeChangeHandler(subjectTypeTmp);
+        subjectNameChangeHandler(subjectNameTmp);
+        setTypesLabel(
+          teacherSubjectTypes.map((tst) => ({
+            label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
+            id: tst.id,
+          }))
+        );
+      }
+
+      if (editing.name) {
+        nameChangeHandler({ target: { value: editing.name } });
+        setTab(1);
+      }
 
       const splitedST = editing.startTime.split(':');
       const splitedET = editing.endTime.split(':');
@@ -124,14 +168,6 @@ const AddItem = ({ editing, onClose }) => {
       const startTimeTmp = { target: { value: st } };
       const endTimeTmp = { target: { value: et } };
 
-      subjectNameChangeHandler(subjectNameTmp);
-      setTypesLabel(
-        teacherSubjectTypes.map((tst) => ({
-          label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
-          id: tst.id,
-        }))
-      );
-      subjectTypeChangeHandler(subjectTypeTmp);
       startTimeChangeHandler(startTimeTmp);
       endTimeChangeHandler(endTimeTmp);
       setFrequency(`${editing.repetition}`);
@@ -139,25 +175,33 @@ const AddItem = ({ editing, onClose }) => {
   }, [
     editing,
     subjects,
+    nameChangeHandler,
     subjectNameChangeHandler,
     subjectTypeChangeHandler,
     startTimeChangeHandler,
     endTimeChangeHandler,
   ]);
 
-  const formIsValid =
+  const subjectFormIsValid =
     subjectNameIsValid &&
     subjectTypeIsValid &&
     startTimeIsValid &&
     endTimeIsValid;
 
+  const otherFormIsValid = nameIsValid && startTimeIsValid && endTimeIsValid;
+
   const handleEdit = async () => {
+    nameTouchHandler();
     subjectNameTouchHandler();
     subjectTypeTouchHandler();
     startTimeTouchHandler();
     endTimeTouchHandler();
 
-    if (!formIsValid) return;
+    if (tab === 0) {
+      if (!subjectFormIsValid) return;
+    } else {
+      if (!otherFormIsValid) return;
+    }
 
     if (showAlert) {
       closeAlert();
@@ -204,10 +248,11 @@ const AddItem = ({ editing, onClose }) => {
     const resultAction = await dispatch(
       editPlan({
         id: editing.id,
+        name: name.trim() ? name : null,
         day: editing.day,
         startTime: start,
         endTime: end,
-        tstId: subjectType.id,
+        tstId: subjectType ? subjectType.id : null,
         repetition: +frequency,
       })
     );
@@ -235,12 +280,13 @@ const AddItem = ({ editing, onClose }) => {
 
     setTimeout(() => {
       handleClose(null, {
-        id: resultAction.payload.id,
+        id: editing.id,
+        name,
         day: editing.day,
         startTime: start,
         endTime: end,
         repetition: +frequency,
-        teacherSubjectType: resultAction.payload.teacherSubjectType,
+        teacherSubjectType: resultAction.payload.planElement.teacherSubjectType,
       });
 
       setTimeout(() => {
@@ -275,39 +321,116 @@ const AddItem = ({ editing, onClose }) => {
     }
 
     setTimeout(() => {
+      nameReset();
       subjectNameReset();
       subjectTypeReset();
       startTimeReset();
       endTimeReset();
       setFrequency('0');
+      setTab(0);
     }, 300);
+  };
+
+  const handleChangeTab = (_, newValue) => {
+    if (editing.name) {
+      nameChangeHandler({ target: { value: editing.name } });
+      subjectNameReset();
+      subjectTypeReset();
+      setTypesLabel([]);
+    }
+
+    if (editing.teacherSubjectType) {
+      nameReset();
+
+      const subjectNameTmp = {
+        target: {
+          value: {
+            label: editing.teacherSubjectType.subject.name,
+            id: editing.teacherSubjectType.subject.id,
+          },
+        },
+      };
+
+      const { teacherSubjectTypes } = subjects.find(
+        (item) => item.id === editing.teacherSubjectType.subject.id
+      );
+
+      const subjectTypeTmp = {
+        target: {
+          value: {
+            label: `${editing.teacherSubjectType.type.name} - ${editing.teacherSubjectType.teacher.academicTitle} ${editing.teacherSubjectType.teacher.firstName} ${editing.teacherSubjectType.teacher.lastName}`,
+            id: editing.teacherSubjectType.id,
+          },
+        },
+      };
+
+      subjectTypeChangeHandler(subjectTypeTmp);
+      subjectNameChangeHandler(subjectNameTmp);
+      setTypesLabel(
+        teacherSubjectTypes.map((tst) => ({
+          label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
+          id: tst.id,
+        }))
+      );
+    }
+
+    setTab(newValue);
   };
 
   const body = (
     <>
       <Stack p={1} spacing={2}>
-        <Autocomplete
-          id="subjectName"
-          label={t('plan.subject')}
-          value={subjectName}
-          onChange={changeSubjectHandler}
-          onBlur={subjectNameTouchHandler}
-          error={subjectNameHasError}
-          helperText={subjectNameHasError && t('global.incorrectEntry')}
-          disabled={loading}
-          options={subjectsLabel}
-        />
-        <Autocomplete
-          id="subjectType"
-          label={t('plan.type')}
-          value={subjectType}
-          onChange={subjectTypeChangeHandler}
-          onBlur={subjectTypeTouchHandler}
-          error={subjectTypeHasError}
-          helperText={subjectTypeHasError && t('global.incorrectEntry')}
-          disabled={loading}
-          options={typesLabel}
-        />
+        <Tabs
+          value={tab}
+          onChange={handleChangeTab}
+          textColor="secondary"
+          indicatorColor="secondary"
+          centered
+        >
+          <Tab label={t('plan.subject')} />
+          <Tab label={t('plan.other')} />
+        </Tabs>
+        <TabPanel value={tab} index={0}>
+          <Stack spacing={2}>
+            <Autocomplete
+              id="subjectName"
+              label={t('plan.subject')}
+              value={subjectName}
+              onChange={changeSubjectHandler}
+              onBlur={subjectNameTouchHandler}
+              error={subjectNameHasError}
+              helperText={subjectNameHasError && t('global.incorrectEntry')}
+              disabled={loading}
+              options={subjectsLabel}
+            />
+            <Autocomplete
+              id="subjectType"
+              label={t('plan.type')}
+              value={subjectType}
+              onChange={subjectTypeChangeHandler}
+              onBlur={subjectTypeTouchHandler}
+              error={subjectTypeHasError}
+              helperText={subjectTypeHasError && t('global.incorrectEntry')}
+              disabled={loading}
+              options={typesLabel}
+            />
+          </Stack>
+        </TabPanel>
+        <TabPanel value={tab} index={1}>
+          <Input100Width
+            id="name"
+            label={t('global.name')}
+            value={name}
+            onChange={nameChangeHandler}
+            onBlur={nameTouchHandler}
+            error={nameHasError}
+            helperText={
+              nameHasError &&
+              t('global.incorrectEntryChar', { min: 1, max: 100 })
+            }
+            disabled={loading}
+          />
+        </TabPanel>
         <Time
           id="startTime"
           label={t('plan.timeStart')}

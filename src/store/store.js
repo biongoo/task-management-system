@@ -7,6 +7,7 @@ import paletteSlice from './palette-slice';
 import subjectsSlice from './subjects-slice';
 import teachersSlice from './teachers-slice';
 import materialsSlice from './materials-slice';
+import homeworkSlice from './homework-slice';
 
 const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ const store = configureStore({
     subjects: subjectsSlice,
     teachers: teachersSlice,
     materials: materialsSlice,
+    homework: homeworkSlice,
   },
 });
 

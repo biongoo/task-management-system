@@ -7,19 +7,22 @@ import { TransitionGroup } from 'react-transition-group';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
 import {
   Box,
-  Stack,
   List,
-  ListItem,
-  ListItemAvatar,
+  Stack,
   Avatar,
-  ListItemText,
+  ListItem,
+  Checkbox,
   Collapse,
+  ListItemText,
+  ListItemAvatar,
+  FormControlLabel,
 } from '@mui/material';
 
+import Select from '../UI/Inputs/Select';
 import Dialog from '../UI/Modals/Dialog';
-import DateInput from '../UI/Inputs/Date';
 import useInput from '../../hooks/use-input';
 import { setError } from '../../store/user-slice';
+import DateTimeInput from '../UI/Inputs/DateTime';
 import IconButton from '../UI/Buttons/IconButton';
 import Attachment from '../UI/Buttons/Attachment';
 import FilledAlert from '../UI/Alerts/FilledAlert';
@@ -28,21 +31,17 @@ import { useAlert, wait } from '../../hooks/use-alert';
 import Input100Width from '../UI/Inputs/Input100Width';
 import { Add, Cancel } from '../UI/Buttons/FormButtons';
 import { showSnackbar } from '../../store/palette-slice';
-import addMaterial from '../../store/materials/addMaterial';
+import addHomework from '../../store/homework/addHomework';
 
-const AddMaterial = () => {
+const AddHomework = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [files, setFiles] = useState([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isMarked, setIsMarked] = useState(true);
   const [typesLabel, setTypesLabel] = useState([]);
-
-  const subjects = useSelector((state) => state.subjects.subjects);
-  const subjectsLabel = subjects.map((subject) => ({
-    label: subject.name,
-    id: subject.id,
-  }));
+  const [notifications, setNotifications] = useState([0]);
 
   const {
     showAlert,
@@ -52,6 +51,23 @@ const AddMaterial = () => {
     setErrorAlert,
     closeAlert,
   } = useAlert();
+
+  const names = [
+    t('global.notification1'),
+    t('global.notification2'),
+    t('global.notification3'),
+    t('global.notification4'),
+    t('global.notification5'),
+    t('global.notification6'),
+    t('global.notification7'),
+    t('global.notification8'),
+  ];
+
+  const subjects = useSelector((state) => state.subjects.subjects);
+  const subjectsLabel = subjects.map((subject) => ({
+    label: subject.name,
+    id: subject.id,
+  }));
 
   const {
     value: name,
@@ -88,7 +104,18 @@ const AddMaterial = () => {
     inputTouchHandler: dateTouchHandler,
     reset: dateReset,
   } = useInput((value) => value instanceof Date && !isNaN(value), {
-    value: new Date(),
+    value: null,
+  });
+
+  const {
+    value: deadline,
+    isValid: deadlineIsValid,
+    hasError: deadlineHasError,
+    valueChangeHandler: deadlineChangeHandler,
+    inputTouchHandler: deadlineTouchHandler,
+    reset: deadlineReset,
+  } = useInput((value) => value instanceof Date && !isNaN(value), {
+    value: null,
   });
 
   const {
@@ -100,19 +127,50 @@ const AddMaterial = () => {
     reset: descriptionReset,
   } = useInput((value) => value.trim().length < 2048);
 
+  const {
+    value: estimatedHours,
+    isValid: estimatedHoursIsValid,
+    hasError: estimatedHoursHasError,
+    valueChangeHandler: estimatedHoursChangeHandler,
+    inputTouchHandler: estimatedHoursTouchHandler,
+    reset: estimatedHoursReset,
+  } = useInput(
+    (value) => typeof +value === 'number' && +value <= 500 && +value >= 0
+  );
+
+  const {
+    value: estimatedMinutes,
+    isValid: estimatedMinutesIsValid,
+    hasError: estimatedMinutesHasError,
+    valueChangeHandler: estimatedMinutesChangeHandler,
+    inputTouchHandler: estimatedMinutesTouchHandler,
+    reset: estimatedMinutesReset,
+  } = useInput(
+    (value) => typeof +value === 'number' && +value <= 59 && +value >= 0
+  );
+
   const formIsValid =
     nameIsValid &&
     subjectNameIsValid &&
     subjectTypeIsValid &&
     dateIsValid &&
-    descriptionIsValid;
+    deadlineIsValid &&
+    descriptionIsValid &&
+    estimatedHoursIsValid &&
+    estimatedMinutesIsValid;
 
   const handleAdd = async () => {
+    let filesSize = 0;
+    const formData = new FormData();
+
     nameTouchHandler();
     subjectNameTouchHandler();
     subjectTypeTouchHandler();
     dateTouchHandler();
+    deadlineTouchHandler();
     descriptionTouchHandler();
+    estimatedHoursTouchHandler();
+    estimatedMinutesTouchHandler();
 
     if (!formIsValid) return;
 
@@ -121,28 +179,30 @@ const AddMaterial = () => {
       await wait(250);
     }
 
+    if ((deadline - date) / 1000 / 60 < 1) {
+      setErrorAlert('global.error', t('global.incorrectDateOrDeadline'));
+      return;
+    }
+
     setLoading(true);
 
-    const formData = new FormData();
+    const estimatedTime = estimatedHours * 60 + estimatedMinutes;
 
     formData.append('name', name);
     formData.append('description', description);
-    formData.append('day', date.getDate());
-    formData.append('month', date.getMonth() + 1);
-    formData.append('year', date.getFullYear());
+    formData.append('date', +date);
+    formData.append('deadline', +deadline);
+    formData.append('estimatedTime', estimatedTime);
+    formData.append('isMarked', isMarked);
     formData.append('tstId', subjectType.id);
 
-    let filesSize = 0;
+    for (const notification of notifications) {
+      formData.append('notifications', notification);
+    }
 
     for (const file of files) {
       formData.append('files', file, file.name);
       filesSize += file.size;
-    }
-
-    if (description.trim().length === 0 && filesSize === 0) {
-      setErrorAlert('global.error', t('materials.empty'));
-      setLoading(false);
-      return;
     }
 
     if (filesSize > 40000000) {
@@ -152,12 +212,12 @@ const AddMaterial = () => {
     }
 
     const time1 = new Date().getTime();
-    const resultAction = await dispatch(addMaterial(formData));
+    const resultAction = await dispatch(addHomework(formData));
     const time2 = new Date().getTime();
 
-    if (addMaterial.fulfilled.match(resultAction)) {
+    if (addHomework.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
-        case 'materialAdded':
+        case 'homeworkAdded':
           setTimeout(() => {
             dispatch(
               showSnackbar({
@@ -247,13 +307,19 @@ const AddMaterial = () => {
 
     setTimeout(() => {
       closeAlert();
+
       nameReset();
       subjectNameReset();
       subjectTypeReset();
       dateReset();
+      deadlineReset();
       descriptionReset();
+      estimatedHoursReset();
+      estimatedMinutesReset();
+      setIsMarked(true);
       setFiles([]);
       setTypesLabel([]);
+      setNotifications([0]);
     }, 300);
   };
 
@@ -274,7 +340,7 @@ const AddMaterial = () => {
         />
         <Autocomplete
           id="subjectName"
-          label={t('plan.subject')}
+          label={t('global.subject')}
           value={subjectName}
           onChange={changeSubjectHandler}
           onBlur={subjectNameTouchHandler}
@@ -285,7 +351,7 @@ const AddMaterial = () => {
         />
         <Autocomplete
           id="subjectType"
-          label={t('plan.type')}
+          label={t('global.type')}
           value={subjectType}
           onChange={subjectTypeChangeHandler}
           onBlur={subjectTypeTouchHandler}
@@ -294,19 +360,43 @@ const AddMaterial = () => {
           disabled={loading}
           options={typesLabel}
         />
-        <DateInput
-          id="date"
-          label={t('materials.date')}
-          value={date}
-          onChange={dateChangeHandler}
-          onBlur={dateTouchHandler}
-          error={dateHasError}
-          helperText={dateHasError && t('global.incorrectEntry')}
-          disabled={loading}
-        />
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          justifyContent="space-between"
+          alignItems="center"
+          spacing={2}
+        >
+          <Box sx={{ width: '100%' }}>
+            <DateTimeInput
+              id="date"
+              label={t('global.date')}
+              value={date}
+              onChange={dateChangeHandler}
+              onBlur={dateTouchHandler}
+              error={dateHasError}
+              helperText={dateHasError && t('global.incorrectEntry')}
+              disabled={loading}
+            />
+          </Box>
+          <Box sx={{ width: '100%' }}>
+            <DateTimeInput
+              id="deadline"
+              label={t('global.deadline')}
+              value={deadline}
+              onChange={(e) => {
+                deadlineChangeHandler(e);
+                setNotifications([0]);
+              }}
+              onBlur={deadlineTouchHandler}
+              error={deadlineHasError}
+              helperText={deadlineHasError && t('global.incorrectEntry')}
+              disabled={loading}
+            />
+          </Box>
+        </Stack>
         <Input100Width
           id="description"
-          label={t('materials.description')}
+          label={t('global.description')}
           value={description}
           onChange={descriptionChangeHandler}
           onBlur={descriptionTouchHandler}
@@ -318,6 +408,90 @@ const AddMaterial = () => {
           multiline
           maxRows={12}
           disabled={loading}
+        />
+
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          justifyContent="space-between"
+          alignItems="center"
+          spacing={2}
+        >
+          <Box sx={{ width: '100%' }}>
+            <Input100Width
+              id="estimatedHours"
+              type="number"
+              label={t('homework.estimatedHours')}
+              value={estimatedHours}
+              onKeyDown={(e) =>
+                (e.key === 'e' || e.key === '+' || e.key === '-') &&
+                e.preventDefault()
+              }
+              onChange={estimatedHoursChangeHandler}
+              onBlur={(e) => {
+                estimatedHoursTouchHandler(e);
+                const event = {
+                  target: {
+                    value:
+                      e.target.value === '' ? '' : Math.floor(e.target.value),
+                  },
+                };
+                estimatedHoursChangeHandler(event);
+              }}
+              error={estimatedHoursHasError}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              helperText={
+                estimatedHoursHasError &&
+                t('homework.incorrectNumber', { min: 0, max: 500 })
+              }
+              disabled={loading}
+            />
+          </Box>
+          <Box sx={{ width: '100%' }}>
+            <Input100Width
+              id="estimatedMinutes"
+              type="number"
+              label={t('homework.estimatedMinutes')}
+              value={estimatedMinutes}
+              onKeyDown={(e) =>
+                (e.key === 'e' || e.key === '+' || e.key === '-') &&
+                e.preventDefault()
+              }
+              onChange={estimatedMinutesChangeHandler}
+              onBlur={(e) => {
+                estimatedMinutesTouchHandler(e);
+                const event = {
+                  target: {
+                    value:
+                      e.target.value === '' ? '' : Math.floor(e.target.value),
+                  },
+                };
+                estimatedMinutesChangeHandler(event);
+              }}
+              error={estimatedMinutesHasError}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              helperText={
+                estimatedMinutesHasError &&
+                t('homework.incorrectNumber', { min: 0, max: 59 })
+              }
+              disabled={loading}
+            />
+          </Box>
+        </Stack>
+        <Select
+          id="notifications"
+          list={names}
+          label={t('global.notifications')}
+          value={notifications}
+          onChange={setNotifications}
+        />
+        <FormControlLabel
+          label={t('global.isMarked')}
+          control={<Checkbox checked={isMarked} color="secondary" />}
+          onChange={(event) => setIsMarked(event.target.checked)}
         />
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Attachment id="att" onChange={changeFilesHandler} />
@@ -381,7 +555,7 @@ const AddMaterial = () => {
       <Dialog
         open={open}
         handleClose={handleClose}
-        title={t('materials.addMaterial')}
+        title={t('homework.addHomework')}
         body={body}
         buttons={buttons}
       />
@@ -389,4 +563,4 @@ const AddMaterial = () => {
   );
 };
 
-export default AddMaterial;
+export default AddHomework;

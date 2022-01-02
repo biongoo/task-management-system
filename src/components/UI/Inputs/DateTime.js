@@ -4,9 +4,9 @@ import plLocale from 'date-fns/locale/pl';
 import enLocale from 'date-fns/locale/en-US';
 import { useTranslation } from 'react-i18next';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import DatePicker from '@mui/lab/DatePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import DateTimePicker from '@mui/lab/DateTimePicker';
 
 import Input100Width from './Input100Width';
 import darkTheme from '../../../theme/darkMode';
@@ -18,11 +18,11 @@ const localeMap = {
 };
 
 const maskMap = {
-  en: '__/__/____',
-  pl: '__.__.____',
+  en: '__/__/____ __:__  _M',
+  pl: '__.__.____ __:__',
 };
 
-const DateInput = ({
+const DateTimeInput = ({
   value,
   onChange,
   label,
@@ -63,14 +63,14 @@ const DateInput = ({
       locale={localeMap[actualLanguageId]}
     >
       <ThemeProvider theme={theme}>
-        <DatePicker
+        <DateTimePicker
           cancelText={t('global.cancel')}
           clearText={t('global.clear')}
-          leftArrowButtonText={t('global.previousMonth')}
-          rightArrowButtonText={t('global.nextMonth')}
+          leftArrowButtonText={t('global.previous')}
+          rightArrowButtonText={t('global.next')}
           okText={t('global.edit')}
           todayText={t('global.today')}
-          toolbarTitle={t('global.selectDate')}
+          toolbarTitle={t('global.selectDateTime')}
           value={value}
           mask={maskMap[actualLanguageId]}
           onOpen={() => setOpen(true)}
@@ -103,4 +103,4 @@ const DateInput = ({
   );
 };
 
-export default DateInput;
+export default DateTimeInput;

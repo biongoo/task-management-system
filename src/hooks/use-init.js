@@ -11,6 +11,7 @@ import getPlan from '../store/plan/getPlan';
 import getTypes from '../store/subjects/getTypes';
 import getTeachers from '../store/teachers/getTeachers';
 import getMaterials from '../store/materials/getMaterials';
+import getHomework from '../store/homework/getHomework';
 import getSubjectsUser from '../store/subjects/user/getSubjectsUser';
 
 const useInit = () => {
@@ -34,6 +35,7 @@ const useInit = () => {
           }
           dispatch(getPlan());
           dispatch(getMaterials());
+          dispatch(getHomework());
           break;
         case 'tokenNotValid':
         default:

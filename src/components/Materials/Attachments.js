@@ -34,31 +34,32 @@ const Attachments = ({ attachments, handleClose }) => {
     <Stack spacing={2}>
       {descAtach.description && (
         <Typography>
-          {t('materials.description')}: {descAtach.description}
+          {t('global.description')}: {descAtach.description}
         </Typography>
       )}
-      <List sx={{ py: 0 }}>
-        {descAtach.files.map((item, index) => (
-          <ListItem key={index}>
-            <ListItemAvatar>
-              <Avatar sx={{ bgcolor: 'primary.dark' }}>
-                <FilePresentIcon sx={{ color: 'primary.light' }} />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={
-                <Link
-                  href={`http://java.ts4ever.pl/materials/files/download/${item.id}`}
-                  color="inherit"
-                >
-                  {item.name}
-                </Link>
-              }
-            />
-          </ListItem>
-        ))}
-      </List>
-      {}
+      {descAtach.files.length > 0 && (
+        <List sx={{ py: 0 }}>
+          {descAtach.files.map((item, index) => (
+            <ListItem key={index}>
+              <ListItemAvatar>
+                <Avatar sx={{ bgcolor: 'primary.dark' }}>
+                  <FilePresentIcon sx={{ color: 'primary.light' }} />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={
+                  <Link
+                    href={`http://java.ts4ever.pl/files/download/${item.id}`}
+                    color="inherit"
+                  >
+                    {item.name}
+                  </Link>
+                }
+              />
+            </ListItem>
+          ))}
+        </List>
+      )}
     </Stack>
   );
 
@@ -66,7 +67,7 @@ const Attachments = ({ attachments, handleClose }) => {
     <Dialog
       open={open}
       handleClose={handleClose}
-      title={t('materials.attachments')}
+      title={t('global.attachments')}
       body={body}
     />
   );

@@ -25,7 +25,7 @@ function a11yProps(index) {
   };
 }
 
-const Tabs = ({ items, name }) => {
+const SubjectsTabs = ({ items, name }) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (_, newValue) => {
@@ -126,4 +126,4 @@ const Tabs = ({ items, name }) => {
   );
 };
 
-export default Tabs;
+export default SubjectsTabs;

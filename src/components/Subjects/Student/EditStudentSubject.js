@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useReducer, useEffect } from 'react';
 
-import Tabs from '../../UI/Tabs/Tabs';
 import useInput from '../../../hooks/use-input';
 import MainModal from '../../UI/Modals/MainModal';
 import { setError } from '../../../store/user-slice';
 import FilledAlert from '../../UI/Alerts/FilledAlert';
+import SubjectsTabs from '../../UI/Tabs/SubjectsTabs';
 import Autocomplete from '../../UI/Inputs/Autocomplete';
 import { useAlert, wait } from '../../../hooks/use-alert';
 import Input100Width from '../../UI/Inputs/Input100Width';
@@ -273,7 +273,7 @@ const EditSubject = ({ editing, onClose }) => {
         }
         disabled={loading}
       />
-      <Tabs items={items} name={t('subjects.group')} />
+      <SubjectsTabs items={items} name={t('subjects.group')} />
       <Box mt={1}>
         <FilledAlert
           show={showAlert}

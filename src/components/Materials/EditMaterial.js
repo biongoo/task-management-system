@@ -257,18 +257,21 @@ const EditMaterial = ({ editing, onClose }) => {
 
   const changeSubjectHandler = (subject) => {
     subjectNameChangeHandler(subject);
-
-    const { teacherSubjectTypes } = subjects.find(
-      (item) => item.id === subject.target.value.id
-    );
-
     subjectTypeReset();
-    setTypesLabel(
-      teacherSubjectTypes.map((tst) => ({
-        label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
-        id: tst.id,
-      }))
-    );
+
+    if (subject.target.value) {
+      const { teacherSubjectTypes } = subjects.find(
+        (item) => item.id === subject.target.value.id
+      );
+      setTypesLabel(
+        teacherSubjectTypes.map((tst) => ({
+          label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
+          id: tst.id,
+        }))
+      );
+    } else {
+      setTypesLabel([]);
+    }
   };
 
   const changeFilesHandler = (event) => {

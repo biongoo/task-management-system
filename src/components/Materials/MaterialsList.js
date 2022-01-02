@@ -26,8 +26,8 @@ const initAttachments = {
 
 const MaterialsList = ({ materials, search, loading }) => {
   const { t } = useTranslation();
-  const [expanded, setExpanded] = useState(false);
   const [editing, setEditing] = useState(null);
+  const [expanded, setExpanded] = useState(false);
   const [attachments, setAttachments] = useState(initAttachments);
   const paletteColor = useSelector((state) => state.palette.color);
 
@@ -106,7 +106,7 @@ const MaterialsList = ({ materials, search, loading }) => {
                             </Stack>
                             <Stack>
                               <IconButton
-                                tooltip={t('materials.attachments')}
+                                tooltip={t('global.attachments')}
                                 onClick={handleOpenAttachments.bind(null, {
                                   files: material.files,
                                   description: material.description,

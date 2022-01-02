@@ -164,7 +164,7 @@ const Login = () => {
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <FormControlLabel
           label={t('login.rememberMe')}
-          control={<Checkbox defaultChecked color="secondary" />}
+          control={<Checkbox checked={rememberPassword} color="secondary" />}
           onChange={(event) => setRememberPassword(event.target.checked)}
         />
 

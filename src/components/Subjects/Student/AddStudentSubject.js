@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next';
 import React, { useState, useReducer } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Tabs from '../../UI/Tabs/Tabs';
 import useInput from '../../../hooks/use-input';
 import MainModal from '../../UI/Modals/MainModal';
 import { setError } from '../../../store/user-slice';
 import IconButton from '../../UI/Buttons/IconButton';
+import SubjectsTabs from '../../UI/Tabs/SubjectsTabs';
 import FilledAlert from '../../UI/Alerts/FilledAlert';
 import Autocomplete from '../../UI/Inputs/Autocomplete';
 import { useAlert, wait } from '../../../hooks/use-alert';
@@ -246,7 +246,7 @@ const AddStudentSubject = () => {
         }
         disabled={loading}
       />
-      <Tabs items={items} name={t('subjects.group')} />
+      <SubjectsTabs items={items} name={t('subjects.group')} />
       <Box mt={1}>
         <FilledAlert
           show={showAlert}

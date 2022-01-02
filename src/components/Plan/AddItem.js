@@ -15,6 +15,7 @@ import {
 
 import Time from '../UI/Inputs/Time';
 import Dialog from '../UI/Modals/Dialog';
+import TabPanel from '../UI/Tabs/TabPanel';
 import useInput from '../../hooks/use-input';
 import addPlan from '../../store/plan/addPlan';
 import { setError } from '../../store/user-slice';
@@ -24,19 +25,6 @@ import Input100Width from '../UI/Inputs/Input100Width';
 import { useAlert, wait } from '../../hooks/use-alert';
 import { Add, Cancel } from '../UI/Buttons/FormButtons';
 import { showSnackbar } from '../../store/palette-slice';
-
-function TabPanel({ children, value, index, ...other }) {
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`tabpanel-${index}`}
-      {...other}
-    >
-      {value === index && children}
-    </div>
-  );
-}
 
 const AddItem = ({ open, onClose, number }) => {
   const { t } = useTranslation();
@@ -225,18 +213,21 @@ const AddItem = ({ open, onClose, number }) => {
 
   const changeSubjectHandler = (subject) => {
     subjectNameChangeHandler(subject);
-
-    const { teacherSubjectTypes } = subjects.find(
-      (item) => item.id === subject.target.value.id
-    );
-
     subjectTypeReset();
-    setTypesLabel(
-      teacherSubjectTypes.map((tst) => ({
-        label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
-        id: tst.id,
-      }))
-    );
+
+    if (subject.target.value) {
+      const { teacherSubjectTypes } = subjects.find(
+        (item) => item.id === subject.target.value.id
+      );
+      setTypesLabel(
+        teacherSubjectTypes.map((tst) => ({
+          label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
+          id: tst.id,
+        }))
+      );
+    } else {
+      setTypesLabel([]);
+    }
   };
 
   const handleClose = (_, item) => {

@@ -41,7 +41,7 @@ const AddHomework = () => {
   const [loading, setLoading] = useState(false);
   const [isMarked, setIsMarked] = useState(true);
   const [typesLabel, setTypesLabel] = useState([]);
-  const [notifications, setNotifications] = useState([0]);
+  const [notifications, setNotifications] = useState([]);
 
   const {
     showAlert,
@@ -51,17 +51,6 @@ const AddHomework = () => {
     setErrorAlert,
     closeAlert,
   } = useAlert();
-
-  const names = [
-    t('global.notification1'),
-    t('global.notification2'),
-    t('global.notification3'),
-    t('global.notification4'),
-    t('global.notification5'),
-    t('global.notification6'),
-    t('global.notification7'),
-    t('global.notification8'),
-  ];
 
   const subjects = useSelector((state) => state.subjects.subjects);
   const subjectsLabel = subjects.map((subject) => ({
@@ -148,6 +137,33 @@ const AddHomework = () => {
   } = useInput(
     (value) => typeof +value === 'number' && +value <= 59 && +value >= 0
   );
+
+  const names = [
+    t('global.notification1'),
+    t('global.notification2'),
+    t('global.notification3'),
+    t('global.notification4'),
+    t('global.notification5'),
+    t('global.notification6'),
+    t('global.notification7'),
+    t('global.notification8'),
+  ];
+
+  let namesTmp = [];
+  if (deadline instanceof Date && !isNaN(deadline)) {
+    const dateNow = new Date();
+    if (deadline - dateNow - 60 * 1000 > 0) namesTmp.push(names[0]);
+    if (deadline - dateNow - 30 * 60 * 1000 > 0) namesTmp.push(names[1]);
+    if (deadline - dateNow - 60 * 60 * 1000 > 0) namesTmp.push(names[2]);
+    if (deadline - dateNow - 6 * 60 * 60 * 1000 > 0) namesTmp.push(names[3]);
+    if (deadline - dateNow - 12 * 60 * 60 * 1000 > 0) namesTmp.push(names[4]);
+    if (deadline - dateNow - 24 * 60 * 60 * 1000 > 0) namesTmp.push(names[5]);
+    if (deadline - dateNow - 3 * 24 * 60 * 60 * 1000 > 0)
+      namesTmp.push(names[6]);
+    if (deadline - dateNow - 7 * 24 * 60 * 60 * 1000 > 0) {
+      namesTmp.push(names[7]);
+    }
+  }
 
   const formIsValid =
     nameIsValid &&
@@ -385,7 +401,15 @@ const AddHomework = () => {
               value={deadline}
               onChange={(e) => {
                 deadlineChangeHandler(e);
-                setNotifications([0]);
+                if (e.target.value instanceof Date && !isNaN(e.target.value)) {
+                  if (e.target.value - new Date() - 60 * 1000 > 0) {
+                    setNotifications([0]);
+                  } else {
+                    setNotifications([]);
+                  }
+                } else {
+                  setNotifications([]);
+                }
               }}
               onBlur={deadlineTouchHandler}
               error={deadlineHasError}
@@ -483,7 +507,7 @@ const AddHomework = () => {
         </Stack>
         <Select
           id="notifications"
-          list={names}
+          list={namesTmp}
           label={t('global.notifications')}
           value={notifications}
           onChange={setNotifications}

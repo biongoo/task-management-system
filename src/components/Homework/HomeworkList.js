@@ -72,8 +72,6 @@ const HomeworkList = ({ homework, search }) => {
     setEditing(null);
   }; */
 
-  console.log(homework);
-
   return (
     <>
       <TransitionGroup>

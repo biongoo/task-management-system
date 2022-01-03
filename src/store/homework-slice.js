@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import getHomework from './homework/getHomework';
 import addHomework from './homework/addHomework';
+import editHomework from './homework/editHomework';
+import deleteHomework from './homework/deleteHomework';
 
 const initialState = {
   homework: [],
@@ -28,22 +30,19 @@ const homeworkSlice = createSlice({
 
       state.homework.push(homework);
     },
-    /* [editType.fulfilled]: (state, action) => {
-      const { id, name, statusCode } = action.payload;
+    [editHomework.fulfilled]: (state, action) => {
+      const { statusCode, homework } = action.payload;
       if (statusCode !== 200) return;
 
-      const index = state.homework.findIndex((type) => type.id === id);
-      state.homework[index] = {
-        id,
-        name,
-      };
-    }, */
-    /* [deleteType.fulfilled]: (state, action) => {
+      const index = state.homework.findIndex((item) => item.id === homework.id);
+      state.homework[index] = homework;
+    },
+    [deleteHomework.fulfilled]: (state, action) => {
       const { id, statusCode } = action.payload;
       if (statusCode !== 200) return;
 
-      state.homework = state.homework.filter((type) => type.id !== id);
-    }, */
+      state.homework = state.homework.filter((item) => item.id !== id);
+    },
   },
 });
 

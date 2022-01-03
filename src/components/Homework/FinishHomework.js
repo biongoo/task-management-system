@@ -22,8 +22,6 @@ const FinishHomework = ({ finishing, onClose }) => {
     }
   }, [finishing]);
 
-  console.log(item);
-
   const handleFinish = async () => {
     setLoading(true);
 

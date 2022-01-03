@@ -34,8 +34,8 @@ import { showSnackbar } from '../../store/palette-slice';
 import addHomework from '../../store/homework/addHomework';
 
 const AddHomework = () => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { i18n, t } = useTranslation();
   const [files, setFiles] = useState([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -211,6 +211,7 @@ const AddHomework = () => {
     formData.append('estimatedTime', estimatedTime);
     formData.append('isMarked', isMarked);
     formData.append('tstId', subjectType.id);
+    formData.append('language', i18n.language);
 
     for (const notification of notifications) {
       formData.append('notifications', notification);

@@ -5,7 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Highlighter from 'react-highlight-words';
 import { Typography, Box, Stack } from '@mui/material';
 import { TransitionGroup } from 'react-transition-group';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
+import InfoIcon from '@mui/icons-material/Info';
 
 import Attachments from './Attachments';
 import EditMaterial from './EditMaterial';
@@ -106,7 +106,7 @@ const MaterialsList = ({ materials, search, loading }) => {
                             </Stack>
                             <Stack>
                               <IconButton
-                                tooltip={t('global.attachments')}
+                                tooltip={t('materials.info')}
                                 onClick={handleOpenAttachments.bind(null, {
                                   files: material.files,
                                   description: material.description,
@@ -116,9 +116,10 @@ const MaterialsList = ({ materials, search, loading }) => {
                                   attachments.description ===
                                     material.description
                                 }
-                                Icon={AttachFileIcon}
+                                Icon={InfoIcon}
                                 defaultSize={24}
                                 circleSize={34}
+                                placement="left"
                               />
                               <IconButton
                                 tooltip={t('global.edit')}
@@ -127,6 +128,7 @@ const MaterialsList = ({ materials, search, loading }) => {
                                 Icon={EditIcon}
                                 defaultSize={24}
                                 circleSize={34}
+                                placement="left"
                               />
                             </Stack>
                           </Stack>

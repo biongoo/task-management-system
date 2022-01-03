@@ -10,8 +10,10 @@ const IconButton = ({
   defaultSize,
   circleSize,
   edge,
+  placement,
 }) => {
   const size = defaultSize ? defaultSize : 28;
+  const placementPosition = placement ? placement : 'bottom';
 
   const body = (
     <MuiIconButton
@@ -43,7 +45,7 @@ const IconButton = ({
   return (
     <>
       {tooltip && (
-        <Tooltip title={tooltip} arrow>
+        <Tooltip title={tooltip} placement={placementPosition} arrow>
           {body}
         </Tooltip>
       )}

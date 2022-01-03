@@ -4,6 +4,7 @@ import getHomework from './homework/getHomework';
 import addHomework from './homework/addHomework';
 import editHomework from './homework/editHomework';
 import deleteHomework from './homework/deleteHomework';
+import finishHomework from './homework/finishHomework';
 
 const initialState = {
   homework: [],
@@ -42,6 +43,13 @@ const homeworkSlice = createSlice({
       if (statusCode !== 200) return;
 
       state.homework = state.homework.filter((item) => item.id !== id);
+    },
+    [finishHomework.fulfilled]: (state, action) => {
+      const { statusCode, homework } = action.payload;
+      if (statusCode !== 200) return;
+
+      const index = state.homework.findIndex((item) => item.id === homework.id);
+      state.homework[index] = homework;
     },
   },
 });

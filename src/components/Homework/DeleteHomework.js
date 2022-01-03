@@ -6,9 +6,9 @@ import Dialog from '../UI/Modals/Dialog';
 import { setError } from '../../store/user-slice';
 import { showSnackbar } from '../../store/palette-slice';
 import { Cancel, Delete } from '../UI/Buttons/FormButtons';
-import deleteMaterial from '../../store/materials/deleteMaterial';
+import deleteHomework from '../../store/homework/deleteHomework';
 
-const DeleteMaterial = ({ deleting, onBack, onExit }) => {
+const DeleteHomework = ({ deleting, onClose }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
@@ -19,12 +19,12 @@ const DeleteMaterial = ({ deleting, onBack, onExit }) => {
     setLoading(true);
 
     const time1 = new Date().getTime();
-    const resultAction = await dispatch(deleteMaterial({ id: deleting.id }));
+    const resultAction = await dispatch(deleteHomework({ id: deleting }));
     const time2 = new Date().getTime();
 
-    if (deleteMaterial.fulfilled.match(resultAction)) {
+    if (deleteHomework.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
-        case 'materialDeleted':
+        case 'homeworkDeleted':
           setTimeout(() => {
             dispatch(
               showSnackbar({
@@ -43,7 +43,7 @@ const DeleteMaterial = ({ deleting, onBack, onExit }) => {
     }
 
     setTimeout(() => {
-      onExit();
+      onClose();
       setTimeout(() => {
         setLoading(false);
       }, 300);
@@ -53,10 +53,10 @@ const DeleteMaterial = ({ deleting, onBack, onExit }) => {
   const handleClose = () => {
     if (loading) return;
 
-    onBack();
+    onClose();
   };
 
-  const body = t('materials.deleteMaterialBody');
+  const body = t('homework.deleteHomeworkBody');
 
   const buttons = (
     <>
@@ -69,11 +69,11 @@ const DeleteMaterial = ({ deleting, onBack, onExit }) => {
     <Dialog
       open={open}
       handleClose={handleClose}
-      title={t('materials.deleteMaterial')}
+      title={t('homework.deleteHomework')}
       body={body}
       buttons={buttons}
     />
   );
 };
 
-export default DeleteMaterial;
+export default DeleteHomework;

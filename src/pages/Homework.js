@@ -137,7 +137,7 @@ const Homework = () => {
         </Tabs>
         <Divider mb={3} />
 
-        <HomeworkList homework={homeworkCopy} search={search} />
+        <HomeworkList homework={homeworkCopy} search={search} tab={tab} />
 
         {!homeworkCopy.length && search && (
           <Box sx={{ textAlign: 'center' }}>

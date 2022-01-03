@@ -67,3 +67,17 @@ export const Cancel = ({ onClick, disabled }) => {
     </Button>
   );
 };
+
+export const CustomizeButton = ({ onClick, disabled, color, text }) => {
+  return (
+    <Button
+      variant="contained"
+      color={color}
+      sx={{ filter: 'brightness(110%)' }}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {text}
+    </Button>
+  );
+};

@@ -1,30 +1,41 @@
-import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect } from 'react';
 
 import Dialog from '../UI/Modals/Dialog';
 import { setError } from '../../store/user-slice';
 import { showSnackbar } from '../../store/palette-slice';
-import { Cancel, Delete } from '../UI/Buttons/FormButtons';
-import deleteMaterial from '../../store/materials/deleteMaterial';
+import finishHomework from '../../store/homework/finishHomework';
+import { Cancel, CustomizeButton } from '../UI/Buttons/FormButtons';
 
-const DeleteMaterial = ({ deleting, onBack, onExit }) => {
+const FinishHomework = ({ finishing, onClose }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const [item, setItem] = useState({ id: 0, name: '', isDone: false });
   const [loading, setLoading] = useState(false);
 
-  const open = !!deleting;
+  const open = !!finishing;
 
-  const handleDelete = async () => {
+  useEffect(() => {
+    if (finishing) {
+      setItem(finishing);
+    }
+  }, [finishing]);
+
+  console.log(item);
+
+  const handleFinish = async () => {
     setLoading(true);
 
     const time1 = new Date().getTime();
-    const resultAction = await dispatch(deleteMaterial({ id: deleting.id }));
+    const resultAction = await dispatch(
+      finishHomework({ id: item.id, isDone: !item.isDone })
+    );
     const time2 = new Date().getTime();
 
-    if (deleteMaterial.fulfilled.match(resultAction)) {
+    if (finishHomework.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
-        case 'materialDeleted':
+        case 'homeworkFinishedOrRestored':
           setTimeout(() => {
             dispatch(
               showSnackbar({
@@ -43,7 +54,7 @@ const DeleteMaterial = ({ deleting, onBack, onExit }) => {
     }
 
     setTimeout(() => {
-      onExit();
+      onClose();
       setTimeout(() => {
         setLoading(false);
       }, 300);
@@ -53,15 +64,22 @@ const DeleteMaterial = ({ deleting, onBack, onExit }) => {
   const handleClose = () => {
     if (loading) return;
 
-    onBack();
+    onClose();
   };
 
-  const body = t('materials.deleteMaterialBody');
+  const body = !item.isDone
+    ? t('homework.finishBody', { name: item.name })
+    : t('homework.restoreBody', { name: item.name });
 
   const buttons = (
     <>
       <Cancel onClick={handleClose} disabled={loading} />
-      <Delete onClick={handleDelete} loading={loading} />
+      <CustomizeButton
+        onClick={handleFinish}
+        loading={loading}
+        color="success"
+        text={!item.isDone ? t('homework.finish') : t('homework.restore')}
+      />
     </>
   );
 
@@ -69,11 +87,11 @@ const DeleteMaterial = ({ deleting, onBack, onExit }) => {
     <Dialog
       open={open}
       handleClose={handleClose}
-      title={t('materials.deleteMaterial')}
+      title={!item.isDone ? t('homework.finish') : t('homework.restore')}
       body={body}
       buttons={buttons}
     />
   );
 };
 
-export default DeleteMaterial;
+export default FinishHomework;

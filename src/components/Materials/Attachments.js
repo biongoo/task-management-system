@@ -67,7 +67,7 @@ const Attachments = ({ attachments, handleClose }) => {
     <Dialog
       open={open}
       handleClose={handleClose}
-      title={t('global.attachments')}
+      title={t('materials.info')}
       body={body}
     />
   );

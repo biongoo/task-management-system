@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import EditIcon from '@mui/icons-material/Edit';
+import TaskIcon from '@mui/icons-material/Task';
+import InfoIcon from '@mui/icons-material/Info';
 import Highlighter from 'react-highlight-words';
 import { Typography, Stack } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { TransitionGroup } from 'react-transition-group';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
+import RestorePageIcon from '@mui/icons-material/RestorePage';
 
 import EditHomework from './EditHomework';
+import FinishHomework from './FinishHomework';
+import DeleteHomework from './DeleteHomework';
 import IconButton from '../UI/Buttons/IconButton';
 import Attachments from '../Materials/Attachments';
 import {
@@ -35,10 +40,12 @@ const initAttachments = {
   open: false,
 };
 
-const HomeworkList = ({ homework, search }) => {
+const HomeworkList = ({ homework, search, tab }) => {
   const { t } = useTranslation();
   const [editing, setEditing] = useState(null);
+  const [deleting, setDeleting] = useState(null);
   const [expanded, setExpanded] = useState(false);
+  const [finishing, setFinishing] = useState(null);
   const [attachments, setAttachments] = useState(initAttachments);
   const paletteColor = useSelector((state) => state.palette.color);
 
@@ -57,6 +64,15 @@ const HomeworkList = ({ homework, search }) => {
     setExpanded(isExpanded ? panel : false);
   };
 
+  const handleOpenFinish = (id, name, isDone) => {
+    setFinishing({ id, name, isDone });
+  };
+
+  const handleCloseFinish = () => {
+    setFinishing(null);
+    setExpanded(false);
+  };
+
   const handleOpenAttachments = (attachments) => {
     setAttachments({ ...attachments, open: true });
   };
@@ -71,6 +87,14 @@ const HomeworkList = ({ homework, search }) => {
 
   const handleCloseEdit = () => {
     setEditing(null);
+  };
+
+  const handleOpenDelete = (id) => {
+    setDeleting(id);
+  };
+
+  const handleCloseDelete = () => {
+    setDeleting(null);
   };
 
   return (
@@ -137,42 +161,50 @@ const HomeworkList = ({ homework, search }) => {
                   </Stack>
                   <Stack>
                     <IconButton
-                      tooltip={t('global.attachments')}
+                      tooltip={
+                        !tab ? t('homework.finish') : t('homework.restore')
+                      }
+                      onClick={handleOpenFinish.bind(
+                        null,
+                        homework.id,
+                        homework.name,
+                        homework.isDone
+                      )}
+                      open={finishing}
+                      Icon={!tab ? TaskIcon : RestorePageIcon}
+                      defaultSize={24}
+                      circleSize={34}
+                      placement="left"
+                    />
+                    <IconButton
+                      tooltip={t('global.edit')}
+                      onClick={handleOpenEdit.bind(null, homework)}
+                      open={editing}
+                      Icon={EditIcon}
+                      defaultSize={24}
+                      circleSize={34}
+                      placement="left"
+                    />
+                    <IconButton
+                      tooltip={t('materials.info')}
                       onClick={handleOpenAttachments.bind(null, {
                         files: homework.files,
                         description: homework.description,
                       })}
-                      open={
-                        attachments.files === homework.files &&
-                        attachments.description === homework.description
-                      }
-                      Icon={AttachFileIcon}
+                      open={attachments.open}
+                      Icon={InfoIcon}
                       defaultSize={24}
                       circleSize={34}
+                      placement="left"
                     />
                     <IconButton
-                      tooltip={t('global.edit')}
-                      onClick={handleOpenEdit.bind(null, homework)}
+                      tooltip={t('global.delete')}
+                      onClick={handleOpenDelete.bind(null, homework.id)}
                       open={editing}
-                      Icon={EditIcon}
+                      Icon={DeleteIcon}
                       defaultSize={24}
                       circleSize={34}
-                    />
-                    <IconButton
-                      tooltip={t('global.edit')}
-                      onClick={handleOpenEdit.bind(null, homework)}
-                      open={editing}
-                      Icon={EditIcon}
-                      defaultSize={24}
-                      circleSize={34}
-                    />
-                    <IconButton
-                      tooltip={t('global.edit')}
-                      onClick={handleOpenEdit.bind(null, homework)}
-                      open={editing}
-                      Icon={EditIcon}
-                      defaultSize={24}
-                      circleSize={34}
+                      placement="left"
                     />
                   </Stack>
                 </Stack>
@@ -181,6 +213,8 @@ const HomeworkList = ({ homework, search }) => {
           </Collapse>
         ))}
       </TransitionGroup>
+      <DeleteHomework deleting={deleting} onClose={handleCloseDelete} />
+      <FinishHomework finishing={finishing} onClose={handleCloseFinish} />
       <EditHomework editing={editing} onClose={handleCloseEdit} />
       <Attachments
         attachments={attachments}

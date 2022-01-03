@@ -360,9 +360,7 @@ const EditHomework = ({ editing, onClose }) => {
     const resultAction = await dispatch(editHomework(formData));
     const time2 = new Date().getTime();
 
-    console.log(resultAction.payload);
-
-    /* if (editHomework.fulfilled.match(resultAction)) {
+    if (editHomework.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
         case 'homeworkEdited':
           setTimeout(() => {
@@ -380,7 +378,7 @@ const EditHomework = ({ editing, onClose }) => {
       }
     } else {
       dispatch(setError(t('global.expiredSession')));
-    } */
+    }
 
     setTimeout(() => {
       handleClose();

@@ -7,6 +7,7 @@ import { Typography, Stack } from '@mui/material';
 import { TransitionGroup } from 'react-transition-group';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
+import EditHomework from './EditHomework';
 import IconButton from '../UI/Buttons/IconButton';
 import Attachments from '../Materials/Attachments';
 import {
@@ -68,9 +69,9 @@ const HomeworkList = ({ homework, search }) => {
     setEditing(material);
   };
 
-  /* const handleCloseEdit = () => {
+  const handleCloseEdit = () => {
     setEditing(null);
-  }; */
+  };
 
   return (
     <>
@@ -133,13 +134,6 @@ const HomeworkList = ({ homework, search }) => {
                         `global.${homework.isMarked ? 'yes' : 'no'}`
                       )}`}
                     </Typography>
-                    {homework.isMarked && (
-                      <Typography variant="body2">
-                        {`${t('global.mark')}: ${
-                          homework.mark ? homework.mark : t('global.notMarked')
-                        }`}
-                      </Typography>
-                    )}
                   </Stack>
                   <Stack>
                     <IconButton
@@ -164,6 +158,22 @@ const HomeworkList = ({ homework, search }) => {
                       defaultSize={24}
                       circleSize={34}
                     />
+                    <IconButton
+                      tooltip={t('global.edit')}
+                      onClick={handleOpenEdit.bind(null, homework)}
+                      open={editing}
+                      Icon={EditIcon}
+                      defaultSize={24}
+                      circleSize={34}
+                    />
+                    <IconButton
+                      tooltip={t('global.edit')}
+                      onClick={handleOpenEdit.bind(null, homework)}
+                      open={editing}
+                      Icon={EditIcon}
+                      defaultSize={24}
+                      circleSize={34}
+                    />
                   </Stack>
                 </Stack>
               </AccordionDetails>
@@ -171,6 +181,7 @@ const HomeworkList = ({ homework, search }) => {
           </Collapse>
         ))}
       </TransitionGroup>
+      <EditHomework editing={editing} onClose={handleCloseEdit} />
       <Attachments
         attachments={attachments}
         handleClose={handleCloseAttachments}

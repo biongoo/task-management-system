@@ -9,6 +9,10 @@ const editHomework = createAsyncThunk(
     formData.append('userEmail', email);
     formData.append('userToken', token);
 
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ', ' + pair[1]);
+    }
+
     try {
       const response = await fetch(url, {
         method: 'POST',

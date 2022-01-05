@@ -1,20 +1,37 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useRef, useEffect, useState } from 'react';
 import { Box, Paper, Backdrop, CircularProgress } from '@mui/material';
 
+import getPlan from '../store/plan/getPlan';
+import getEvents from '../store/events/getEvents';
 import Header from '../components/Dashboard/Header';
 import Calendar from '../components/Dashboard/Calendar';
+import getHomework from '../store/homework/getHomework';
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
   const calendar = useRef(null);
   const [refreshPlan, setRefreshPlan] = useState(1);
 
   const { plan, firstLoading: loadingPlan } = useSelector(
     (state) => state.plan
   );
+
   const { homework, firstLoading: loadingHomework } = useSelector(
     (state) => state.homework
   );
+
+  const { events, firstLoading: loadingEvents } = useSelector(
+    (state) => state.events
+  );
+
+  useEffect(() => {
+    dispatch(getPlan());
+    dispatch(getEvents());
+    dispatch(getHomework());
+  }, [dispatch]);
+
+  console.log(events);
 
   const handleRefresh = () => {
     setRefreshPlan((prevState) => prevState + 1);
@@ -71,7 +88,7 @@ const Dashboard = () => {
     }
   }, [calendar, plan, refreshPlan]);
 
-  const events = [];
+  const calendarEvents = [];
 
   for (const task of homework) {
     const name = task.name;
@@ -80,13 +97,30 @@ const Dashboard = () => {
     const nextMilisec = new Date(task.deadline);
     nextMilisec.setMilliseconds(nextMilisec.getMilliseconds() + 1);
 
-    events.push({
+    calendarEvents.push({
       title: name,
       title2: name2,
       start: new Date(task.deadline),
       end: nextMilisec,
       onlyDeadline: true,
       className: 'priority',
+      priority: true,
+    });
+  }
+
+  for (const event of events) {
+    const name = event.name;
+    const name2 = event.teacherSubjectType
+      ? `${event.name} - ${event.teacherSubjectType.subject.name} - ${event.teacherSubjectType.type.name} - ${event.teacherSubjectType.teacher.academicTitle} ${event.teacherSubjectType.teacher.firstName} ${event.teacherSubjectType.teacher.lastName}`
+      : event.name;
+
+    calendarEvents.push({
+      title: name,
+      title2: name2,
+      start: new Date(event.startDate),
+      end: new Date(event.endDate),
+      className: 'priority',
+      priority: true,
     });
   }
 
@@ -99,7 +133,7 @@ const Dashboard = () => {
         ? planElement.name
         : `${planElement.teacherSubjectType.subject.name} - ${planElement.teacherSubjectType.type.name} - ${planElement.teacherSubjectType.teacher.academicTitle} ${planElement.teacherSubjectType.teacher.firstName} ${planElement.teacherSubjectType.teacher.lastName}`;
 
-      events.push({
+      calendarEvents.push({
         daysOfWeek: [(planElement.day + 1) % 7],
         startTime: planElement.startTime,
         endTime: planElement.endTime,
@@ -118,7 +152,7 @@ const Dashboard = () => {
     >
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loadingPlan || loadingHomework}
+        open={loadingPlan || loadingHomework || loadingEvents}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -133,8 +167,7 @@ const Dashboard = () => {
         }}
       >
         <Header ref={calendar} refreshPlan={handleRefresh} />
-
-        <Calendar ref={calendar} events={events} />
+        <Calendar ref={calendar} events={calendarEvents} />
       </Paper>
     </Box>
   );

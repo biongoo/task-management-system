@@ -27,7 +27,7 @@ const Calendar = forwardRef(({ events }, calendar) => {
         eventContent={renderEventContent}
         weekNumberContent={renderWeekNumberContent}
         contentHeight={'auto'}
-        eventOrder={'onlyDeadline,start'}
+        eventOrder={'priority,start'}
         weekNumbers={true}
         headerToolbar={{
           left: '',

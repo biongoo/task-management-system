@@ -192,7 +192,7 @@ const AddEvent = () => {
     formData.append('startDate', +startDate);
     formData.append('endDate', +endDate);
     formData.append('isMarked', isMarked);
-    formData.append('tstId', subjectType.id);
+    formData.append('tstId', subjectType ? subjectType.id : null);
     formData.append('language', i18n.language);
 
     for (const notification of notifications) {
@@ -241,7 +241,7 @@ const AddEvent = () => {
     } */
 
     setTimeout(() => {
-      //handleClose();
+      /* handleClose(); */
       setTimeout(() => {
         setLoading(false);
       }, 300);

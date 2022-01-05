@@ -8,10 +8,11 @@ import { clearError } from '../store/user-slice';
 import checkLoginAsync from '../store/auth/checkLogin';
 
 import getPlan from '../store/plan/getPlan';
+import getEvents from '../store/events/getEvents';
 import getTypes from '../store/subjects/getTypes';
 import getTeachers from '../store/teachers/getTeachers';
-import getMaterials from '../store/materials/getMaterials';
 import getHomework from '../store/homework/getHomework';
+import getMaterials from '../store/materials/getMaterials';
 import getSubjectsUser from '../store/subjects/user/getSubjectsUser';
 
 const useInit = () => {
@@ -28,14 +29,15 @@ const useInit = () => {
     if (checkLoginAsync.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
         case 'userExists':
+          dispatch(getPlan());
+          dispatch(getHomework());
+          dispatch(getEvents());
           dispatch(getTeachers());
           dispatch(getTypes());
           if (+typeOfAccount === 1) {
             dispatch(getSubjectsUser());
           }
-          dispatch(getPlan());
           dispatch(getMaterials());
-          dispatch(getHomework());
           break;
         case 'tokenNotValid':
         default:

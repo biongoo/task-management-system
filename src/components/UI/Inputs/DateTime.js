@@ -31,6 +31,8 @@ const DateTimeInput = ({
   error,
   helperText,
   disabled,
+  minDateTime,
+  maxDateTime,
 }) => {
   const { t, i18n } = useTranslation();
   const actualLanguageId = i18n.language;
@@ -73,6 +75,8 @@ const DateTimeInput = ({
           toolbarTitle={t('global.selectDateTime')}
           value={value}
           mask={maskMap[actualLanguageId]}
+          minDateTime={minDateTime}
+          maxDateTime={maxDateTime}
           onOpen={() => setOpen(true)}
           onClose={() => setOpen(false)}
           onChange={(newValue) => {

@@ -208,5 +208,13 @@
     "time": "{{h}} godz. {{m}} min",
     "timeWoH": "{{m}} min.",
     "timeWoM": "{{h}} godz."
+  },
+  "dashboard": {
+    "addEvent": "Dodaj wydarzenie",
+    "deleteEvent": "Usuń wydarzenie",
+    "editEvent": "Edytuj wydarzenie",
+    "endDate": "Data zakończenia",
+    "startDate": "Data rozpoczęcia",
+    "today": "Dziś"
   }
 }

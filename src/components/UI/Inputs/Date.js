@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import plLocale from 'date-fns/locale/pl';
 import enLocale from 'date-fns/locale/en-US';
+import DatePicker from '@mui/lab/DatePicker';
 import { useTranslation } from 'react-i18next';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import DatePicker from '@mui/lab/DatePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 

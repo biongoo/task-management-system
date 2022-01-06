@@ -5,7 +5,8 @@ import plLocaleFNS from 'date-fns/locale/pl';
 import FullCalendar from '@fullcalendar/react';
 import { useTranslation } from 'react-i18next';
 import enLocaleFNS from 'date-fns/locale/en-US';
-import { Box, Tooltip, Typography } from '@mui/material';
+import InfoIcon from '@mui/icons-material/InfoOutlined';
+import { Box, Stack, Tooltip, Typography } from '@mui/material';
 
 import listPlugin from '@fullcalendar/list';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -44,6 +45,7 @@ const renderEventContent = (eventInfo) => {
   let startTime = eventInfo.event.start;
   let endTime = eventInfo.event.end;
   let onlyDeadline = eventInfo.event.extendedProps.onlyDeadline;
+  let onClick = eventInfo.event.extendedProps.onClick;
   let startTimeString = '';
   let endTimeString = '';
 
@@ -67,8 +69,36 @@ const renderEventContent = (eventInfo) => {
       break;
   }
 
-  const body =
-    eventInfo.view.type === 'listWeek' ? (
+  const phoneText = (
+    <Typography
+      variant="body2"
+      sx={{
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        width: '100%',
+        px: 0.5,
+      }}
+    >
+      {eventInfo.startTimeString}
+      {eventInfo.event.extendedProps.title2}
+    </Typography>
+  );
+
+  const normalText = (
+    <Tooltip
+      title={
+        <>
+          <Typography variant="body1">
+            {startTimeString} {!onlyDeadline && <>- {endTimeString}</>}
+          </Typography>
+          <Typography variant="body2">
+            {eventInfo.event.extendedProps.title2}
+          </Typography>
+        </>
+      }
+      placement="right"
+      arrow
+    >
       <Typography
         variant="body2"
         sx={{
@@ -78,38 +108,46 @@ const renderEventContent = (eventInfo) => {
           px: 0.5,
         }}
       >
-        {eventInfo.startTimeString}
-        {eventInfo.event.extendedProps.title2}
+        <span style={{ fontWeight: 600 }}>{startTimeString} </span>
+        {eventInfo.event.title}
       </Typography>
+    </Tooltip>
+  );
+
+  const body =
+    eventInfo.view.type === 'listWeek' ? (
+      <>
+        {onClick && (
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            spacing={1}
+            onClick={onClick}
+          >
+            {phoneText}
+            <InfoIcon sx={{ fontSize: '1.1rem' }} />
+          </Stack>
+        )}
+        {!onClick && phoneText}
+      </>
     ) : (
-      <Tooltip
-        title={
-          <>
-            <Typography variant="body1">
-              {startTimeString} {!onlyDeadline && <>- {endTimeString}</>}
-            </Typography>
-            <Typography variant="body2">
-              {eventInfo.event.extendedProps.title2}
-            </Typography>
-          </>
-        }
-        placement="right"
-        arrow
-      >
-        <Typography
-          variant="body2"
-          onClick={eventInfo.event.extendedProps.onClick}
-          sx={{
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            width: '100%',
-            px: 0.5,
-          }}
-        >
-          <span style={{ fontWeight: 600 }}>{startTimeString} </span>
-          {eventInfo.event.title}
-        </Typography>
-      </Tooltip>
+      <>
+        {onClick && (
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            spacing={0}
+            onClick={onClick}
+            sx={{ width: '100%' }}
+          >
+            {normalText}
+            <InfoIcon sx={{ fontSize: '1.1rem', marginRight: '2px' }} />
+          </Stack>
+        )}
+        {!onClick && normalText}
+      </>
     );
 
   return body;

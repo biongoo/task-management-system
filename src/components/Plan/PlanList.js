@@ -1,5 +1,8 @@
+import { format } from 'date-fns';
 import React, { useState } from 'react';
+import plLocaleFNS from 'date-fns/locale/pl';
 import { useTranslation } from 'react-i18next';
+import enLocaleFNS from 'date-fns/locale/en-US';
 import EditIcon from '@mui/icons-material/Edit';
 import { TransitionGroup } from 'react-transition-group';
 import { Paper, Grid, Typography, Stack, Box, Collapse } from '@mui/material';
@@ -8,8 +11,28 @@ import EditDay from './EditDay';
 import Divider from '../UI/Dividers/Divider';
 import IconButton from '../UI/Buttons/IconButton';
 
+const buildTime = (date, lang) => {
+  let stringTime = '';
+
+  switch (lang) {
+    case 'pl':
+      stringTime = format(date, 'HH:mm', {
+        locale: plLocaleFNS,
+      });
+      break;
+    case 'en':
+    default:
+      stringTime = format(date, "h:mmaaaaa'm'", {
+        locale: enLocaleFNS,
+      });
+      break;
+  }
+
+  return stringTime;
+};
+
 const PlanList = ({ planList }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [openDay, setOpenDay] = useState(false);
 
   const handleOpenDay = (day) => {
@@ -76,9 +99,18 @@ const PlanList = ({ planList }) => {
               >
                 {day.map((item, idx) => {
                   let time = '';
-                  time += item.startTime.slice(0, 5);
+                  const date = new Date();
+
+                  date.setHours(item.startTime.split(':')[0]);
+                  date.setMinutes(item.startTime.split(':')[1]);
+
+                  time += buildTime(date, i18n.language);
                   time += ' - ';
-                  time += item.endTime.slice(0, 5);
+
+                  date.setHours(item.endTime.split(':')[0]);
+                  date.setMinutes(item.endTime.split(':')[1]);
+
+                  time += buildTime(date, i18n.language);
 
                   let repetition = '';
                   if (item.repetition !== 0) {

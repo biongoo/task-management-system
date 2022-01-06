@@ -306,7 +306,7 @@ const AddMaterial = () => {
         />
         <Input100Width
           id="description"
-          label={t('materials.description')}
+          label={t('global.description')}
           value={description}
           onChange={descriptionChangeHandler}
           onBlur={descriptionTouchHandler}

@@ -11,6 +11,7 @@
     "deadline": "Termin",
     "delete": "Usuń",
     "description": "Opis",
+    "descriptionEmpty": "Brak",
     "edit": "Edytuj",
     "email": "E-mail",
     "error": "Błąd",
@@ -212,6 +213,7 @@
   "dashboard": {
     "addEvent": "Dodaj wydarzenie",
     "deleteEvent": "Usuń wydarzenie",
+    "deleteEventBody": "Czy aby na pewno chcesz usunąć to wydarzenie?",
     "editEvent": "Edytuj wydarzenie",
     "endDate": "Data zakończenia",
     "startDate": "Data rozpoczęcia",

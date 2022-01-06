@@ -7,6 +7,7 @@ import FilePresentIcon from '@mui/icons-material/FilePresent';
 import {
   Box,
   Tab,
+  Link,
   Tabs,
   List,
   Stack,
@@ -19,6 +20,7 @@ import {
   FormControlLabel,
 } from '@mui/material';
 
+import DeleteEvent from './DeleteEvent';
 import Select from '../UI/Inputs/Select';
 import Dialog from '../UI/Modals/Dialog';
 import TabPanel from '../UI/Tabs/TabPanel';
@@ -43,6 +45,7 @@ const EditEvent = ({ editing, onClose }) => {
   const [open, setOpen] = useState(false);
   const [oldFiles, setOldFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [deleting, setDeleting] = useState(null);
   const [isMarked, setIsMarked] = useState(true);
   const [typesLabel, setTypesLabel] = useState([]);
   const [notifications, setNotifications] = useState([]);
@@ -121,7 +124,7 @@ const EditEvent = ({ editing, onClose }) => {
   } = useInput((value) => value.trim().length < 2048);
 
   useEffect(() => {
-    if (editing) {
+    if (editing && !deleting) {
       if (editing.teacherSubjectType) {
         const subjectNameTmp = {
           target: {
@@ -228,6 +231,7 @@ const EditEvent = ({ editing, onClose }) => {
   }, [
     editing,
     subjects,
+    deleting,
     setTypesLabel,
     nameChangeHandler,
     endDateChangeHandler,
@@ -304,6 +308,7 @@ const EditEvent = ({ editing, onClose }) => {
 
     setLoading(true);
 
+    formData.append('id', editing.id);
     formData.append('name', name);
     formData.append('description', description);
     formData.append('startDate', +startDate);
@@ -424,8 +429,6 @@ const EditEvent = ({ editing, onClose }) => {
     setOldFiles((prevState) => prevState.filter((item) => item.id !== id));
   };
 
-  const handleOpen = () => setOpen(true);
-
   const handleClose = () => {
     if (loading) return;
 
@@ -447,6 +450,25 @@ const EditEvent = ({ editing, onClose }) => {
       setNotifications([0]);
       setTab(0);
     }, 300);
+  };
+
+  const handleOpenDelete = () => {
+    setOpen(false);
+    setTimeout(() => {
+      setDeleting(editing);
+    }, 300);
+  };
+
+  const handleCloseDelete = () => {
+    setDeleting(null);
+    setTimeout(() => {
+      setOpen(true);
+    }, 300);
+  };
+
+  const handleExitDelete = () => {
+    setDeleting(null);
+    handleClose();
   };
 
   const handleChangeTab = (_, newValue) => {
@@ -638,7 +660,16 @@ const EditEvent = ({ editing, onClose }) => {
                           <FilePresentIcon sx={{ color: 'primary.light' }} />
                         </Avatar>
                       </ListItemAvatar>
-                      <ListItemText primary={item.name} />
+                      <ListItemText
+                        primary={
+                          <Link
+                            href={`http://java.ts4ever.pl/files/download/${item.id}`}
+                            color="inherit"
+                          >
+                            {item.name}
+                          </Link>
+                        }
+                      />
                     </ListItem>
                   </Collapse>
                 ))}
@@ -661,12 +692,18 @@ const EditEvent = ({ editing, onClose }) => {
   const buttons = (
     <>
       <Cancel onClick={handleClose} disabled={loading} />
+      <Delete onClick={handleOpenDelete} disabled={loading} />
       <Edit onClick={handleEdit} loading={loading} />
     </>
   );
 
   return (
     <>
+      <DeleteEvent
+        deleting={deleting}
+        onBack={handleCloseDelete}
+        onExit={handleExitDelete}
+      />
       <Dialog
         open={open}
         handleClose={handleClose}

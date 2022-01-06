@@ -37,9 +37,14 @@ const Homework = () => {
     setSearch(e.target.value);
   };
 
-  let homeworkCopy = homework.slice();
+  let homeworkCopy = [...homework];
 
   homeworkCopy = homeworkCopy.filter((homework) => homework.isDone === !!tab);
+
+  let homeworkToCalculateTime = [...homeworkCopy];
+  homeworkToCalculateTime = homeworkToCalculateTime.sort((a, b) =>
+    a.deadline.localeCompare(b.deadline)
+  );
 
   if (search) {
     homeworkCopy = homeworkCopy.filter((homework) =>
@@ -137,7 +142,12 @@ const Homework = () => {
         </Tabs>
         <Divider mb={3} />
 
-        <HomeworkList homework={homeworkCopy} search={search} tab={tab} />
+        <HomeworkList
+          homework={homeworkCopy}
+          search={search}
+          tab={tab}
+          homeworkToCalculateTime={homeworkToCalculateTime}
+        />
 
         {!homeworkCopy.length && search && (
           <Box sx={{ textAlign: 'center' }}>

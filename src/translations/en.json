@@ -11,6 +11,7 @@
     "deadline": "Deadline",
     "delete": "Delete",
     "description": "Description",
+    "descriptionEmpty": "None",
     "edit": "Edit",
     "email": "E-mail",
     "error": "Error",
@@ -212,6 +213,7 @@
   "dashboard": {
     "addEvent": "Add event",
     "deleteEvent": "Delet event",
+    "deleteEventBody": "Are you sure you want to delete this event?",
     "editEvent": "Edit event",
     "endDate": "End date",
     "startDate": "Start date",

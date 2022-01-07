@@ -218,36 +218,8 @@ const HomeworkList = ({ homework, search, tab, homeworkToCalculateTime }) => {
   );
 };
 
-let flag = 0;
-
 const buildIntervals = (events, plan, homeworkToCalculateTime) => {
   const intervals = [];
-
-  for (const event of events) {
-    const start = new Date(event.startDate);
-    const end = new Date(event.endDate);
-
-    start.setSeconds(0);
-    start.setMilliseconds(0);
-    end.setSeconds(0);
-    end.setMilliseconds(0);
-
-    const index = intervals.findIndex(
-      (item) => item.start.getTime() >= start.getTime()
-    );
-
-    if (index === -1) {
-      intervals.push({ start, end });
-    } else {
-      if (
-        !(
-          intervals[index].start.getTime() === start.getTime() &&
-          intervals[index].end.getTime() === end.getTime()
-        )
-      )
-        intervals.splice(index, 0, { start, end });
-    }
-  }
 
   for (const task of homeworkToCalculateTime) {
     const startDate = new Date(task.date);
@@ -290,117 +262,212 @@ const buildIntervals = (events, plan, homeworkToCalculateTime) => {
           (item) => item.start.getTime() >= start.getTime()
         );
 
-        if (index === -1) {
-          intervals.push({ start, end });
-        } else {
-          if (
-            !(
-              intervals[index].start.getTime() === start.getTime() &&
-              intervals[index].end.getTime() === end.getTime()
-            )
-          )
-            intervals.splice(index, 0, { start, end });
-        }
-      }
-    }
-  }
-
-  const homeworkTime = [];
-
-  if (flag < 3) {
-    console.clear();
-    flag++;
-  }
-
-  for (const task of homeworkToCalculateTime) {
-    const times = [];
-    let start = new Date(task.date);
-    const end = new Date(task.end);
-    let estimatedTime = task.estimatedTime;
-
-    start.setSeconds(0);
-    start.setMilliseconds(0);
-    end.setSeconds(0);
-    end.setMilliseconds(0);
-
-    let breakLoop = false;
-    if (estimatedTime) {
-      for (const index in intervals) {
-        let minutes = 0;
-        const interval = intervals[index];
-
-        if (start.getTime() < interval.start.getTime()) {
-          while (start.getTime() < interval.start.getTime()) {
-            let maxDayTime = new Date(start.getTime());
-            let maxTime = new Date(interval.start);
-
-            maxDayTime.setHours(22);
-            maxDayTime.setMinutes(0);
-
-            if (maxDayTime.getTime() < maxTime.getTime()) {
-              maxTime = maxDayTime;
-            }
-
-            minutes = (maxTime.getTime() - start.getTime()) / 1000 / 60;
-
-            if (minutes >= estimatedTime) {
-              maxTime.setHours(start.getHours());
-              maxTime.setMinutes(start.getMinutes() + estimatedTime);
-            }
-
-            times.push({ start: new Date(start), end: new Date(maxTime) });
-
-            if (minutes >= estimatedTime) {
-              breakLoop = true;
-              break;
-            }
-
-            if (maxDayTime.getTime() === maxTime.getTime()) {
-              start.setDate(start.getDate() + 1);
-              start.setHours(8);
-              start.setMinutes(0);
-            } else {
-              start = new Date(interval.end);
-            }
-
-            estimatedTime -= minutes;
-          }
-        } else {
-          start = new Date(interval.end);
-        }
-
-        if (breakLoop) break;
+        insertWithoutDuplicates(intervals, index, start, end);
       }
     }
 
-    for (const time of times) {
-      const start = new Date(time.start);
-      const end = new Date(time.end);
+    for (const event of events) {
+      const start = new Date(event.startDate);
+      const end = new Date(event.endDate);
+
+      if (
+        end.getTime() < startDate.getTime() ||
+        start.getTime() > endDate.getTime()
+      ) {
+        continue;
+      }
+
+      start.setSeconds(0);
+      start.setMilliseconds(0);
+      end.setSeconds(0);
+      end.setMilliseconds(0);
 
       const index = intervals.findIndex(
         (item) => item.start.getTime() >= start.getTime()
       );
 
-      if (index === -1) {
-        intervals.push({ start, end });
-      } else {
-        if (
-          !(
-            intervals[index].start.getTime() === start.getTime() &&
-            intervals[index].end.getTime() === end.getTime()
-          )
-        )
-          intervals.splice(index, 0, { start, end });
+      insertWithoutDuplicates(intervals, index, start, end);
+    }
+  }
+
+  const homeworkTime = [];
+
+  for (const task of homeworkToCalculateTime) {
+    const times = [];
+    const startTaskDate = new Date(task.date);
+    const endTaskDate = new Date(task.deadline);
+
+    let estimatedTime = task.estimatedTime;
+    let freeStart = new Date(startTaskDate);
+
+    freeStart.setSeconds(0);
+    startTaskDate.setSeconds(0);
+    freeStart.setMilliseconds(0);
+    startTaskDate.setMilliseconds(0);
+
+    let breakLoop = false;
+
+    if (estimatedTime) {
+      for (const index in intervals) {
+        const interval = intervals[index];
+
+        if (startTaskDate.getTime() > interval.end.getTime()) continue;
+
+        while (freeStart < interval.start && estimatedTime > 0) {
+          const maxDayTime = new Date(freeStart);
+          let maxTime = new Date(interval.start);
+          maxDayTime.setHours(22);
+          maxDayTime.setMinutes(0);
+
+          const prevIndex = index - 1;
+          if (prevIndex >= 0) {
+            if (freeStart < intervals[index - 1].end) {
+              freeStart = new Date(intervals[index - 1].end);
+              continue;
+            }
+          }
+
+          if (maxDayTime.getTime() < maxTime.getTime()) {
+            maxTime = maxDayTime;
+          }
+
+          const minutes = (maxTime.getTime() - freeStart.getTime()) / 1000 / 60;
+
+          if (minutes > estimatedTime) {
+            maxTime.setHours(freeStart.getHours());
+            maxTime.setMinutes(freeStart.getMinutes() + estimatedTime);
+          }
+
+          times.push({ start: new Date(freeStart), end: new Date(maxTime) });
+          estimatedTime -= minutes;
+
+          if (estimatedTime <= 0) {
+            breakLoop = true;
+            break;
+          }
+
+          if (maxDayTime.getTime() === maxTime.getTime()) {
+            freeStart.setDate(freeStart.getDate() + 1);
+            freeStart.setHours(8);
+            freeStart.setMinutes(0);
+          } else {
+            freeStart = new Date(interval.end);
+          }
+        }
+        if (breakLoop) break;
+      }
+
+      if (estimatedTime <= 0) {
+        for (const time of times) {
+          const start = new Date(time.start);
+          const end = new Date(time.end);
+
+          const index = intervals.findIndex(
+            (item) => item.start.getTime() >= start.getTime()
+          );
+
+          if (index === -1) {
+            intervals.push({ start, end });
+          } else {
+            if (
+              !(
+                intervals[index].start.getTime() === start.getTime() &&
+                intervals[index].end.getTime() === end.getTime()
+              )
+            )
+              intervals.splice(index, 0, { start, end });
+          }
+        }
       }
     }
 
-    homeworkTime.push({ id: task.id, times });
+    homeworkTime.push({ id: task.id, times: estimatedTime <= 0 ? times : [] });
   }
 
-  console.log(homeworkTime);
-  console.log(intervals);
+  return homeworkTime;
+};
 
-  return intervals;
+const insertWithoutDuplicates = (intervals, index, start, end) => {
+  if (index === -1) {
+    let lastIndex = intervals.length - 1;
+    let newStart = new Date(start);
+    let newEnd = new Date(end);
+
+    if (
+      typeof intervals[lastIndex] !== 'undefined' &&
+      intervals[lastIndex].end >= start
+    ) {
+      newStart = new Date(intervals[lastIndex].start);
+      newEnd = new Date(
+        intervals[lastIndex].end > end ? intervals[lastIndex].end : end
+      );
+      intervals.splice(lastIndex, 1);
+      lastIndex--;
+
+      while (
+        typeof intervals[lastIndex] !== 'undefined' &&
+        intervals[lastIndex].end >= start
+      ) {
+        newEnd = new Date(
+          intervals[lastIndex].end > end ? intervals[lastIndex].end : end
+        );
+        intervals.splice(lastIndex, 1);
+        lastIndex--;
+      }
+    }
+    intervals.push({ start: newStart, end: newEnd });
+  } else {
+    if (
+      !(
+        intervals[index].start.getTime() === start.getTime() &&
+        intervals[index].end.getTime() === end.getTime()
+      )
+    ) {
+      if (intervals[index].start <= end) {
+        let endTime = new Date(
+          end > intervals[index].end ? end : intervals[index].end
+        );
+        intervals.splice(index, 1);
+
+        while (
+          typeof intervals[index] !== 'undefined' &&
+          intervals[index].start <= endTime
+        ) {
+          endTime = new Date(
+            endTime > intervals[index].end ? endTime : intervals[index].end
+          );
+          intervals.splice(index, 1);
+        }
+
+        intervals.splice(index, 0, {
+          start,
+          end: endTime,
+        });
+      } else if (
+        typeof intervals[index - 1] !== 'undefined' &&
+        intervals[index - 1].end >= start
+      ) {
+        let startTime = new Date(
+          intervals[index - 1].start < start
+            ? intervals[index - 1].start
+            : start
+        );
+        let endTime = new Date(
+          intervals[index - 1].end > end ? intervals[index - 1].end : end
+        );
+
+        intervals.splice(index - 1, 1, {
+          start: startTime,
+          end: endTime,
+        });
+      } else {
+        intervals.splice(index, 0, {
+          start,
+          end: end,
+        });
+      }
+    }
+  }
 };
 
 const buildDateTime = (date, lang) => {

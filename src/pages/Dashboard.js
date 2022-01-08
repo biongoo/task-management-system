@@ -16,7 +16,6 @@ import getHomework from '../store/homework/getHomework';
 import EditEvent from '../components/Dashboard/EditEvent';
 
 let flag = false;
-let flag2 = false;
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -37,11 +36,9 @@ const Dashboard = () => {
   );
 
   useEffect(() => {
-    if (flag) {
-      dispatch(getPlan());
-      dispatch(getEvents());
-      dispatch(getHomework());
-    } else flag = true;
+    dispatch(getPlan());
+    dispatch(getEvents());
+    dispatch(getHomework());
   }, [dispatch]);
 
   const handleOpenEditEvent = useCallback(
@@ -61,8 +58,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (refreshPlan > 0 && calendar.current) {
-      if (flag2) {
+      if (flag) {
         let calendarApi = calendar.current.getApi();
+
+        if (!Array.isArray(plan) || plan.length === 0) return;
 
         for (const planElement of plan) {
           if (planElement.repetition) {
@@ -108,7 +107,7 @@ const Dashboard = () => {
             }
           }
         }
-      } else flag2 = true;
+      } else flag = true;
     }
   }, [calendar, plan, refreshPlan]);
 
@@ -155,6 +154,8 @@ const Dashboard = () => {
 
 const init = (homework, events, plan, handleOpenEditEvent) => {
   const array = [];
+
+  if (!Array.isArray(homework) || homework.length === 0) return array;
 
   for (const task of homework) {
     const name = task.name;

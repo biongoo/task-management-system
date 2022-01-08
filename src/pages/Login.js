@@ -134,7 +134,7 @@ const Login = () => {
         onChange={passwordChangeHandler}
         onBlur={passwordTouchHandler}
         error={passwordHasError}
-        helperText={passwordHasError && t('global.incorrectEntry')}
+        helperText={passwordHasError && t('global.invalidPassword')}
         disabled={loading}
         InputProps={{
           endAdornment: (

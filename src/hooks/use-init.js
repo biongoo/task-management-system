@@ -8,6 +8,7 @@ import { clearError } from '../store/user-slice';
 import checkLoginAsync from '../store/auth/checkLogin';
 
 import getPlan from '../store/plan/getPlan';
+import getMarks from '../store/marks/getMarks';
 import getEvents from '../store/events/getEvents';
 import getTypes from '../store/subjects/getTypes';
 import getTeachers from '../store/teachers/getTeachers';
@@ -36,6 +37,7 @@ const useInit = () => {
           dispatch(getTypes());
           if (+typeOfAccount === 1) {
             dispatch(getSubjectsUser());
+            dispatch(getMarks());
           }
           dispatch(getMaterials());
           break;

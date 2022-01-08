@@ -8,6 +8,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import SubjectIcon from '@mui/icons-material/Subject';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import ScheduleIcon from '@mui/icons-material/Schedule';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import {
   Box,
@@ -37,7 +38,7 @@ const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
       },
       {
         text: t('global.teachers'),
-        icon: <SchoolIcon sx={{ color: 'primary.light' }} />,
+        icon: <PeopleAltIcon sx={{ color: 'primary.light' }} />,
         path: '/dashboard/teachers',
       },
       {
@@ -54,6 +55,11 @@ const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
         text: t('layout.materials'),
         icon: <AttachmentIcon sx={{ color: 'primary.light' }} />,
         path: '/dashboard/materials',
+      },
+      {
+        text: t('layout.marks'),
+        icon: <SchoolIcon sx={{ color: 'primary.light' }} />,
+        path: '/dashboard/marks',
       },
       {
         text: t('layout.plan'),

@@ -68,6 +68,7 @@
     "homepage404": "home page",
     "homework": "Homework",
     "logout": "Logout",
+    "marks": "Marks",
     "materials": "Materials",
     "mode": "Mode",
     "noOptions": "No options",
@@ -197,9 +198,11 @@
     "done": "Done",
     "editHomework": "Edit homework",
     "emptyDone": "No homework completed.",
+    "emptyEstimatedHours": "There is not enough time to complete the task within the given time frame.",
     "estimatedHours": "Estimated hours",
     "estimatedMinutes": "Estimated minutes",
     "estimatedTime": "Estimated time",
+    "estimatedTimeLong": "Estimated time to complete the task",
     "finish": "Finish",
     "finishBody": "Are you sure you want to finish \"{{name}}\"?",
     "incorrectNumber": "Incorrect number. Min {{min}}, max {{max}}.",
@@ -218,5 +221,14 @@
     "endDate": "End date",
     "startDate": "Start date",
     "today": "Today"
+  },
+  "settings": {
+    "changePassword": "Change new password",
+    "confirmPassword": "Confirm password",
+    "delete": "Delete account",
+    "invalidOldPassword": "Old password is invalid.",
+    "newPassword": "New password",
+    "oldPassword": "Old password",
+    "successChange": "Password changed successfully. Please sign in again!"
   }
 }

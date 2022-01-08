@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import authSlice from './auth-slice';
 import userSlice from './user-slice';
 import planSlice from './plan-slice';
+import marksSlice from './marks-slice';
 import eventsSlice from './events-slice';
 import paletteSlice from './palette-slice';
 import subjectsSlice from './subjects-slice';
@@ -15,6 +16,7 @@ const store = configureStore({
     auth: authSlice,
     user: userSlice,
     plan: planSlice,
+    marks: marksSlice,
     events: eventsSlice,
     palette: paletteSlice,
     subjects: subjectsSlice,

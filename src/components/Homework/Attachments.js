@@ -2,21 +2,26 @@ import { useTranslation } from 'react-i18next';
 import React, { useState, useEffect } from 'react';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
 import {
+  Box,
   List,
   Link,
   Stack,
   Avatar,
   ListItem,
+  Typography,
   ListItemText,
   ListItemAvatar,
-  Typography,
 } from '@mui/material';
 
 import Dialog from '../UI/Modals/Dialog';
 
-const Attachments = ({ attachments, handleClose }) => {
-  const { t } = useTranslation();
-  const [descAtach, setdescAtach] = useState({ files: [], description: '' });
+const Attachments = ({ attachments, handleClose, buildDateTime }) => {
+  const { t, i18n } = useTranslation();
+  const [descAtach, setdescAtach] = useState({
+    files: [],
+    description: '',
+    dateList: { times: [] },
+  });
 
   useEffect(() => {
     if (
@@ -29,11 +34,12 @@ const Attachments = ({ attachments, handleClose }) => {
   }, [attachments, setdescAtach]);
 
   const open = attachments.open;
+  const lang = i18n.language;
 
   const body = (
     <Stack spacing={2}>
       <Typography>
-        {t('global.description')}:
+        {`${t('global.description')}: `}
         {descAtach.description
           ? descAtach.description
           : t('global.descriptionEmpty')}
@@ -60,6 +66,31 @@ const Attachments = ({ attachments, handleClose }) => {
             </ListItem>
           ))}
         </List>
+      )}
+      {typeof descAtach.dateList !== 'undefined' && (
+        <Box>
+          <Typography>{`${t('homework.estimatedTimeLong')}: `}</Typography>
+          <Typography>
+            {descAtach.dateList.times.length === 0 &&
+              t('homework.emptyEstimatedHours')}
+          </Typography>
+          {descAtach.dateList.times.length !== 0 && (
+            <List sx={{ mt: 0 }}>
+              {descAtach.dateList.times.map((item, index) => (
+                <ListItem key={index} sx={{ py: '6px' }}>
+                  <ListItemText
+                    primary={
+                      <>
+                        {buildDateTime(item.start, lang)} -{' '}
+                        {buildDateTime(item.end, lang)}
+                      </>
+                    }
+                  />
+                </ListItem>
+              ))}
+            </List>
+          )}
+        </Box>
       )}
     </Stack>
   );

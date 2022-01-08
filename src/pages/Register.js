@@ -1,6 +1,6 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 import Stepper from '../components/Auth/Stepper';
 import FirstStep from '../components/Auth/Register/FirstStep';

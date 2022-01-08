@@ -119,7 +119,7 @@ const Materials = () => {
         <MaterialsList
           materials={materialsList}
           search={search}
-          loading={loading}
+          loading={firstLoading}
         />
       </Paper>
     </Box>

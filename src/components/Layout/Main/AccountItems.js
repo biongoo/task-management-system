@@ -1,18 +1,13 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { MenuItem, ListItemIcon, Box, Button } from '@mui/material';
 
 import { logout } from '../../../store/auth-slice';
 
 const MENU_OPTIONS = [
-  {
-    label: 'layout.home',
-    icon: <HomeIcon />,
-    linkTo: '/dashboard',
-  },
   {
     label: 'layout.settings',
     icon: <SettingsIcon />,
@@ -31,7 +26,12 @@ const AccountItems = ({ handleClose }) => {
   return (
     <>
       {MENU_OPTIONS.map((item) => (
-        <MenuItem key={item.label} onClick={handleClose}>
+        <MenuItem
+          key={item.label}
+          onClick={handleClose}
+          component={NavLink}
+          to={item.linkTo}
+        >
           <ListItemIcon sx={{ color: 'primary.light' }}>
             {item.icon}
           </ListItemIcon>

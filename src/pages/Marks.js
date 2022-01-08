@@ -3,13 +3,24 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Paper, Stack, Backdrop, CircularProgress } from '@mui/material';
 
-import AddTeacher from '../components/Teachers/AddTeacher';
-import Search from '../components/UI/Inputs/Search';
+import getMarks from '../store/marks/getMarks';
 import Sort from '../components/UI/Sorts/Sort';
-import TeachersList from '../components/Teachers/TeachersList';
-import getTeachers from '../store/teachers/getTeachers';
+import Search from '../components/UI/Inputs/Search';
 
-const Teachers = () => {
+const groupItemBy = (array, property) => {
+  var hash = {},
+    props = property.split('.');
+  for (var i = 0; i < array.length; i++) {
+    var key = props.reduce(function (acc, prop) {
+      return acc && acc[prop];
+    }, array[i]);
+    if (!hash[key]) hash[key] = [];
+    hash[key].push(array[i]);
+  }
+  return hash;
+};
+
+const Marks = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [search, setSearch] = useState('');
@@ -20,23 +31,23 @@ const Teachers = () => {
     navigate('/404');
   }
 
-  const { teachers, loading, firstLoading } = useSelector(
-    (state) => state.teachers
-  );
+  const { marks, loading, firstLoading } = useSelector((state) => state.marks);
+
+  console.log(marks);
+
+  useEffect(() => {
+    dispatch(getMarks());
+  }, [dispatch]);
 
   const searchHandler = (e) => {
     setSearch(e.target.value);
   };
 
-  let teachersList = teachers.slice();
-
-  useEffect(() => {
-    dispatch(getTeachers());
-  }, [dispatch]);
+  let marksList = marks.slice();
 
   if (search) {
-    teachersList = teachersList.filter((teacher) =>
-      `${teacher.academicTitle} ${teacher.firstName} ${teacher.lastName}`
+    marksList = marksList.filter((material) =>
+      `${material.teacherSubjectType.subject.name}`
         .toLowerCase()
         .includes(search.toLowerCase())
     );
@@ -44,27 +55,31 @@ const Teachers = () => {
 
   switch (selectedSortingIndex) {
     case 0:
-      teachersList = teachersList.sort(
-        (a, b) =>
-          a.firstName.localeCompare(b.firstName) ||
-          a.lastName.localeCompare(b.lastName)
+      marksList = marksList.sort((a, b) =>
+        a.teacherSubjectType.subject.name.localeCompare(
+          b.teacherSubjectType.subject.name
+        )
       );
       break;
     case 1:
-      teachersList = teachersList.sort(
-        (a, b) =>
-          b.firstName.localeCompare(a.firstName) ||
-          b.lastName.localeCompare(a.lastName)
+      marksList = marksList.sort((a, b) =>
+        b.teacherSubjectType.subject.name.localeCompare(
+          a.teacherSubjectType.subject.name
+        )
       );
       break;
     case 2:
       break;
     case 3:
-      teachersList = teachersList.reverse();
+      marksList = marksList.reverse();
       break;
     default:
       break;
   }
+
+  marksList = groupItemBy(marksList, 'teacherSubjectType.subject.name');
+
+  console.log(marksList);
 
   return (
     <Box
@@ -75,10 +90,11 @@ const Teachers = () => {
     >
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading && firstLoading && !teachersList.length}
+        open={loading && firstLoading && !marksList.length}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+
       <Paper
         sx={{
           width: { xs: '95%', md: '95%' },
@@ -102,19 +118,20 @@ const Teachers = () => {
             <Sort
               selectedIndex={selectedSortingIndex}
               setSelectedIndex={setSelectedSortingIndex}
+              alphabeticOnly={true}
             />
-            <AddTeacher />
+            {/* <AddMaterial /> */}
           </Stack>
         </Stack>
 
-        <TeachersList
-          teachersList={teachersList}
+        {/* <MaterialsList
+          materials={materialsList}
           search={search}
           loading={firstLoading}
-        />
+        /> */}
       </Paper>
     </Box>
   );
 };
 
-export default Teachers;
+export default Marks;

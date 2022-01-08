@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { setError } from '../user-slice';
 
-const getTeachers = createAsyncThunk(
-  'teachers/get',
+const getMarks = createAsyncThunk(
+  'marks/get',
   async (_, { getState, dispatch }) => {
     try {
-      const url = 'http://java.ts4ever.pl/teachers/get';
+      const url = 'http://java.ts4ever.pl/marks/get';
       const { email: userEmail, token: userToken, type } = getState().auth;
 
       const response = await fetch(url, {
@@ -32,4 +32,4 @@ const getTeachers = createAsyncThunk(
   }
 );
 
-export default getTeachers;
+export default getMarks;

@@ -13,11 +13,11 @@ import { TransitionGroup } from 'react-transition-group';
 import React, { useState, useMemo } from 'react';
 import RestorePageIcon from '@mui/icons-material/RestorePage';
 
+import Attachments from './Attachments';
 import EditHomework from './EditHomework';
 import FinishHomework from './FinishHomework';
 import DeleteHomework from './DeleteHomework';
 import IconButton from '../UI/Buttons/IconButton';
-import Attachments from './Attachments';
 import {
   Accordion,
   AccordionSummary,
@@ -29,6 +29,7 @@ const initAttachments = {
   files: [],
   description: '',
   open: false,
+  dateList: { times: [] },
 };
 
 const HomeworkList = ({ homework, search, tab, homeworkToCalculateTime }) => {
@@ -45,7 +46,7 @@ const HomeworkList = ({ homework, search, tab, homeworkToCalculateTime }) => {
   });
   const events = useSelector((state) => state.events.events);
 
-  const intervals = useMemo(
+  const homeworkTime = useMemo(
     () => buildIntervals(events, plan, homeworkToCalculateTime),
     [events, plan, homeworkToCalculateTime]
   );
@@ -184,6 +185,9 @@ const HomeworkList = ({ homework, search, tab, homeworkToCalculateTime }) => {
                       onClick={handleOpenAttachments.bind(null, {
                         files: homework.files,
                         description: homework.description,
+                        dateList: homeworkTime.find(
+                          (item) => item.id === homework.id
+                        ),
                       })}
                       open={attachments.open}
                       Icon={InfoIcon}
@@ -213,6 +217,7 @@ const HomeworkList = ({ homework, search, tab, homeworkToCalculateTime }) => {
       <Attachments
         attachments={attachments}
         handleClose={handleCloseAttachments}
+        buildDateTime={buildDateTime}
       />
     </>
   );
@@ -313,7 +318,11 @@ const buildIntervals = (events, plan, homeworkToCalculateTime) => {
 
         if (startTaskDate.getTime() > interval.end.getTime()) continue;
 
-        while (freeStart < interval.start && estimatedTime > 0) {
+        while (
+          freeStart < interval.start &&
+          estimatedTime > 0 &&
+          freeStart < endTaskDate
+        ) {
           const maxDayTime = new Date(freeStart);
           let maxTime = new Date(interval.start);
           maxDayTime.setHours(22);

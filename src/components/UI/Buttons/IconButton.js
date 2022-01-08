@@ -11,6 +11,7 @@ const IconButton = ({
   circleSize,
   edge,
   placement,
+  color,
 }) => {
   const size = defaultSize ? defaultSize : 28;
   const placementPosition = placement ? placement : 'bottom';
@@ -22,12 +23,13 @@ const IconButton = ({
       edge={edge}
       sx={{
         padding: 0,
+        color: color,
         width: circleSize ? circleSize : 44,
         height: circleSize ? circleSize : 44,
         ...(open && {
           bgcolor: (theme) =>
             alpha(
-              theme.palette.secondary.main,
+              color ? color : theme.palette.secondary.main,
               theme.palette.action.focusOpacity
             ),
         }),
@@ -37,7 +39,7 @@ const IconButton = ({
         sx={{
           width: size,
           height: size,
-          color: open ? 'secondary.main' : 'primary.light',
+          color: color ? color : open ? 'secondary.main' : 'primary.light',
         }}
       />
     </MuiIconButton>

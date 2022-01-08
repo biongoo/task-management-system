@@ -102,7 +102,7 @@ const Subjects = () => {
           <StudentSubjectsList
             subjectsList={subjectsList}
             search={search}
-            loading={loading}
+            loading={firstLoading}
           />
         )}
       </Paper>

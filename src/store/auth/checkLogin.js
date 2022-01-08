@@ -6,12 +6,12 @@ const checkLogin = createAsyncThunk(
     const url = 'http://java.ts4ever.pl/signin/checklogin';
     const method = 'POST';
 
-    const { email: userEmail, token: userToken } = getState().auth;
+    const { email: userEmail, token: userToken, type } = getState().auth;
 
     try {
       const response = await fetch(url, {
         method: method,
-        body: JSON.stringify({ userEmail, userToken }),
+        body: JSON.stringify({ userEmail, userToken, type }),
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',

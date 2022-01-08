@@ -1,11 +1,11 @@
+import { blue } from '@mui/material/colors';
 import { createSlice } from '@reduxjs/toolkit';
-import { purple } from '@mui/material/colors';
 
 const initialState = {
   mode: localStorage.getItem('mode') ? localStorage.getItem('mode') : 'light',
   color: localStorage.getItem('color')
     ? localStorage.getItem('color')
-    : purple[500],
+    : blue[500],
   snackbar: { message: '', variant: 'success', time: 6000, show: false },
 };
 

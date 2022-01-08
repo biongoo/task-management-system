@@ -106,9 +106,10 @@ const renderEventContent = (eventInfo) => {
           textOverflow: 'ellipsis',
           width: '100%',
           px: 0.5,
+          color: 'text.primary',
         }}
       >
-        <span style={{ fontWeight: 600 }}>{startTimeString} </span>
+        <span style={{ fontWeight: 500 }}>{startTimeString} </span>
         {eventInfo.event.title}
       </Typography>
     </Tooltip>
@@ -126,7 +127,7 @@ const renderEventContent = (eventInfo) => {
             onClick={onClick}
           >
             {phoneText}
-            <InfoIcon sx={{ fontSize: '1.1rem' }} />
+            <InfoIcon sx={{ fontSize: '1.1rem', color: 'text.primary' }} />
           </Stack>
         )}
         {!onClick && phoneText}
@@ -143,7 +144,13 @@ const renderEventContent = (eventInfo) => {
             sx={{ width: '100%' }}
           >
             {normalText}
-            <InfoIcon sx={{ fontSize: '1.1rem', marginRight: '2px' }} />
+            <InfoIcon
+              sx={{
+                fontSize: '1.1rem',
+                marginRight: '2px',
+                color: 'text.primary',
+              }}
+            />
           </Stack>
         )}
         {!onClick && normalText}
@@ -223,7 +230,7 @@ const sxCalendar = {
             bgcolor: (theme) => alpha(theme.palette.secondary.main, 0.55),
             borderColor: (theme) => alpha(theme.palette.secondary.main, 0.4),
             '&.priority': {
-              bgcolor: (theme) => alpha(theme.palette.secondary.main, 0.9),
+              bgcolor: (theme) => alpha(theme.palette.secondary.main, 0.8),
               '&:hover': {
                 bgcolor: (theme) => alpha(theme.palette.secondary.main, 0.7),
               },

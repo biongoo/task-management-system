@@ -6,15 +6,17 @@ import Theme from './theme/Theme';
 import useInit from './hooks/use-init';
 
 import Plan from './pages/Plan';
+import Marks from './pages/Marks';
 import Login from './pages/Login';
 import Forgot from './pages/Forgot';
 import NotFound from './pages/404.js';
+import Settings from './pages/Settings';
 import Teachers from './pages/Teachers';
 import Subjects from './pages/Subjects';
 import Register from './pages/Register';
+import Homework from './pages/Homework';
 import Dashboard from './pages/Dashboard';
 import Materials from './pages/Materials';
-import Homework from './pages/Homework';
 import MainLayout from './components/Layout/Main/MainLayout';
 import AuthLayout from './components/Layout/Auth/AuthLayout';
 
@@ -30,7 +32,9 @@ function App() {
           <Route path="subjects" element={<Subjects />} />
           <Route path="homework" element={<Homework />} />
           <Route path="materials" element={<Materials />} />
+          <Route path="marks" element={<Marks />} />
           <Route path="plan" element={<Plan />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
 
         <Route path="/" element={<AuthLayout />}>

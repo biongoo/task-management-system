@@ -93,7 +93,7 @@ const Account = () => {
             },
           }}
         />
-        <Box sx={{ my: 1 }}>{<AccountItems />}</Box>
+        <Box sx={{ my: 1 }}>{<AccountItems handleClose={handleClose} />}</Box>
       </Menu>
     </>
   );

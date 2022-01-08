@@ -41,7 +41,9 @@ const Homework = () => {
 
   homeworkCopy = homeworkCopy.filter((homework) => homework.isDone === !!tab);
 
-  let homeworkToCalculateTime = [...homeworkCopy];
+  let homeworkToCalculateTime = [...homework].filter(
+    (homework) => homework.isDone === false
+  );
   homeworkToCalculateTime = homeworkToCalculateTime.sort((a, b) =>
     a.deadline.localeCompare(b.deadline)
   );
@@ -159,7 +161,7 @@ const Homework = () => {
             </Stack>
           </Box>
         )}
-        {!homeworkCopy.length && !search && !loading && (
+        {!homeworkCopy.length && !search && !firstLoading && (
           <Box sx={{ textAlign: 'center' }}>
             <Stack>
               <Typography variant="h6">

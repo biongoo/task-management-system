@@ -68,6 +68,7 @@
     "homepage404": "strony głównej",
     "homework": "Zadania",
     "logout": "Wyloguj",
+    "marks": "Oceny",
     "materials": "Materiały",
     "mode": "Tryb",
     "noOptions": "Brak opcji",
@@ -197,9 +198,11 @@
     "done": "Ukończone",
     "editHomework": "Edytuj zadanie",
     "emptyDone": "Brak ukończonych zadań.",
+    "emptyEstimatedHours": "W podanym przedziale czasowym jest za mało czasu na wykonanie zadania.",
     "estimatedHours": "Przewidywane godziny",
     "estimatedMinutes": "Przewidywane minuty",
     "estimatedTime": "Przewidywany czas",
+    "estimatedTimeLong": "Przewidywany czas na wykonanie zadania",
     "finish": "Zakończ",
     "finishBody": "Czy aby na pewno chcesz zakończyć \"{{name}}\"?",
     "incorrectNumber": "Nieprawidłowa liczba. Min {{min}}, maks {{max}}.",
@@ -218,5 +221,14 @@
     "endDate": "Data zakończenia",
     "startDate": "Data rozpoczęcia",
     "today": "Dziś"
+  },
+  "settings": {
+    "changePassword": "Zmień hasło",
+    "confirmPassword": "Powtórz nowe hasło",
+    "invalidOldPassword": "Stare hasło jest nieprawidłowe.",
+    "delete": "Usuń konto",
+    "newPassword": "Nowe hasło",
+    "oldPassword": "Stare hasło",
+    "successChange": "Hasło zostało zmienione pomyślnie. Zaloguj się ponownie!"
   }
 }

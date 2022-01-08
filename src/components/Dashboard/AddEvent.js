@@ -191,7 +191,7 @@ const AddEvent = () => {
     formData.append('description', description);
     formData.append('startDate', +startDate);
     formData.append('endDate', +endDate);
-    formData.append('isMarked', isMarked);
+    formData.append('isMarked', tab === 0 ? isMarked : false);
     formData.append('tstId', subjectType ? subjectType.id : 0);
     formData.append('language', i18n.language);
 
@@ -325,6 +325,7 @@ const AddEvent = () => {
     subjectNameReset();
     subjectTypeReset();
     setTypesLabel([]);
+    setIsMarked(true);
     setTab(newValue);
   };
 
@@ -445,11 +446,13 @@ const AddEvent = () => {
           value={notifications}
           onChange={setNotifications}
         />
-        <FormControlLabel
-          label={t('global.isMarked')}
-          control={<Checkbox checked={isMarked} color="secondary" />}
-          onChange={(event) => setIsMarked(event.target.checked)}
-        />
+        <TabPanel value={tab} index={0}>
+          <FormControlLabel
+            label={t('global.isMarked')}
+            control={<Checkbox checked={isMarked} color="secondary" />}
+            onChange={(event) => setIsMarked(event.target.checked)}
+          />
+        </TabPanel>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Attachment id="att" onChange={changeFilesHandler} />
         </Box>

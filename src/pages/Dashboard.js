@@ -61,7 +61,7 @@ const Dashboard = () => {
       if (flag) {
         let calendarApi = calendar.current.getApi();
 
-        if (!Array.isArray(plan) || plan.length === 0) return;
+        if (!Array.isArray(plan)) return;
 
         for (const planElement of plan) {
           if (planElement.repetition) {
@@ -155,7 +155,12 @@ const Dashboard = () => {
 const init = (homework, events, plan, handleOpenEditEvent) => {
   const array = [];
 
-  if (!Array.isArray(homework) || homework.length === 0) return array;
+  if (
+    !Array.isArray(homework) ||
+    !Array.isArray(events) ||
+    !Array.isArray(plan)
+  )
+    return array;
 
   for (const task of homework) {
     const name = task.name;

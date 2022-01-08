@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
-import { red } from '@mui/material/colors';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Stack, Paper, Typography } from '@mui/material';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
-import IconButton from '../components/UI/Buttons/IconButton';
+import DeleteAccount from '../components/Settings/DeleteAccount';
 import ChangePassword from '../components/Settings/ChangePassword';
 
 const Settings = () => {
   const { t } = useTranslation();
-  const [showDelete, setShowDelete] = useState(false);
 
   return (
     <Box
@@ -41,14 +38,7 @@ const Settings = () => {
           >
             {t('layout.settings')}
           </Typography>
-          <IconButton
-            tooltip={t('settings.delete')}
-            onClick={() => setShowDelete((prevState) => !prevState)}
-            Icon={DeleteForeverIcon}
-            color={red[800]}
-            open={showDelete}
-            defaultSize={32}
-          />
+          <DeleteAccount />
         </Stack>
         <ChangePassword />
       </Paper>

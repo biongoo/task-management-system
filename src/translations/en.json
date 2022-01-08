@@ -226,9 +226,11 @@
     "changePassword": "Change new password",
     "confirmPassword": "Confirm password",
     "delete": "Delete account",
+    "deleteBody": "Are you sure you want to delete your account? All information will be irretrievably deleted.",
     "invalidOldPassword": "Old password is invalid.",
     "newPassword": "New password",
     "oldPassword": "Old password",
-    "successChange": "Password changed successfully. Please sign in again!"
+    "successChange": "Password changed successfully. Please sign in again!",
+    "successDelete": "Your account has been successfully deleted."
   }
 }

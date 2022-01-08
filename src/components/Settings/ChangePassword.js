@@ -70,7 +70,7 @@ const ChangePassword = () => {
       if (changePassword.fulfilled.match(resultAction)) {
         switch (resultAction.payload.message) {
           case 'passwordEdited':
-            /* dispatch(logout()); */
+            dispatch(logout());
             dispatch(
               showSnackbar({
                 message: t('settings.successChange'),

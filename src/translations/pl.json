@@ -225,10 +225,12 @@
   "settings": {
     "changePassword": "Zmień hasło",
     "confirmPassword": "Powtórz nowe hasło",
-    "invalidOldPassword": "Stare hasło jest nieprawidłowe.",
     "delete": "Usuń konto",
+    "deleteBody": "Czy aby na pewno chcesz usunąć swoje konto? Wszystkie informacje zostaną bezpowrotnie usunięte.",
+    "invalidOldPassword": "Stare hasło jest nieprawidłowe.",
     "newPassword": "Nowe hasło",
     "oldPassword": "Stare hasło",
-    "successChange": "Hasło zostało zmienione pomyślnie. Zaloguj się ponownie!"
+    "successChange": "Hasło zostało zmienione pomyślnie. Zaloguj się ponownie!",
+    "successDelete": "Konto zostało pomyślnie usunięte."
   }
 }

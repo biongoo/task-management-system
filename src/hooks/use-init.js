@@ -14,6 +14,7 @@ import getTypes from '../store/subjects/getTypes';
 import getTeachers from '../store/teachers/getTeachers';
 import getHomework from '../store/homework/getHomework';
 import getMaterials from '../store/materials/getMaterials';
+import getUniversities from '../store/universities/getUniversities';
 import getSubjectsUser from '../store/subjects/user/getSubjectsUser';
 
 import { resetPlan } from '../store/plan-slice';
@@ -23,6 +24,7 @@ import { resetHomework } from '../store/homework-slice';
 import { resetSubjects } from '../store/subjects-slice';
 import { resetTeachers } from '../store/teachers-slice';
 import { resetMaterials } from '../store/materials-slice';
+import { resetUniversities } from '../store/universities-slice';
 
 const useInit = () => {
   const { t } = useTranslation();
@@ -46,6 +48,8 @@ const useInit = () => {
           if (+typeOfAccount === 1) {
             dispatch(getSubjectsUser());
             dispatch(getMarks());
+          } else if (+typeOfAccount === 2) {
+            dispatch(getUniversities());
           }
           dispatch(getMaterials());
           break;
@@ -94,6 +98,7 @@ const useInit = () => {
       dispatch(resetSubjects());
       dispatch(resetTeachers());
       dispatch(resetMaterials());
+      dispatch(resetUniversities());
     }
   }, [dispatch, logsOut]);
 };

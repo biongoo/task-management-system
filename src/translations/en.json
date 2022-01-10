@@ -78,7 +78,8 @@
     "shortTitle": "TMS",
     "subjects": "Subjects",
     "themeSettings": "Theme settings",
-    "title": "Task Management System"
+    "title": "Task Management System",
+    "universities": "Universities"
   },
   "auth": {
     "enterDetails": "Enter your details below.",

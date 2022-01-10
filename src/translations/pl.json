@@ -78,7 +78,8 @@
     "shortTitle": "TMS",
     "subjects": "Przedmioty",
     "themeSettings": "Ustawienia motywu",
-    "title": "System zarządzania zadaniami"
+    "title": "System zarządzania zadaniami",
+    "universities": "Uczelnie"
   },
   "auth": {
     "enterDetails": "Wpisz poniżej swoje dane.",

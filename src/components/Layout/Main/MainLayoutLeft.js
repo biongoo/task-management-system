@@ -10,6 +10,7 @@ import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import AttachmentIcon from '@mui/icons-material/Attachment';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import {
   Box,
   Drawer,
@@ -71,11 +72,18 @@ const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
 
   //teacher
   if (+typeOfAccount === 2) {
-    menuItems.push({
-      text: 'My Notes',
-      icon: <SchoolIcon />,
-      path: '/test2',
-    });
+    menuItems.push(
+      {
+        text: t('layout.home'),
+        icon: <HomeIcon sx={{ color: 'primary.light' }} />,
+        path: '/dashboard/',
+      },
+      {
+        text: t('layout.universities'),
+        icon: <AccountBalanceIcon sx={{ color: 'primary.light' }} />,
+        path: '/dashboard/universities',
+      }
+    );
   }
 
   const drawer = (

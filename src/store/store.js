@@ -10,6 +10,7 @@ import subjectsSlice from './subjects-slice';
 import teachersSlice from './teachers-slice';
 import homeworkSlice from './homework-slice';
 import materialsSlice from './materials-slice';
+import universitiesSlice from './universities-slice';
 
 const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ const store = configureStore({
     teachers: teachersSlice,
     homework: homeworkSlice,
     materials: materialsSlice,
+    universities: universitiesSlice,
   },
 });
 

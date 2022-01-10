@@ -17,6 +17,7 @@ import Register from './pages/Register';
 import Homework from './pages/Homework';
 import Dashboard from './pages/Dashboard';
 import Materials from './pages/Materials';
+import Universities from './pages/Universities';
 import MainLayout from './components/Layout/Main/MainLayout';
 import AuthLayout from './components/Layout/Auth/AuthLayout';
 
@@ -35,6 +36,7 @@ function App() {
           <Route path="marks" element={<Marks />} />
           <Route path="plan" element={<Plan />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="universities" element={<Universities />} />
         </Route>
 
         <Route path="/" element={<AuthLayout />}>

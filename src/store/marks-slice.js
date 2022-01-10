@@ -14,7 +14,9 @@ const initialState = {
 const marksSlice = createSlice({
   name: 'marks',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: () => initialState,
+  },
   extraReducers: {
     [getMarks.pending]: (state) => {
       state.loading = true;
@@ -45,5 +47,7 @@ const marksSlice = createSlice({
     },
   },
 });
+
+export const { reset: resetMarks } = marksSlice.actions;
 
 export default marksSlice.reducer;

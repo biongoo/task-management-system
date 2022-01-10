@@ -110,6 +110,7 @@
     "forgot": "Forgot password?",
     "rememberMe": "Remember me",
     "successLogin": "Logged in successfully",
+    "successLogout": "Logged out successfully",
     "title": "Sign in to TMS"
   },
   "forgot": {
@@ -232,5 +233,15 @@
     "oldPassword": "Old password",
     "successChange": "Password changed successfully. Please sign in again!",
     "successDelete": "Your account has been successfully deleted."
+  },
+  "marks": {
+    "addMark": "Add mark",
+    "averageGrade": "Average grade",
+    "deleteMark": "Delete mark",
+    "deleteMarkBody": "Are you sure you want to delete this mark?",
+    "editMark": "Edit mark",
+    "emptyMark": "Not graded",
+    "incorrectMark": "Incorrect mark. Min {{min}}, max {{max}}.",
+    "noMarks": "No marks"
   }
 }

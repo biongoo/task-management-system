@@ -14,7 +14,9 @@ const initialState = {
 const planSlice = createSlice({
   name: 'plan',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: () => initialState,
+  },
   extraReducers: {
     [getPlan.pending]: (state) => {
       state.loading = true;
@@ -45,5 +47,7 @@ const planSlice = createSlice({
     },
   },
 });
+
+export const { reset: resetPlan } = planSlice.actions;
 
 export default planSlice.reducer;

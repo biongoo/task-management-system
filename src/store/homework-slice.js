@@ -15,7 +15,9 @@ const initialState = {
 const homeworkSlice = createSlice({
   name: 'homework',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: () => initialState,
+  },
   extraReducers: {
     [getHomework.pending]: (state) => {
       state.loading = true;
@@ -53,5 +55,7 @@ const homeworkSlice = createSlice({
     },
   },
 });
+
+export const { reset: resetHomework } = homeworkSlice.actions;
 
 export default homeworkSlice.reducer;

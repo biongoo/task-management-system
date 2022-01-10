@@ -1,12 +1,13 @@
 import { format } from 'date-fns';
-import React, { forwardRef } from 'react';
 import { alpha } from '@mui/material/styles';
 import plLocaleFNS from 'date-fns/locale/pl';
 import FullCalendar from '@fullcalendar/react';
 import { useTranslation } from 'react-i18next';
 import enLocaleFNS from 'date-fns/locale/en-US';
+import React, { forwardRef, useEffect } from 'react';
 import InfoIcon from '@mui/icons-material/InfoOutlined';
 import { Box, Stack, Tooltip, Typography } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 
 import listPlugin from '@fullcalendar/list';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -15,6 +16,14 @@ import interactionPlugin from '@fullcalendar/interaction';
 
 const Calendar = forwardRef(({ events }, calendar) => {
   const { i18n } = useTranslation();
+  const matches = useMediaQuery('(min-width:1200px)');
+
+  useEffect(() => {
+    if (calendar.current) {
+      let calendarApi = calendar.current.getApi();
+      calendarApi.changeView(matches ? 'dayGridMonth' : 'listWeek');
+    }
+  }, [matches, calendar]);
 
   return (
     <Box sx={sxCalendar}>
@@ -243,6 +252,9 @@ const sxCalendar = {
       },
       '& .fc-list': {
         border: 'none !important',
+        '& .fc-list-empty': {
+          bgcolor: 'primary.main',
+        },
         '& .fc-list-day': {
           '&.fc-day-today th': {
             bgcolor: (theme) => alpha(theme.palette.secondary.main, 0.45),

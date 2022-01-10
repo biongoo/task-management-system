@@ -22,10 +22,7 @@ const editMark = createAsyncThunk(
 
       const dataRes = await response.json();
 
-      return {
-        ...dataRes,
-        ...data,
-      };
+      return dataRes;
     } catch (err) {
       if (!err.response) throw err;
       return rejectWithValue(err.response.data);

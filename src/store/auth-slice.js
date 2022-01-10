@@ -23,6 +23,7 @@ const initialState = {
     localStorage.getItem('email') || sessionStorage.getItem('email')
       ? true
       : false,
+  logsOut: false,
 };
 
 const authSlice = createSlice({
@@ -61,14 +62,18 @@ const authSlice = createSlice({
 
       state.email = '';
       state.token = '';
+      state.type = 0;
       state.isLoggedIn = false;
     },
-    setTeachers: (state, action) => {
-      state.teachers = action.payload;
+    startLogout: (state) => {
+      state.logsOut = true;
+    },
+    stopLogout: (state) => {
+      state.logsOut = false;
     },
   },
 });
 
-export const { login, logout, setTeachers } = authSlice.actions;
+export const { login, logout, startLogout, stopLogout } = authSlice.actions;
 
 export default authSlice.reducer;

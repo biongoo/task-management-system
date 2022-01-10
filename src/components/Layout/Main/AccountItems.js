@@ -5,7 +5,8 @@ import { useTranslation } from 'react-i18next';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { MenuItem, ListItemIcon, Box, Button } from '@mui/material';
 
-import { logout } from '../../../store/auth-slice';
+import { startLogout } from '../../../store/auth-slice';
+import { showSnackbar } from '../../../store/palette-slice';
 
 const MENU_OPTIONS = [
   {
@@ -20,7 +21,13 @@ const AccountItems = ({ handleClose }) => {
   const dispatch = useDispatch();
 
   const logoutHandler = () => {
-    dispatch(logout());
+    dispatch(startLogout());
+    dispatch(
+      showSnackbar({
+        message: t('login.successLogout'),
+        variant: 'success',
+      })
+    );
   };
 
   return (

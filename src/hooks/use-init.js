@@ -2,10 +2,10 @@ import { useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { logout } from '../store/auth-slice';
-import { showSnackbar } from '../store/palette-slice';
 import { clearError } from '../store/user-slice';
+import { showSnackbar } from '../store/palette-slice';
 import checkLoginAsync from '../store/auth/checkLogin';
+import { logout, startLogout, stopLogout } from '../store/auth-slice';
 
 import getPlan from '../store/plan/getPlan';
 import getMarks from '../store/marks/getMarks';
@@ -16,12 +16,20 @@ import getHomework from '../store/homework/getHomework';
 import getMaterials from '../store/materials/getMaterials';
 import getSubjectsUser from '../store/subjects/user/getSubjectsUser';
 
+import { resetPlan } from '../store/plan-slice';
+import { resetMarks } from '../store/marks-slice';
+import { resetEvents } from '../store/events-slice';
+import { resetHomework } from '../store/homework-slice';
+import { resetSubjects } from '../store/subjects-slice';
+import { resetTeachers } from '../store/teachers-slice';
+import { resetMaterials } from '../store/materials-slice';
+
 const useInit = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const { error } = useSelector((state) => state.user);
-  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { isLoggedIn, logsOut } = useSelector((state) => state.auth);
   const typeOfAccount = useSelector((state) => state.auth.type);
 
   const checkLogin = useCallback(async () => {
@@ -43,7 +51,7 @@ const useInit = () => {
           break;
         case 'tokenNotValid':
         default:
-          dispatch(logout());
+          dispatch(startLogout());
           dispatch(
             showSnackbar({
               message: t('global.expiredSession'),
@@ -53,7 +61,7 @@ const useInit = () => {
           break;
       }
     } else {
-      dispatch(logout());
+      dispatch(startLogout());
       dispatch(
         showSnackbar({ message: t('global.connectionError'), variant: 'error' })
       );
@@ -68,11 +76,26 @@ const useInit = () => {
 
   useEffect(() => {
     if (error) {
-      dispatch(logout());
+      dispatch(startLogout());
       dispatch(showSnackbar({ message: error, variant: 'error' }));
       dispatch(clearError());
     }
   }, [dispatch, error]);
+
+  useEffect(() => {
+    if (logsOut) {
+      dispatch(stopLogout());
+      dispatch(logout());
+
+      dispatch(resetPlan());
+      dispatch(resetMarks());
+      dispatch(resetEvents());
+      dispatch(resetHomework());
+      dispatch(resetSubjects());
+      dispatch(resetTeachers());
+      dispatch(resetMaterials());
+    }
+  }, [dispatch, logsOut]);
 };
 
 export default useInit;

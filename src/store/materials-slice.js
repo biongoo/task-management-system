@@ -14,7 +14,9 @@ const initialState = {
 const materialsSlice = createSlice({
   name: 'materials',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: () => initialState,
+  },
   extraReducers: {
     [getMaterials.pending]: (state) => {
       state.loading = true;
@@ -47,5 +49,7 @@ const materialsSlice = createSlice({
     },
   },
 });
+
+export const { reset: resetMaterials } = materialsSlice.actions;
 
 export default materialsSlice.reducer;

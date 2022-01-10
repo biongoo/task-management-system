@@ -14,7 +14,9 @@ const initialState = {
 const teachersSlice = createSlice({
   name: 'teachers',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: () => initialState,
+  },
   extraReducers: {
     [getTeachers.pending]: (state) => {
       state.loading = true;
@@ -61,5 +63,7 @@ const teachersSlice = createSlice({
     },
   },
 });
+
+export const { reset: resetTeachers } = teachersSlice.actions;
 
 export default teachersSlice.reducer;

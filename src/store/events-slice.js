@@ -14,7 +14,9 @@ const initialState = {
 const eventsSlice = createSlice({
   name: 'events',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: () => initialState,
+  },
   extraReducers: {
     [getEvents.pending]: (state) => {
       state.loading = true;
@@ -45,5 +47,7 @@ const eventsSlice = createSlice({
     },
   },
 });
+
+export const { reset: resetEvents } = eventsSlice.actions;
 
 export default eventsSlice.reducer;

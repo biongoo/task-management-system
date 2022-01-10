@@ -5,7 +5,9 @@ import { Box, Paper, Stack, Backdrop, CircularProgress } from '@mui/material';
 
 import getMarks from '../store/marks/getMarks';
 import Sort from '../components/UI/Sorts/Sort';
+import AddMark from '../components/Marks/AddMark';
 import Search from '../components/UI/Inputs/Search';
+import MarksList from '../components/Marks/MarksList';
 
 const groupItemBy = (array, property) => {
   var hash = {},
@@ -32,8 +34,6 @@ const Marks = () => {
   }
 
   const { marks, loading, firstLoading } = useSelector((state) => state.marks);
-
-  console.log(marks);
 
   useEffect(() => {
     dispatch(getMarks());
@@ -79,8 +79,6 @@ const Marks = () => {
 
   marksList = groupItemBy(marksList, 'teacherSubjectType.subject.name');
 
-  console.log(marksList);
-
   return (
     <Box
       sx={{
@@ -120,15 +118,11 @@ const Marks = () => {
               setSelectedIndex={setSelectedSortingIndex}
               alphabeticOnly={true}
             />
-            {/* <AddMaterial /> */}
+            <AddMark />
           </Stack>
         </Stack>
 
-        {/* <MaterialsList
-          materials={materialsList}
-          search={search}
-          loading={firstLoading}
-        /> */}
+        <MarksList marks={marksList} search={search} loading={firstLoading} />
       </Paper>
     </Box>
   );

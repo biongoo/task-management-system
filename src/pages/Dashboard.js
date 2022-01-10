@@ -20,25 +20,35 @@ let flag = false;
 const Dashboard = () => {
   const dispatch = useDispatch();
   const calendar = useRef(null);
-  const [refreshPlan, setRefreshPlan] = useState(1);
   const [editingEvent, setEditingEvent] = useState(null);
+  const [currentDate, setCurrentDate] = useState(new Date());
 
-  const { plan, firstLoading: loadingPlan } = useSelector(
-    (state) => state.plan
-  );
+  const {
+    plan,
+    loading: loadingPlan,
+    firstLoading: firstLoadingP,
+  } = useSelector((state) => state.plan);
 
-  const { homework, firstLoading: loadingHomework } = useSelector(
-    (state) => state.homework
-  );
+  const {
+    homework,
+    loading: loadingHomework,
+    firstLoading: firstLoadingH,
+  } = useSelector((state) => state.homework);
 
-  const { events, firstLoading: loadingEvents } = useSelector(
-    (state) => state.events
-  );
+  const {
+    events,
+    loading: loadingEvents,
+    firstLoading: firstLoadingE,
+  } = useSelector((state) => state.events);
+
+  flag = !firstLoadingP && !firstLoadingH && !firstLoadingE;
 
   useEffect(() => {
-    dispatch(getPlan());
-    dispatch(getEvents());
-    dispatch(getHomework());
+    if (flag) {
+      dispatch(getPlan());
+      dispatch(getEvents());
+      dispatch(getHomework());
+    }
   }, [dispatch]);
 
   const handleOpenEditEvent = useCallback(
@@ -52,74 +62,34 @@ const Dashboard = () => {
     setEditingEvent(null);
   };
 
-  const handleRefresh = () => {
-    setRefreshPlan((prevState) => prevState + 1);
-  };
-
-  useEffect(() => {
-    if (refreshPlan > 0 && calendar.current) {
-      if (flag) {
-        let calendarApi = calendar.current.getApi();
-
-        if (!Array.isArray(plan)) return;
-
-        for (const planElement of plan) {
-          if (planElement.repetition) {
-            const name = planElement.name
-              ? planElement.name
-              : `${planElement.teacherSubjectType.subject.name}`;
-
-            const name2 = planElement.name
-              ? planElement.name
-              : `${planElement.teacherSubjectType.subject.name} - ${planElement.teacherSubjectType.type.name} - ${planElement.teacherSubjectType.teacher.academicTitle} ${planElement.teacherSubjectType.teacher.firstName} ${planElement.teacherSubjectType.teacher.lastName}`;
-
-            const dayOfWeek = (planElement.day + 1) % 7;
-
-            const firstEventDateOnTab = new Date(
-              calendarApi.getDate().getFullYear(),
-              calendarApi.getDate().getMonth(),
-              1
-            );
-            let days = dayOfWeek - firstEventDateOnTab.getDay();
-            if (days < 1) days += 7;
-            firstEventDateOnTab.setDate(firstEventDateOnTab.getDate() + days);
-
-            for (let i = -1; i <= 5; i++) {
-              let newDate = new Date(firstEventDateOnTab.getTime());
-              newDate.setDate(newDate.getDate() + i * 7);
-
-              let weekNumber = getWeekNumber(newDate);
-              let id = `${planElement.id}-${
-                planElement.startTime
-              }-${newDate.getDay()}-${weekNumber}-${newDate.getFullYear()}`;
-
-              if (!calendarApi.getEventById(id)) {
-                if (weekNumber % 2 === planElement.repetition % 2) {
-                  calendarApi.addEvent({
-                    id: id,
-                    title: name,
-                    title2: name2,
-                    start: `${formatDate(newDate)}T${planElement.startTime}`,
-                    end: `${formatDate(newDate)}T${planElement.endTime}`,
-                  });
-                }
-              }
-            }
-          }
-        }
-      } else flag = true;
+  const calendarEvents = useMemo(() => {
+    if (!loadingPlan && !loadingHomework && !loadingEvents) {
+      return init(homework, events, plan, handleOpenEditEvent);
     }
-  }, [calendar, plan, refreshPlan]);
+    return [];
+  }, [
+    plan,
+    events,
+    homework,
+    loadingPlan,
+    loadingEvents,
+    loadingHomework,
+    handleOpenEditEvent,
+  ]);
 
-  const calendarEvents = useMemo(
-    () => init(homework, events, plan, handleOpenEditEvent),
-    [homework, events, plan, handleOpenEditEvent]
-  );
-
-  const calendarMemo = useMemo(
-    () => <Calendar ref={calendar} events={calendarEvents} />,
-    [calendarEvents]
-  );
+  const calendarEventsWithRep = useMemo(() => {
+    if (!loadingPlan && !loadingHomework && !loadingEvents) {
+      return [...calendarEvents, ...initRepetition(plan, currentDate)];
+    }
+    return [];
+  }, [
+    plan,
+    currentDate,
+    loadingPlan,
+    loadingEvents,
+    calendarEvents,
+    loadingHomework,
+  ]);
 
   return (
     <Box
@@ -130,7 +100,7 @@ const Dashboard = () => {
     >
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loadingPlan || loadingHomework || loadingEvents}
+        open={loadingPlan || loadingEvents || loadingHomework}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -144,9 +114,13 @@ const Dashboard = () => {
           borderRadius: 4,
         }}
       >
-        <Header ref={calendar} refreshPlan={handleRefresh} />
+        <Header
+          ref={calendar}
+          currentDate={currentDate}
+          setDate={(date) => setCurrentDate(date)}
+        />
         <EditEvent editing={editingEvent} onClose={handleCloseEditEvent} />
-        {calendarMemo}
+        <Calendar ref={calendar} events={calendarEventsWithRep} />
       </Paper>
     </Box>
   );
@@ -162,6 +136,26 @@ const init = (homework, events, plan, handleOpenEditEvent) => {
   )
     return array;
 
+  for (const planElement of plan) {
+    if (!planElement.repetition) {
+      const name = planElement.name
+        ? planElement.name
+        : `${planElement.teacherSubjectType.subject.name}`;
+      const name2 = planElement.name
+        ? planElement.name
+        : `${planElement.teacherSubjectType.subject.name} - ${planElement.teacherSubjectType.type.name} - ${planElement.teacherSubjectType.teacher.academicTitle} ${planElement.teacherSubjectType.teacher.firstName} ${planElement.teacherSubjectType.teacher.lastName}`;
+
+      array.push({
+        id: `p-${homework.id}`,
+        daysOfWeek: [(planElement.day + 1) % 7],
+        startTime: planElement.startTime,
+        endTime: planElement.endTime,
+        title: name,
+        title2: name2,
+      });
+    }
+  }
+
   for (const task of homework) {
     const name = task.name;
     const name2 = `${task.name} - ${task.teacherSubjectType.subject.name} - ${task.teacherSubjectType.type.name} - ${task.teacherSubjectType.teacher.academicTitle} ${task.teacherSubjectType.teacher.firstName} ${task.teacherSubjectType.teacher.lastName}`;
@@ -170,6 +164,7 @@ const init = (homework, events, plan, handleOpenEditEvent) => {
     nextMilisec.setMilliseconds(nextMilisec.getMilliseconds() + 1);
 
     array.push({
+      id: `h-${homework.id}`,
       title: name,
       title2: name2,
       start: new Date(task.deadline),
@@ -187,6 +182,7 @@ const init = (homework, events, plan, handleOpenEditEvent) => {
       : event.name;
 
     array.push({
+      id: `e-${homework.id}`,
       title: name,
       title2: name2,
       start: new Date(event.startDate),
@@ -197,8 +193,16 @@ const init = (homework, events, plan, handleOpenEditEvent) => {
     });
   }
 
+  return array;
+};
+
+const initRepetition = (plan, currentDate) => {
+  const array = [];
+
+  if (!Array.isArray(plan)) return array;
+
   for (const planElement of plan) {
-    if (!planElement.repetition) {
+    if (planElement.repetition) {
       const name = planElement.name
         ? planElement.name
         : `${planElement.teacherSubjectType.subject.name}`;
@@ -206,13 +210,36 @@ const init = (homework, events, plan, handleOpenEditEvent) => {
         ? planElement.name
         : `${planElement.teacherSubjectType.subject.name} - ${planElement.teacherSubjectType.type.name} - ${planElement.teacherSubjectType.teacher.academicTitle} ${planElement.teacherSubjectType.teacher.firstName} ${planElement.teacherSubjectType.teacher.lastName}`;
 
-      array.push({
-        daysOfWeek: [(planElement.day + 1) % 7],
-        startTime: planElement.startTime,
-        endTime: planElement.endTime,
-        title: name,
-        title2: name2,
-      });
+      const dayOfWeek = (planElement.day + 1) % 7;
+      const firstEventDateOnTab = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        1
+      );
+
+      let days = dayOfWeek - firstEventDateOnTab.getDay();
+      if (days < 1) days += 7;
+      firstEventDateOnTab.setDate(firstEventDateOnTab.getDate() + days);
+
+      for (let i = -1; i <= 5; i++) {
+        let newDate = new Date(firstEventDateOnTab.getTime());
+        newDate.setDate(newDate.getDate() + i * 7);
+
+        let weekNumber = getWeekNumber(newDate);
+        let id = `p-${planElement.id}-${
+          planElement.startTime
+        }-${newDate.getDay()}-${weekNumber}-${newDate.getFullYear()}`;
+
+        if (weekNumber % 2 === planElement.repetition % 2) {
+          array.push({
+            id: id,
+            title: name,
+            title2: name2,
+            start: `${formatDate(newDate)}T${planElement.startTime}`,
+            end: `${formatDate(newDate)}T${planElement.endTime}`,
+          });
+        }
+      }
     }
   }
 

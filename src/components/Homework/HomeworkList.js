@@ -1,8 +1,5 @@
-import { format } from 'date-fns';
 import { useSelector } from 'react-redux';
-import plLocaleFNS from 'date-fns/locale/pl';
 import { useTranslation } from 'react-i18next';
-import enLocaleFNS from 'date-fns/locale/en-US';
 import EditIcon from '@mui/icons-material/Edit';
 import TaskIcon from '@mui/icons-material/Task';
 import InfoIcon from '@mui/icons-material/Info';
@@ -18,6 +15,7 @@ import EditHomework from './EditHomework';
 import FinishHomework from './FinishHomework';
 import DeleteHomework from './DeleteHomework';
 import IconButton from '../UI/Buttons/IconButton';
+import { buildDate, buildDateTime } from '../../utils/formatDate';
 import {
   Accordion,
   AccordionSummary,
@@ -198,7 +196,7 @@ const HomeworkList = ({ homework, search, tab, homeworkToCalculateTime }) => {
                     <IconButton
                       tooltip={t('global.delete')}
                       onClick={handleOpenDelete.bind(null, homework.id)}
-                      open={editing}
+                      open={deleting}
                       Icon={DeleteIcon}
                       defaultSize={24}
                       circleSize={34}
@@ -477,46 +475,6 @@ const insertWithoutDuplicates = (intervals, index, start, end) => {
       }
     }
   }
-};
-
-const buildDateTime = (date, lang) => {
-  let stringTime = '';
-
-  switch (lang) {
-    case 'pl':
-      stringTime = format(date, 'yyyy.MM.dd HH:mm', {
-        locale: plLocaleFNS,
-      });
-      break;
-    case 'en':
-    default:
-      stringTime = format(date, "yyyy/MM/dd h:mmaaaaa'm'", {
-        locale: enLocaleFNS,
-      });
-      break;
-  }
-
-  return stringTime;
-};
-
-const buildDate = (date, lang) => {
-  let stringTime = '';
-
-  switch (lang) {
-    case 'pl':
-      stringTime = format(date, 'yyyy.MM.dd', {
-        locale: plLocaleFNS,
-      });
-      break;
-    case 'en':
-    default:
-      stringTime = format(date, 'yyyy/MM/dd', {
-        locale: enLocaleFNS,
-      });
-      break;
-  }
-
-  return stringTime;
 };
 
 const getHour = (totalMinutes, t) => {

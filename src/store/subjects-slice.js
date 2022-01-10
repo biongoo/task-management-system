@@ -18,7 +18,9 @@ const initialState = {
 const subjectsSlice = createSlice({
   name: 'subjects',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: () => initialState,
+  },
   extraReducers: {
     [getTypes.fulfilled]: (state, action) => {
       state.types = action.payload;
@@ -74,5 +76,7 @@ const subjectsSlice = createSlice({
     },
   },
 });
+
+export const { reset: resetSubjects } = subjectsSlice.actions;
 
 export default subjectsSlice.reducer;

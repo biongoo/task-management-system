@@ -110,6 +110,7 @@
     "forgot": "Nie pamiętasz hasła?",
     "rememberMe": "Zapamiętaj mnie",
     "successLogin": "Zalogowano pomyślnie",
+    "successLogout": "Wylogowano pomyślnie",
     "title": "Zaloguj się do TMS"
   },
   "forgot": {
@@ -232,5 +233,15 @@
     "oldPassword": "Stare hasło",
     "successChange": "Hasło zostało zmienione pomyślnie. Zaloguj się ponownie!",
     "successDelete": "Konto zostało pomyślnie usunięte."
+  },
+  "marks": {
+    "addMark": "Dodaj ocenę",
+    "averageGrade": "Średnia ocen",
+    "deleteMark": "Usuń ocenę",
+    "deleteMarkBody": "Czy aby na pewno chcesz usunąć tę ocenę?",
+    "editMark": "Edytuj ocenę",
+    "emptyMark": "Nie oceniono",
+    "incorrectMark": "Nieprawidłowa ocena. Min {{min}}, maks {{max}}.",
+    "noMarks": "Brak ocen"
   }
 }

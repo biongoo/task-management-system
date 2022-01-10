@@ -96,7 +96,7 @@ const EditDay = ({ openDay, onClose }) => {
   const body = (
     <Stack direction="column" justifyContent="center" alignItems="center">
       <IconButton
-        tooltip={t('subjects.addType')}
+        tooltip={t('global.add')}
         onClick={handleOpenAdd}
         open={false}
         Icon={AddCircleIcon}

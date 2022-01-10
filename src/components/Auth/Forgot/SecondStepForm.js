@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { Stack, InputAdornment } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Tooltip, Stack, InputAdornment, IconButton } from '@mui/material';
 
 import Header from '../Header';
 import { wait } from '../../../hooks/use-alert.js';
 import useInput from '../../../hooks/use-input.js';
+import IconButton from '../../UI/Buttons/IconButton';
 import Input100Width from '../../UI/Inputs/Input100Width';
 import forgotThird from '../../../store/auth/forgotThird.js';
 import LoadingButton100Width from '../../UI/Buttons/LoadingButton100Width.js';
@@ -24,7 +25,8 @@ const SecondStepForm = ({
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     value: newPassword,
@@ -35,10 +37,22 @@ const SecondStepForm = ({
     reset: newPasswordReset,
   } = useInput((value) => value.trim().length >= 6);
 
+  const {
+    value: confirmPassword,
+    isValid: confirmPasswordIsValid,
+    hasError: confirmPasswordHasError,
+    valueChangeHandler: confirmPasswordChangeHandler,
+    inputTouchHandler: confirmPasswordTouchHandler,
+    reset: confirmPasswordReset,
+  } = useInput((value) => value === newPassword);
+
+  const formIsValid = newPasswordIsValid && confirmPasswordIsValid;
+
   const forgotHandler = async (event) => {
     event.preventDefault();
     newPasswordTouchHandler();
-    if (!newPasswordIsValid) return;
+    confirmPasswordTouchHandler();
+    if (!formIsValid) return;
 
     setLoading(true);
     if (showAlert) {
@@ -52,6 +66,7 @@ const SecondStepForm = ({
 
     setLoading(false);
     newPasswordReset();
+    confirmPasswordReset();
 
     if (forgotThird.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
@@ -81,9 +96,9 @@ const SecondStepForm = ({
       <Header header={'auth.title2'} subHeader={'auth.enterDetails'} />
 
       <Input100Width
-        id="password"
-        label={t('global.password')}
-        type={showPassword ? 'text' : 'password'}
+        id="newPassword"
+        label={t('settings.newPassword')}
+        type={showNewPassword ? 'text' : 'password'}
         value={newPassword}
         onChange={newPasswordChangeHandler}
         onBlur={newPasswordTouchHandler}
@@ -93,23 +108,44 @@ const SecondStepForm = ({
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <Tooltip
-                title={
-                  showPassword
+              <IconButton
+                tooltip={
+                  showNewPassword
                     ? t('global.hidePassword')
                     : t('global.showPassword')
                 }
-                arrow
-              >
-                <IconButton
-                  onClick={() => setShowPassword((prevState) => !prevState)}
-                  onMouseDown={(e) => e.preventDefault()}
-                  edge="end"
-                  sx={{ color: 'primary.light' }}
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </Tooltip>
+                onClick={() => setShowNewPassword((prevState) => !prevState)}
+                Icon={showNewPassword ? VisibilityOff : Visibility}
+              />
+            </InputAdornment>
+          ),
+        }}
+      />
+
+      <Input100Width
+        id="confirmPassword"
+        label={t('settings.confirmPassword')}
+        type={showConfirmPassword ? 'text' : 'password'}
+        value={confirmPassword}
+        onChange={confirmPasswordChangeHandler}
+        onBlur={confirmPasswordTouchHandler}
+        error={confirmPasswordHasError}
+        helperText={confirmPasswordHasError && t('global.incorrectEntry')}
+        disabled={loading}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                tooltip={
+                  showConfirmPassword
+                    ? t('global.hidePassword')
+                    : t('global.showPassword')
+                }
+                onClick={() =>
+                  setShowConfirmPassword((prevState) => !prevState)
+                }
+                Icon={showConfirmPassword ? VisibilityOff : Visibility}
+              />
             </InputAdornment>
           ),
         }}

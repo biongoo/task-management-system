@@ -87,6 +87,16 @@ const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
         text: t('layout.fields'),
         icon: <SubjectIcon sx={{ color: 'primary.light' }} />,
         path: '/dashboard/fields',
+      },
+      {
+        text: t('layout.subjects'),
+        icon: <SchoolIcon sx={{ color: 'primary.light' }} />,
+        path: '/dashboard/subjects',
+      },
+      {
+        text: t('layout.plan'),
+        icon: <ScheduleIcon sx={{ color: 'primary.light' }} />,
+        path: '/dashboard/plan',
       }
     );
   }

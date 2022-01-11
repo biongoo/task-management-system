@@ -33,7 +33,7 @@ const AddField = () => {
   } = useAlert();
 
   const universities = useSelector((state) => state.universities.universities);
-  const subjectsLabel = universities.map((university) => ({
+  const universitiesLabel = universities.map((university) => ({
     label: university.name,
     id: university.id,
   }));
@@ -158,7 +158,7 @@ const AddField = () => {
 
   const body = (
     <>
-      <Stack p={1} spacing={2}>
+      <Stack my={2} spacing={2}>
         <Input100Width
           id="name"
           label={t('global.name')}
@@ -167,7 +167,7 @@ const AddField = () => {
           onBlur={nameTouchHandler}
           error={nameHasError}
           helperText={
-            nameHasError && t('global.incorrectEntryChar', { min: 1, max: 100 })
+            nameHasError && t('global.incorrectEntryChar', { min: 1, max: 200 })
           }
           disabled={loading}
         />
@@ -180,7 +180,7 @@ const AddField = () => {
           error={universityHasError}
           helperText={universityHasError && t('global.incorrectEntry')}
           disabled={loading}
-          options={subjectsLabel}
+          options={universitiesLabel}
         />
         <Autocomplete
           id="faculty"

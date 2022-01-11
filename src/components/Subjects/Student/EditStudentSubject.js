@@ -13,8 +13,8 @@ import { useAlert, wait } from '../../../hooks/use-alert';
 import Input100Width from '../../UI/Inputs/Input100Width';
 import { Edit, Cancel } from '../../UI/Buttons/FormButtons';
 import { showSnackbar } from '../../../store/palette-slice';
-import getSubjectsUser from '../../../store/subjects/user/getSubjectsUser';
-import editSubjectUser from '../../../store/subjects/user/editSubjectUser';
+import getSubjectsUser from '../../../store/subjects/getSubjects';
+import editSubjectStudent from '../../../store/subjects/student/editSubjectStudent';
 
 function isDuplicate(entry, arr) {
   return arr.some(
@@ -162,7 +162,7 @@ const EditSubject = ({ editing, onClose }) => {
 
     const time1 = new Date().getTime();
     const resultAction = await dispatch(
-      editSubjectUser({
+      editSubjectStudent({
         id: editing.id,
         name,
         teacherType,
@@ -170,7 +170,7 @@ const EditSubject = ({ editing, onClose }) => {
     );
     const time2 = new Date().getTime();
 
-    if (editSubjectUser.fulfilled.match(resultAction)) {
+    if (editSubjectStudent.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
         case 'subjectEdited':
           setTimeout(() => {

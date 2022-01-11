@@ -84,7 +84,7 @@ const SubjectsTabs = ({ items, name }) => {
           bgcolor: 'primary.main',
           display: 'flex',
           visibility: { xs: 'hidden', sm: 'visible' },
-          height: { xs: 0, sm: 242 },
+          height: { xs: '0px', sm: 242 },
           mt: { xs: 0, sm: 2 },
           border: '1px solid',
           borderColor: 'primary.light',

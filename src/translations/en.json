@@ -148,6 +148,7 @@
     "editType": "Edit type",
     "editSubject": "Edit subject",
     "emptyGroups": "No division into groups.",
+    "field": "Field",
     "group": "Group",
     "groupError": "Group {{number}} is not fully completed.",
     "groupErrorDuplicate": "Group {{number}} is duplicated.",

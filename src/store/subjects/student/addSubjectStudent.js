@@ -1,16 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-const deleteSubjectUser = createAsyncThunk(
-  'subjects/user/delete',
+const addSubjectStudent = createAsyncThunk(
+  'subjects/student/add',
   async (data, { rejectWithValue, getState }) => {
-    const url = 'http://java.ts4ever.pl/subjects/user/delete';
+    const url = 'http://java.ts4ever.pl/subjects/student/add';
     const { email: userEmail, token: userToken } = getState().auth;
+    const { name, teacherType, teacherTypeOriginal } = data;
 
     try {
       const response = await fetch(url, {
         method: 'POST',
         body: JSON.stringify({
-          ...data,
+          name,
+          teacherType,
           userEmail,
           userToken,
         }),
@@ -22,7 +24,7 @@ const deleteSubjectUser = createAsyncThunk(
 
       const dataRes = await response.json();
 
-      return { ...dataRes, ...data };
+      return { ...dataRes, name, teacherTypeOriginal };
     } catch (err) {
       if (!err.response) throw err;
       return rejectWithValue(err.response.data);
@@ -30,4 +32,4 @@ const deleteSubjectUser = createAsyncThunk(
   }
 );
 
-export default deleteSubjectUser;
+export default addSubjectStudent;

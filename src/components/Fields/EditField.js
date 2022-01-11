@@ -117,7 +117,7 @@ const EditField = ({ editing, onClose }) => {
           onBlur={nameTouchHandler}
           error={nameHasError}
           helperText={
-            nameHasError && t('global.incorrectEntryChar', { min: 1, max: 100 })
+            nameHasError && t('global.incorrectEntryChar', { min: 1, max: 200 })
           }
           disabled={loading}
         />

@@ -9,7 +9,7 @@ import { Typography, Box, Stack } from '@mui/material';
 
 import DeleteSubject from '../DeleteSubject';
 import IconButton from '../../UI/Buttons/IconButton';
-import EditStudentSubject from './EditStudentSubject';
+import EditTeacherSubject from './EditTeacherSubject';
 import {
   Accordion,
   AccordionSummary,
@@ -17,7 +17,7 @@ import {
   Collapse,
 } from '../../UI/Acordions/MainAccordion';
 
-const StudentSubjectsList = ({ subjectsList, search }) => {
+const TeacherSubjectsList = ({ subjectsList, search }) => {
   const { t } = useTranslation();
   const [editing, setEditing] = useState(null);
   const [deleting, setDeleting] = useState(null);
@@ -72,31 +72,37 @@ const StudentSubjectsList = ({ subjectsList, search }) => {
                   alignItems="center"
                   spacing={2}
                 >
-                  <Stack direction="column" spacing={1.5}>
-                    {subject.teacherSubjectTypes.length ? (
-                      subject.teacherSubjectTypes
+                  <Stack direction="column" spacing={0.5}>
+                    <Typography variant="subtitle2">
+                      {t('fields.faculty')}: {subject.field.faculty.name}
+                    </Typography>
+                    <Typography variant="subtitle2">
+                      {t('fields.university')}:{' '}
+                      {subject.field.faculty.university.name}
+                    </Typography>
+                    <Typography variant="subtitle2">
+                      {t('subjects.types')}:{' '}
+                      {subject.teacherSubjectTypes
                         .slice()
-                        .sort(
-                          (a, b) =>
-                            a.type.name.localeCompare(b.type.name) ||
-                            a.teacher.firstName.localeCompare(
-                              b.teacher.firstName
-                            ) ||
-                            a.teacher.lastName.localeCompare(b.teacher.lastName)
-                        )
-                        .map((tst, index) => (
-                          <Typography variant="body2" key={index}>
-                            {`${tst.type.name}: ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`}
-                          </Typography>
-                        ))
-                    ) : (
-                      <Typography
-                        variant="subtitle2"
-                        sx={{ wordBreak: 'break-all' }}
-                      >
-                        {t('subjects.emptyGroups')}
-                      </Typography>
-                    )}
+                        .sort((a, b) => a.type.name.localeCompare(b.type.name))
+                        .map((tst, index) => {
+                          if (
+                            index + 1 ===
+                            subject.teacherSubjectTypes.length
+                          ) {
+                            return (
+                              <Box component="span" key={index}>
+                                {tst.type.name}
+                              </Box>
+                            );
+                          }
+                          return (
+                            <Box component="span" key={index}>
+                              {`${tst.type.name}, `}
+                            </Box>
+                          );
+                        })}
+                    </Typography>
                   </Stack>
                   <Stack direction="row">
                     <IconButton
@@ -118,10 +124,10 @@ const StudentSubjectsList = ({ subjectsList, search }) => {
           </Collapse>
         ))}
       </TransitionGroup>
-      <EditStudentSubject editing={editing} onClose={closeEditing} />
+      <EditTeacherSubject editing={editing} onClose={closeEditing} />
       <DeleteSubject deleting={deleting} onClose={closeDeleting} />
     </Box>
   );
 };
 
-export default StudentSubjectsList;
+export default TeacherSubjectsList;

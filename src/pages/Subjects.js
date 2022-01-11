@@ -1,16 +1,28 @@
+import { useTranslation } from 'react-i18next';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Paper, Stack, Backdrop, CircularProgress } from '@mui/material';
+import {
+  Box,
+  Paper,
+  Stack,
+  Backdrop,
+  Typography,
+  CircularProgress,
+} from '@mui/material';
 
 import Sort from '../components/UI/Sorts/Sort';
 import getTypes from '../store/subjects/getTypes';
 import Search from '../components/UI/Inputs/Search';
 import Types from '../components/Subjects/Types/Types';
-import getSubjectsUser from '../store/subjects/user/getSubjectsUser';
+import getSubjects from '../store/subjects/getSubjects';
+import getUniversities from '../store/universities/getUniversities';
 import AddStudentSubject from '../components/Subjects/Student/AddStudentSubject';
+import AddTeacherSubject from '../components/Subjects/Teacher/AddTeacherSubject';
 import StudentSubjectsList from '../components/Subjects/Student/StudentSubjectsList';
+import TeacherSubjectsList from '../components/Subjects/Teacher/TeacherSubjectsList';
 
 const Subjects = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const typeOfAccount = useSelector((state) => state.auth.type);
   const { subjects, types, loading, firstLoading } = useSelector(
@@ -22,10 +34,9 @@ const Subjects = () => {
 
   useEffect(() => {
     dispatch(getTypes());
-    if (+typeOfAccount === 1) {
-      dispatch(getSubjectsUser());
-    }
-  }, [dispatch, typeOfAccount]);
+    dispatch(getSubjects());
+    dispatch(getUniversities());
+  }, [dispatch]);
 
   const searchHandler = (e) => {
     setSearch(e.target.value);
@@ -95,15 +106,34 @@ const Subjects = () => {
             />
             <Types types={types} />
             {+typeOfAccount === 1 && <AddStudentSubject />}
+            {+typeOfAccount === 2 && <AddTeacherSubject />}
           </Stack>
         </Stack>
 
         {+typeOfAccount === 1 && (
-          <StudentSubjectsList
-            subjectsList={subjectsList}
-            search={search}
-            loading={firstLoading}
-          />
+          <StudentSubjectsList subjectsList={subjectsList} search={search} />
+        )}
+
+        {+typeOfAccount === 2 && (
+          <TeacherSubjectsList subjectsList={subjectsList} search={search} />
+        )}
+
+        {!subjectsList.length && search && (
+          <Box sx={{ textAlign: 'center' }}>
+            <Stack>
+              <Typography variant="h6">{t('global.notFound')}</Typography>
+              <Typography>
+                {t('global.notFoundDesc', { search: search })}
+              </Typography>
+            </Stack>
+          </Box>
+        )}
+        {!subjectsList.length && !search && !firstLoading && (
+          <Box sx={{ textAlign: 'center' }}>
+            <Stack>
+              <Typography variant="h6">{t('subjects.letsAdd')}</Typography>
+            </Stack>
+          </Box>
         )}
       </Paper>
     </Box>

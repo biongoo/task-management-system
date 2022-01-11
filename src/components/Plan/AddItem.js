@@ -219,9 +219,12 @@ const AddItem = ({ open, onClose, number }) => {
       const { teacherSubjectTypes } = subjects.find(
         (item) => item.id === subject.target.value.id
       );
+
       setTypesLabel(
         teacherSubjectTypes.map((tst) => ({
-          label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
+          label: tst.teacher
+            ? `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`
+            : tst.type.name,
           id: tst.id,
         }))
       );

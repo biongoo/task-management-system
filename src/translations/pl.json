@@ -148,6 +148,7 @@
     "editType": "Edytuj typ",
     "editSubject": "Edytuj przedmiot",
     "emptyGroups": "Brak podziału na grupy.",
+    "field": "Kierunek",
     "group": "Grupa",
     "groupError": "Grupa {{number}} nie jest w pełni uzupełniona.",
     "groupErrorDuplicate": "Grupa {{number}} jest zduplikowana.",

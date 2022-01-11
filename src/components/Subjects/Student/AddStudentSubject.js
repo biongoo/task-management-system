@@ -15,13 +15,13 @@ import { useAlert, wait } from '../../../hooks/use-alert';
 import Input100Width from '../../UI/Inputs/Input100Width';
 import { Add, Cancel } from '../../UI/Buttons/FormButtons';
 import { showSnackbar } from '../../../store/palette-slice';
-import addSubjectUser from '../../../store/subjects/user/addSubjectUser';
+import addSubjectUser from '../../../store/subjects/student/addSubjectStudent';
 
-function isDuplicate(entry, arr) {
+const isDuplicate = (entry, arr) => {
   return arr.some(
     (x) => entry.typeId === x.typeId && entry.teacherId === x.teacherId
   );
-}
+};
 
 const reducer = (state, action) => {
   let newState = [...state];

@@ -12,11 +12,11 @@ import getMarks from '../store/marks/getMarks';
 import getEvents from '../store/events/getEvents';
 import getTypes from '../store/subjects/getTypes';
 import getFields from '../store/fields/getFields';
+import getSubjects from '../store/subjects/getSubjects';
 import getTeachers from '../store/teachers/getTeachers';
 import getHomework from '../store/homework/getHomework';
 import getMaterials from '../store/materials/getMaterials';
 import getUniversities from '../store/universities/getUniversities';
-import getSubjectsUser from '../store/subjects/user/getSubjectsUser';
 
 import { resetPlan } from '../store/plan-slice';
 import { resetMarks } from '../store/marks-slice';
@@ -48,8 +48,8 @@ const useInit = () => {
           dispatch(getTeachers());
           dispatch(getTypes());
           dispatch(getMaterials());
+          dispatch(getSubjects());
           if (+typeOfAccount === 1) {
-            dispatch(getSubjectsUser());
             dispatch(getMarks());
           } else if (+typeOfAccount === 2) {
             dispatch(getUniversities());

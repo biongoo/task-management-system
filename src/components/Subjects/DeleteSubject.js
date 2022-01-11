@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import MainModal from '../../UI/Modals/MainModal';
-import { setError } from '../../../store/user-slice';
-import { showSnackbar } from '../../../store/palette-slice';
-import { Cancel, Delete as DeleteBtn } from '../../UI/Buttons/FormButtons';
-import deleteSubjectUser from '../../../store/subjects/user/deleteSubjectUser';
+import MainModal from '../UI/Modals/MainModal';
+import { setError } from '../../store/user-slice';
+import { showSnackbar } from '../../store/palette-slice';
+import { Cancel, Delete as DeleteBtn } from '../UI/Buttons/FormButtons';
+import deleteSubject from '../../store/subjects/deleteSubject';
 
 const DeleteSubject = ({ deleting, onClose }) => {
   const dispatch = useDispatch();
@@ -32,10 +32,10 @@ const DeleteSubject = ({ deleting, onClose }) => {
     setLoading(true);
 
     const time1 = new Date().getTime();
-    const resultAction = await dispatch(deleteSubjectUser({ id: deleting.id }));
+    const resultAction = await dispatch(deleteSubject({ id: deleting.id }));
     const time2 = new Date().getTime();
 
-    if (deleteSubjectUser.fulfilled.match(resultAction)) {
+    if (deleteSubject.fulfilled.match(resultAction)) {
       switch (resultAction.payload.message) {
         case 'subjectDeleted':
           setTimeout(() => {

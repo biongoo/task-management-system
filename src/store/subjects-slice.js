@@ -4,9 +4,12 @@ import addType from './subjects/addType';
 import editType from './subjects/editType';
 import getTypes from './subjects/getTypes';
 import deleteType from './subjects/deleteType';
-import addSubjectUser from './subjects/user/addSubjectUser';
-import getSubjectsUser from './subjects/user/getSubjectsUser';
-import deleteSubjectUser from './subjects/user/deleteSubjectUser';
+
+import getSubjects from './subjects/getSubjects';
+import deleteSubject from './subjects/deleteSubject';
+import addSubjectStudent from './subjects/student/addSubjectStudent';
+import addSubjectTeacher from './subjects/teacher/addSubjectTeacher';
+import editSubjectTeacher from './subjects/teacher/editSubjectTeacher';
 
 const initialState = {
   subjects: [],
@@ -25,10 +28,10 @@ const subjectsSlice = createSlice({
     [getTypes.fulfilled]: (state, action) => {
       state.types = action.payload;
     },
-    [getSubjectsUser.pending]: (state) => {
+    [getSubjects.pending]: (state) => {
       state.loading = true;
     },
-    [getSubjectsUser.fulfilled]: (state, action) => {
+    [getSubjects.fulfilled]: (state, action) => {
       state.subjects = action.payload;
       state.loading = false;
       state.firstLoading = false;
@@ -58,7 +61,7 @@ const subjectsSlice = createSlice({
 
       state.types = state.types.filter((type) => type.id !== id);
     },
-    [addSubjectUser.fulfilled]: (state, action) => {
+    [addSubjectStudent.fulfilled]: (state, action) => {
       const { id, name, teacherTypeOriginal, statusCode } = action.payload;
       if (statusCode !== 200) return;
 
@@ -68,11 +71,24 @@ const subjectsSlice = createSlice({
         teacherSubjectTypes: teacherTypeOriginal,
       });
     },
-    [deleteSubjectUser.fulfilled]: (state, action) => {
+    [deleteSubject.fulfilled]: (state, action) => {
       const { id, statusCode } = action.payload;
       if (statusCode !== 200) return;
 
       state.subjects = state.subjects.filter((type) => type.id !== id);
+    },
+    [addSubjectTeacher.fulfilled]: (state, action) => {
+      const { subject, statusCode } = action.payload;
+      if (statusCode !== 200) return;
+
+      state.subjects.push(subject);
+    },
+    [editSubjectTeacher.fulfilled]: (state, action) => {
+      const { subject, statusCode } = action.payload;
+      if (statusCode !== 200) return;
+
+      const index = state.subjects.findIndex((item) => item.id === subject.id);
+      state.subjects[index] = subject;
     },
   },
 });

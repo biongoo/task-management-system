@@ -5,6 +5,7 @@ import userSlice from './user-slice';
 import planSlice from './plan-slice';
 import marksSlice from './marks-slice';
 import eventsSlice from './events-slice';
+import fieldsSlice from './fields-slice';
 import paletteSlice from './palette-slice';
 import subjectsSlice from './subjects-slice';
 import teachersSlice from './teachers-slice';
@@ -19,6 +20,7 @@ const store = configureStore({
     plan: planSlice,
     marks: marksSlice,
     events: eventsSlice,
+    fields: fieldsSlice,
     palette: paletteSlice,
     subjects: subjectsSlice,
     teachers: teachersSlice,

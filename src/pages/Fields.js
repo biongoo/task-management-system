@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, Paper, Stack, Backdrop, CircularProgress } from '@mui/material';
 
 import Sort from '../components/UI/Sorts/Sort';
+import getFields from '../store/fields/getFields';
 import Search from '../components/UI/Inputs/Search';
-import getUniversities from '../store/universities/getUniversities';
-import AddUniversity from '../components/Universities/AddUniveristy';
-import UniversitiesList from '../components/Universities/UniversitiesList';
+import AddField from '../components/Fields/AddField';
+import FieldsList from '../components/Fields/FieldsList';
 
 const Fields = () => {
   const navigate = useNavigate();
@@ -20,41 +20,41 @@ const Fields = () => {
     navigate('/404');
   }
 
-  const { universities, loading, firstLoading } = useSelector(
-    (state) => state.universities
+  const { fields, loading, firstLoading } = useSelector(
+    (state) => state.fields
   );
 
   const searchHandler = (e) => {
     setSearch(e.target.value);
   };
 
-  let universitiesList = universities.slice();
+  let fieldsList = fields.slice();
 
   useEffect(() => {
-    dispatch(getUniversities());
+    dispatch(getFields());
   }, [dispatch]);
 
   if (search) {
-    universitiesList = universitiesList.filter((university) =>
+    fieldsList = fieldsList.filter((university) =>
       university.name.toLowerCase().includes(search.toLowerCase())
     );
   }
 
   switch (selectedSortingIndex) {
     case 0:
-      universitiesList = universitiesList.sort(
+      fieldsList = fieldsList.sort(
         (a, b) => a.name.localeCompare(b.name) || a.name.localeCompare(b.name)
       );
       break;
     case 1:
-      universitiesList = universitiesList.sort(
+      fieldsList = fieldsList.sort(
         (a, b) => b.name.localeCompare(a.name) || b.name.localeCompare(a.name)
       );
       break;
     case 2:
       break;
     case 3:
-      universitiesList = universitiesList.reverse();
+      fieldsList = fieldsList.reverse();
       break;
     default:
       break;
@@ -69,7 +69,7 @@ const Fields = () => {
     >
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading && firstLoading && !universitiesList.length}
+        open={loading && firstLoading && !fieldsList.length}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -97,12 +97,12 @@ const Fields = () => {
               selectedIndex={selectedSortingIndex}
               setSelectedIndex={setSelectedSortingIndex}
             />
-            <AddUniversity />
+            <AddField />
           </Stack>
         </Stack>
 
-        <UniversitiesList
-          universitiesList={universitiesList}
+        <FieldsList
+          fieldsList={fieldsList}
           search={search}
           loading={firstLoading}
         />

@@ -247,7 +247,7 @@ const UniversitiesList = ({ universitiesList, search, loading }) => {
       {!universitiesList.length && !search && !loading && (
         <Box sx={{ textAlign: 'center' }}>
           <Stack>
-            <Typography variant="h6">{t('teachers.letsAdd')}</Typography>
+            <Typography variant="h6">{t('universities.letsAdd')}</Typography>
           </Stack>
         </Box>
       )}

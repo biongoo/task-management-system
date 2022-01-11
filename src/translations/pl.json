@@ -253,8 +253,18 @@
     "deleteFaculty": "Usuń wydział",
     "deleteUniversity": "Usuń uczelnię",
     "deleteFacultyBody": "Czy aby na pewno chcesz usunąć ten wydział?",
-    "deleteUniversityBody": "Czy aby na pewno chcesz usunąć tę uczelnię",
+    "deleteUniversityBody": "Czy aby na pewno chcesz usunąć tę uczelnię?",
     "editFaculty": "Edytuj wydział",
-    "editUniversity": "Edytuj uczelnię"
+    "editUniversity": "Edytuj uczelnię",
+    "letsAdd": "Dodaj swoje uczelnie!"
+  },
+  "fields": {
+    "addField": "Dodaj kierunek",
+    "deleteField": "Usuń kierunek",
+    "deleteFieldBody": "Czy aby na pewno chcesz usunąć ten kierunek?",
+    "editField": "Edytuj kierunek",
+    "faculty": "Wydział",
+    "letsAdd": "Dodaj swoje kierunki!",
+    "university": "Uczelnia"
   }
 }

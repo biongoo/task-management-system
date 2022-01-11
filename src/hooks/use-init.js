@@ -11,6 +11,7 @@ import getPlan from '../store/plan/getPlan';
 import getMarks from '../store/marks/getMarks';
 import getEvents from '../store/events/getEvents';
 import getTypes from '../store/subjects/getTypes';
+import getFields from '../store/fields/getFields';
 import getTeachers from '../store/teachers/getTeachers';
 import getHomework from '../store/homework/getHomework';
 import getMaterials from '../store/materials/getMaterials';
@@ -20,6 +21,7 @@ import getSubjectsUser from '../store/subjects/user/getSubjectsUser';
 import { resetPlan } from '../store/plan-slice';
 import { resetMarks } from '../store/marks-slice';
 import { resetEvents } from '../store/events-slice';
+import { resetFields } from '../store/fields-slice';
 import { resetHomework } from '../store/homework-slice';
 import { resetSubjects } from '../store/subjects-slice';
 import { resetTeachers } from '../store/teachers-slice';
@@ -45,13 +47,14 @@ const useInit = () => {
           dispatch(getEvents());
           dispatch(getTeachers());
           dispatch(getTypes());
+          dispatch(getMaterials());
           if (+typeOfAccount === 1) {
             dispatch(getSubjectsUser());
             dispatch(getMarks());
           } else if (+typeOfAccount === 2) {
             dispatch(getUniversities());
+            dispatch(getFields());
           }
-          dispatch(getMaterials());
           break;
         case 'tokenNotValid':
         default:
@@ -94,6 +97,7 @@ const useInit = () => {
       dispatch(resetPlan());
       dispatch(resetMarks());
       dispatch(resetEvents());
+      dispatch(resetFields());
       dispatch(resetHomework());
       dispatch(resetSubjects());
       dispatch(resetTeachers());

@@ -48,6 +48,7 @@
     "search": "Search",
     "selectDate": "Select date",
     "selectDateTime": "Select date & time",
+    "selectTime": "Select time",
     "sizeError": "The total size of the files is greater than 40MB.",
     "showPassword": "Show password",
     "sort": "Sort",

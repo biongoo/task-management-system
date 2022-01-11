@@ -1,8 +1,5 @@
-import { format } from 'date-fns';
 import React, { useState } from 'react';
-import plLocaleFNS from 'date-fns/locale/pl';
 import { useTranslation } from 'react-i18next';
-import enLocaleFNS from 'date-fns/locale/en-US';
 import EditIcon from '@mui/icons-material/Edit';
 import { TransitionGroup } from 'react-transition-group';
 import { Paper, Grid, Typography, Stack, Box, Collapse } from '@mui/material';
@@ -10,26 +7,7 @@ import { Paper, Grid, Typography, Stack, Box, Collapse } from '@mui/material';
 import EditDay from './EditDay';
 import Divider from '../UI/Dividers/Divider';
 import IconButton from '../UI/Buttons/IconButton';
-
-const buildTime = (date, lang) => {
-  let stringTime = '';
-
-  switch (lang) {
-    case 'pl':
-      stringTime = format(date, 'HH:mm', {
-        locale: plLocaleFNS,
-      });
-      break;
-    case 'en':
-    default:
-      stringTime = format(date, "h:mmaaaaa'm'", {
-        locale: enLocaleFNS,
-      });
-      break;
-  }
-
-  return stringTime;
-};
+import { buildTime } from '../../utils/formatDate';
 
 const PlanList = ({ planList }) => {
   const { t, i18n } = useTranslation();

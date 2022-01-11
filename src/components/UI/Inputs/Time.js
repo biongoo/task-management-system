@@ -26,8 +26,10 @@ const Time = ({
   error,
   helperText,
   disabled,
+  maxTime,
+  minTime,
 }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const actualLanguageId = i18n.language;
   const [open, setOpen] = useState(false);
   const paletteMode = useSelector((state) => state.palette.mode);
@@ -59,12 +61,22 @@ const Time = ({
     >
       <ThemeProvider theme={theme}>
         <TimePicker
+          cancelText={t('global.cancel')}
+          clearText={t('global.clear')}
+          leftArrowButtonText={t('global.previous')}
+          rightArrowButtonText={t('global.next')}
+          okText={t('global.edit')}
+          todayText={t('global.today')}
+          toolbarTitle={t('global.selectTime')}
           value={value}
+          maxTime={maxTime}
+          minTime={minTime}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
           onChange={(newValue) => {
             const event = { target: { value: newValue } };
             onChange(event);
           }}
-          desktopModeMediaQuery=""
           renderInput={(params) => (
             <ThemeProvider theme={themeMain}>
               <Input100Width
@@ -77,10 +89,7 @@ const Time = ({
                 disabled={disabled}
                 sx={{
                   '& .MuiInputAdornment-root .MuiSvgIcon-root': {
-                    color: 'primary.light',
-                  },
-                  '& .Mui-focused .MuiInputAdornment-root .MuiSvgIcon-root': {
-                    color: 'secondary.main',
+                    color: open ? 'secondary.main' : 'primary.light',
                   },
                 }}
               />

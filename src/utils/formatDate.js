@@ -41,3 +41,23 @@ export const buildDate = (date, lang) => {
 
   return stringTime;
 };
+
+export const buildTime = (date, lang) => {
+  let stringTime = '';
+
+  switch (lang) {
+    case 'pl':
+      stringTime = format(date, 'HH:mm', {
+        locale: plLocaleFNS,
+      });
+      break;
+    case 'en':
+    default:
+      stringTime = format(date, "h:mmaaaaa'm'", {
+        locale: enLocaleFNS,
+      });
+      break;
+  }
+
+  return stringTime;
+};

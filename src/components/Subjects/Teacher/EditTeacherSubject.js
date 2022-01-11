@@ -239,7 +239,7 @@ const EditTeacherSubject = ({ editing, onClose }) => {
 
     const time1 = new Date().getTime();
     const resultAction = await dispatch(
-      editSubjectTeacher({ name, types, fieldId: field.id })
+      editSubjectTeacher({ id: editing.id, name, types, fieldId: field.id })
     );
     const time2 = new Date().getTime();
 

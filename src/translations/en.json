@@ -25,6 +25,7 @@
     "isMarked": "Marking",
     "mark": "Mark",
     "name": "Name",
+    "nameInUse": "Name is used.",
     "next": "Next",
     "nextMonth": "Next month",
     "no": "No",
@@ -64,6 +65,7 @@
     "clear": "Clear",
     "close": "Close",
     "color": "Color",
+    "fields": "Fields",
     "home": "Home",
     "homepage404": "home page",
     "homework": "Homework",
@@ -244,5 +246,15 @@
     "emptyMark": "Not graded",
     "incorrectMark": "Incorrect mark. Min {{min}}, max {{max}}.",
     "noMarks": "No marks"
+  },
+  "universities": {
+    "addFaculty": "Add faculty",
+    "addUniversity": "Add university",
+    "deleteFaculty": "Delete faculty",
+    "deleteUniversity": "Delete university",
+    "deleteFacultyBody": "Are you sure you want to delete this faculty?",
+    "deleteUniversityBody": "Are you sure you want to delete this university?",
+    "editFaculty": "Edit faculty",
+    "editUniversity": "Edit university"
   }
 }

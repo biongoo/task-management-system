@@ -9,7 +9,7 @@ import getUniversities from '../store/universities/getUniversities';
 import AddUniversity from '../components/Universities/AddUniveristy';
 import UniversitiesList from '../components/Universities/UniversitiesList';
 
-const Universities = () => {
+const Fields = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [search, setSearch] = useState('');
@@ -111,4 +111,4 @@ const Universities = () => {
   );
 };
 
-export default Universities;
+export default Fields;

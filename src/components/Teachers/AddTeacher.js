@@ -105,7 +105,12 @@ const AddTeacher = () => {
     const time1 = new Date().getTime();
 
     const resultAction = await dispatch(
-      addTeacher({ firstName, lastName, academicTitle, email })
+      addTeacher({
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        academicTitle: academicTitle.trim(),
+        email: email.trim(),
+      })
     );
 
     const time2 = new Date().getTime();

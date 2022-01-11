@@ -82,6 +82,11 @@ const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
         text: t('layout.universities'),
         icon: <AccountBalanceIcon sx={{ color: 'primary.light' }} />,
         path: '/dashboard/universities',
+      },
+      {
+        text: t('layout.fields'),
+        icon: <SubjectIcon sx={{ color: 'primary.light' }} />,
+        path: '/dashboard/fields',
       }
     );
   }

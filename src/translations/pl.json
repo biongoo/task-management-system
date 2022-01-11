@@ -25,6 +25,7 @@
     "isMarked": "Na ocenę",
     "mark": "Ocena",
     "name": "Nazwa",
+    "nameInUse": "Taka nazwa została już użyta.",
     "next": "Następny",
     "nextMonth": "Następny miesiąc",
     "no": "Nie",
@@ -64,6 +65,7 @@
     "clear": "Wyczyść",
     "close": "Zamknij",
     "color": "Kolor",
+    "fields": "Kierunki",
     "home": "Strona główna",
     "homepage404": "strony głównej",
     "homework": "Zadania",
@@ -244,5 +246,15 @@
     "emptyMark": "Nie oceniono",
     "incorrectMark": "Nieprawidłowa ocena. Min {{min}}, maks {{max}}.",
     "noMarks": "Brak ocen"
+  },
+  "universities": {
+    "addFaculty": "Dodaj wydział",
+    "addUniversity": "Dodaj uczelnię",
+    "deleteFaculty": "Usuń wydział",
+    "deleteUniversity": "Usuń uczelnię",
+    "deleteFacultyBody": "Czy aby na pewno chcesz usunąć ten wydział?",
+    "deleteUniversityBody": "Czy aby na pewno chcesz usunąć tę uczelnię",
+    "editFaculty": "Edytuj wydział",
+    "editUniversity": "Edytuj uczelnię"
   }
 }

@@ -115,10 +115,10 @@ const EditTeacher = ({ settings, onClose }) => {
     const resultAction = await dispatch(
       editTeacher({
         id: settings.id,
-        academicTitle,
-        firstName,
-        lastName,
-        email,
+        academicTitle: academicTitle.trim(),
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
       })
     );
 

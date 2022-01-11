@@ -9,6 +9,7 @@ import Plan from './pages/Plan';
 import Marks from './pages/Marks';
 import Login from './pages/Login';
 import Forgot from './pages/Forgot';
+import Fields from './pages/Fields';
 import NotFound from './pages/404.js';
 import Settings from './pages/Settings';
 import Teachers from './pages/Teachers';
@@ -29,13 +30,14 @@ function App() {
       <Routes>
         <Route path="/dashboard" element={<MainLayout />}>
           <Route index element={<Dashboard />} />
+          <Route path="plan" element={<Plan />} />
+          <Route path="marks" element={<Marks />} />
+          <Route path="fields" element={<Fields />} />
           <Route path="teachers" element={<Teachers />} />
           <Route path="subjects" element={<Subjects />} />
           <Route path="homework" element={<Homework />} />
-          <Route path="materials" element={<Materials />} />
-          <Route path="marks" element={<Marks />} />
-          <Route path="plan" element={<Plan />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="materials" element={<Materials />} />
           <Route path="universities" element={<Universities />} />
         </Route>
 

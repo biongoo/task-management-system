@@ -1,11 +1,11 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 import Stepper from '../components/Auth/Stepper';
 import FirstStep from '../components/Auth/Forgot/FirstStep';
-import SecondStep from '../components/Auth/Forgot/SecondStep';
 import ThirdStep from '../components/Auth/Forgot/ThirdStep';
+import SecondStep from '../components/Auth/Forgot/SecondStep';
 
 const Forgot = ({ step }) => {
   const { t } = useTranslation();

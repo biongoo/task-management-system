@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import EditIcon from '@mui/icons-material/Edit';
 import Highlighter from 'react-highlight-words';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { TransitionGroup } from 'react-transition-group';
 import { Typography, Box, Stack } from '@mui/material';
+import { TransitionGroup } from 'react-transition-group';
 
 import DeleteSubject from '../DeleteSubject';
 import IconButton from '../../UI/Buttons/IconButton';

@@ -152,8 +152,6 @@ const EditSubject = ({ editing, onClose }) => {
       }
     }
 
-    console.log(teacherType);
-
     setLoading(true);
     if (showAlert) {
       closeAlert();

@@ -41,6 +41,7 @@ const EditHomework = ({ editing, onClose }) => {
   const [isMarked, setIsMarked] = useState(true);
   const [typesLabel, setTypesLabel] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const typeOfAccount = useSelector((state) => state.auth.type);
 
   const open = !!editing;
 
@@ -159,7 +160,9 @@ const EditHomework = ({ editing, onClose }) => {
       const subjectTypeTmp = {
         target: {
           value: {
-            label: `${editing.teacherSubjectType.type.name} - ${editing.teacherSubjectType.teacher.academicTitle} ${editing.teacherSubjectType.teacher.firstName} ${editing.teacherSubjectType.teacher.lastName}`,
+            label: editing.teacherSubjectType.teacher
+              ? `${editing.teacherSubjectType.type.name} - ${editing.teacherSubjectType.teacher.academicTitle} ${editing.teacherSubjectType.teacher.firstName} ${editing.teacherSubjectType.teacher.lastName}`
+              : editing.teacherSubjectType.type.name,
             id: editing.teacherSubjectType.id,
           },
         },
@@ -233,7 +236,9 @@ const EditHomework = ({ editing, onClose }) => {
       subjectNameChangeHandler(subjectNameTmp);
       setTypesLabel(
         teacherSubjectTypes.map((tst) => ({
-          label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
+          label: tst.teacher
+            ? `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`
+            : tst.type.name,
           id: tst.id,
         }))
       );
@@ -333,7 +338,7 @@ const EditHomework = ({ editing, onClose }) => {
     formData.append('date', +date);
     formData.append('deadline', +deadline);
     formData.append('estimatedTime', estimatedTime);
-    formData.append('isMarked', isMarked);
+    formData.append('isMarked', typeOfAccount === 1 ? isMarked : false);
     formData.append('tstId', subjectType.id);
     formData.append('language', i18n.language);
 
@@ -399,7 +404,9 @@ const EditHomework = ({ editing, onClose }) => {
       );
       setTypesLabel(
         teacherSubjectTypes.map((tst) => ({
-          label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
+          label: tst.teacher
+            ? `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`
+            : tst.type.name,
           id: tst.id,
         }))
       );
@@ -644,11 +651,13 @@ const EditHomework = ({ editing, onClose }) => {
           value={notifications}
           onChange={setNotifications}
         />
-        <FormControlLabel
-          label={t('global.isMarked')}
-          control={<Checkbox checked={isMarked} color="secondary" />}
-          onChange={(event) => setIsMarked(event.target.checked)}
-        />
+        {typeOfAccount === 1 && (
+          <FormControlLabel
+            label={t('global.isMarked')}
+            control={<Checkbox checked={isMarked} color="secondary" />}
+            onChange={(event) => setIsMarked(event.target.checked)}
+          />
+        )}
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Attachment id="att" onChange={changeFilesHandler} />
         </Box>

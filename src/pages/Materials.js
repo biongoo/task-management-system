@@ -2,24 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Paper, Stack, Backdrop, CircularProgress } from '@mui/material';
 
+import { groupItemBy } from '../utils/helpers';
 import Sort from '../components/UI/Sorts/Sort';
 import Search from '../components/UI/Inputs/Search';
 import getMaterials from '../store/materials/getMaterials';
 import AddMaterial from '../components/Materials/AddMaterial';
 import MaterialsList from '../components/Materials/MaterialsList';
-
-function groupItemBy(array, property) {
-  var hash = {},
-    props = property.split('.');
-  for (var i = 0; i < array.length; i++) {
-    var key = props.reduce(function (acc, prop) {
-      return acc && acc[prop];
-    }, array[i]);
-    if (!hash[key]) hash[key] = [];
-    hash[key].push(array[i]);
-  }
-  return hash;
-}
 
 const Materials = () => {
   const dispatch = useDispatch();

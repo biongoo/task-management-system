@@ -1,8 +1,8 @@
 import { Box } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import AddIcon from '@mui/icons-material/Add';
+import { useTranslation } from 'react-i18next';
 
 import Dialog from '../UI/Modals/Dialog';
 import useInput from '../../hooks/use-input';

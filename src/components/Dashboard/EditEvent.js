@@ -49,6 +49,7 @@ const EditEvent = ({ editing, onClose }) => {
   const [isMarked, setIsMarked] = useState(true);
   const [typesLabel, setTypesLabel] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const typeOfAccount = useSelector((state) => state.auth.type);
 
   const {
     showAlert,
@@ -142,7 +143,9 @@ const EditEvent = ({ editing, onClose }) => {
         const subjectTypeTmp = {
           target: {
             value: {
-              label: `${editing.teacherSubjectType.type.name} - ${editing.teacherSubjectType.teacher.academicTitle} ${editing.teacherSubjectType.teacher.firstName} ${editing.teacherSubjectType.teacher.lastName}`,
+              label: editing.teacherSubjectType.teacher
+                ? `${editing.teacherSubjectType.type.name} - ${editing.teacherSubjectType.teacher.academicTitle} ${editing.teacherSubjectType.teacher.firstName} ${editing.teacherSubjectType.teacher.lastName}`
+                : editing.teacherSubjectType.type.name,
               id: editing.teacherSubjectType.id,
             },
           },
@@ -152,7 +155,9 @@ const EditEvent = ({ editing, onClose }) => {
         subjectNameChangeHandler(subjectNameTmp);
         setTypesLabel(
           teacherSubjectTypes.map((tst) => ({
-            label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
+            label: tst.teacher
+              ? `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`
+              : tst.type.name,
             id: tst.id,
           }))
         );
@@ -313,7 +318,10 @@ const EditEvent = ({ editing, onClose }) => {
     formData.append('description', description);
     formData.append('startDate', +startDate);
     formData.append('endDate', +endDate);
-    formData.append('isMarked', tab === 0 ? isMarked : false);
+    formData.append(
+      'isMarked',
+      tab === 0 && typeOfAccount === 1 ? isMarked : false
+    );
     formData.append('tstId', tab === 0 ? subjectType.id : 0);
     formData.append('language', i18n.language);
 
@@ -377,9 +385,12 @@ const EditEvent = ({ editing, onClose }) => {
       const { teacherSubjectTypes } = subjects.find(
         (item) => item.id === subject.target.value.id
       );
+
       setTypesLabel(
         teacherSubjectTypes.map((tst) => ({
-          label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
+          label: tst.teacher
+            ? `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`
+            : tst.type.name,
           id: tst.id,
         }))
       );
@@ -489,7 +500,9 @@ const EditEvent = ({ editing, onClose }) => {
       const subjectTypeTmp = {
         target: {
           value: {
-            label: `${editing.teacherSubjectType.type.name} - ${editing.teacherSubjectType.teacher.academicTitle} ${editing.teacherSubjectType.teacher.firstName} ${editing.teacherSubjectType.teacher.lastName}`,
+            label: editing.teacherSubjectType.teacher
+              ? `${editing.teacherSubjectType.type.name} - ${editing.teacherSubjectType.teacher.academicTitle} ${editing.teacherSubjectType.teacher.firstName} ${editing.teacherSubjectType.teacher.lastName}`
+              : editing.teacherSubjectType.type.name,
             id: editing.teacherSubjectType.id,
           },
         },
@@ -499,7 +512,9 @@ const EditEvent = ({ editing, onClose }) => {
       subjectNameChangeHandler(subjectNameTmp);
       setTypesLabel(
         teacherSubjectTypes.map((tst) => ({
-          label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
+          label: tst.teacher
+            ? `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`
+            : tst.type.name,
           id: tst.id,
         }))
       );
@@ -626,13 +641,15 @@ const EditEvent = ({ editing, onClose }) => {
           value={notifications}
           onChange={setNotifications}
         />
-        <TabPanel value={tab} index={0}>
-          <FormControlLabel
-            label={t('global.isMarked')}
-            control={<Checkbox checked={isMarked} color="secondary" />}
-            onChange={(event) => setIsMarked(event.target.checked)}
-          />
-        </TabPanel>
+        {typeOfAccount === 1 && (
+          <TabPanel value={tab} index={0}>
+            <FormControlLabel
+              label={t('global.isMarked')}
+              control={<Checkbox checked={isMarked} color="secondary" />}
+              onChange={(event) => setIsMarked(event.target.checked)}
+            />
+          </TabPanel>
+        )}
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Attachment id="att" onChange={changeFilesHandler} />
         </Box>
@@ -666,7 +683,11 @@ const EditEvent = ({ editing, onClose }) => {
                       <ListItemText
                         primary={
                           <Link
-                            href={`http://java.ts4ever.pl/files/download/${item.id}`}
+                            href={
+                              index >= Object.keys(files).length
+                                ? `http://java.ts4ever.pl/files/download/${item.id}`
+                                : '#'
+                            }
                             color="inherit"
                           >
                             {item.name}

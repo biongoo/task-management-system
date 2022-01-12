@@ -5,22 +5,10 @@ import { Box, Paper, Stack, Backdrop, CircularProgress } from '@mui/material';
 
 import getMarks from '../store/marks/getMarks';
 import Sort from '../components/UI/Sorts/Sort';
+import { groupItemBy } from '../utils/helpers';
 import AddMark from '../components/Marks/AddMark';
 import Search from '../components/UI/Inputs/Search';
 import MarksList from '../components/Marks/MarksList';
-
-const groupItemBy = (array, property) => {
-  var hash = {},
-    props = property.split('.');
-  for (var i = 0; i < array.length; i++) {
-    var key = props.reduce(function (acc, prop) {
-      return acc && acc[prop];
-    }, array[i]);
-    if (!hash[key]) hash[key] = [];
-    hash[key].push(array[i]);
-  }
-  return hash;
-};
 
 const Marks = () => {
   const navigate = useNavigate();

@@ -42,6 +42,7 @@ const AddHomework = () => {
   const [isMarked, setIsMarked] = useState(true);
   const [typesLabel, setTypesLabel] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const typeOfAccount = useSelector((state) => state.auth.type);
 
   const {
     showAlert,
@@ -209,7 +210,7 @@ const AddHomework = () => {
     formData.append('date', +date);
     formData.append('deadline', +deadline);
     formData.append('estimatedTime', estimatedTime);
-    formData.append('isMarked', isMarked);
+    formData.append('isMarked', typeOfAccount === 1 ? isMarked : false);
     formData.append('tstId', subjectType.id);
     formData.append('language', i18n.language);
 
@@ -270,7 +271,9 @@ const AddHomework = () => {
       );
       setTypesLabel(
         teacherSubjectTypes.map((tst) => ({
-          label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
+          label: tst.teacher
+            ? `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`
+            : tst.type.name,
           id: tst.id,
         }))
       );
@@ -393,6 +396,7 @@ const AddHomework = () => {
               error={dateHasError}
               helperText={dateHasError && t('global.incorrectEntry')}
               disabled={loading}
+              maxDateTime={deadline}
             />
           </Box>
           <Box sx={{ width: '100%' }}>
@@ -414,6 +418,7 @@ const AddHomework = () => {
               }}
               onBlur={deadlineTouchHandler}
               error={deadlineHasError}
+              minDateTime={date}
               helperText={deadlineHasError && t('global.incorrectEntry')}
               disabled={loading}
             />
@@ -513,11 +518,13 @@ const AddHomework = () => {
           value={notifications}
           onChange={setNotifications}
         />
-        <FormControlLabel
-          label={t('global.isMarked')}
-          control={<Checkbox checked={isMarked} color="secondary" />}
-          onChange={(event) => setIsMarked(event.target.checked)}
-        />
+        {typeOfAccount === 1 && (
+          <FormControlLabel
+            label={t('global.isMarked')}
+            control={<Checkbox checked={isMarked} color="secondary" />}
+            onChange={(event) => setIsMarked(event.target.checked)}
+          />
+        )}
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Attachment id="att" onChange={changeFilesHandler} />
         </Box>

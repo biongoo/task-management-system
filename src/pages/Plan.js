@@ -2,18 +2,9 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Backdrop, CircularProgress } from '@mui/material';
 
+import { groupBy } from '../utils/helpers';
 import getPlan from '../store/plan/getPlan';
 import PlanList from '../components/Plan/PlanList';
-
-function groupBy(arr, property) {
-  return arr.reduce(function (memo, x) {
-    if (!memo[x[property]]) {
-      memo[x[property]] = [];
-    }
-    memo[x[property]].push(x);
-    return memo;
-  }, []);
-}
 
 const Plan = () => {
   const dispatch = useDispatch();

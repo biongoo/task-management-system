@@ -1,20 +1,13 @@
-import { format } from 'date-fns';
-import plLocale from 'date-fns/locale/pl';
-import enLocale from 'date-fns/locale/en-US';
+import React, { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import TodayIcon from '@mui/icons-material/Today';
 import { Stack, Typography } from '@mui/material';
-import React, { forwardRef } from 'react';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 
 import AddEvent from './AddEvent';
 import IconButton from '../UI/Buttons/IconButton';
-
-const localeMap = {
-  en: enLocale,
-  pl: plLocale,
-};
+import { buildFullDate } from '../../utils/formatDate';
 
 const Header = forwardRef(({ currentDate, setDate }, calendar) => {
   const { t, i18n } = useTranslation();
@@ -64,9 +57,7 @@ const Header = forwardRef(({ currentDate, setDate }, calendar) => {
           Icon={NavigateBeforeIcon}
         />
         <Typography variant="h5" sx={{ fontWeight: 500 }}>
-          {format(currentDate, 'dd MMMM yyyy', {
-            locale: localeMap[actualLanguageId],
-          })}
+          {buildFullDate(currentDate, actualLanguageId)}
         </Typography>
         <IconButton
           tooltip={t('global.next')}

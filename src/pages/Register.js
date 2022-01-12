@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 
 import Stepper from '../components/Auth/Stepper';
 import FirstStep from '../components/Auth/Register/FirstStep';
-import SecondStep from '../components/Auth/Register/SecondStep';
 import ThirdStep from '../components/Auth/Register/ThirdStep';
+import SecondStep from '../components/Auth/Register/SecondStep';
 
 const Register = ({ step }) => {
   const { t } = useTranslation();

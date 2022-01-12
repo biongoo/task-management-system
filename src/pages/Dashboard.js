@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Paper, Backdrop, CircularProgress } from '@mui/material';
 import React, {
@@ -9,6 +10,7 @@ import React, {
 } from 'react';
 
 import getPlan from '../store/plan/getPlan';
+import { getWeekNumber } from '../utils/helpers';
 import getEvents from '../store/events/getEvents';
 import Header from '../components/Dashboard/Header';
 import Calendar from '../components/Dashboard/Calendar';
@@ -18,8 +20,9 @@ import EditEvent from '../components/Dashboard/EditEvent';
 let flag = false;
 
 const Dashboard = () => {
-  const dispatch = useDispatch();
   const calendar = useRef(null);
+  const dispatch = useDispatch();
+  const [loadingFlag, setLoadingFlag] = useState(true);
   const [editingEvent, setEditingEvent] = useState(null);
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -50,6 +53,14 @@ const Dashboard = () => {
       dispatch(getHomework());
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (loadingFlag) {
+      setTimeout(() => {
+        setLoadingFlag(false);
+      }, 400);
+    }
+  }, [loadingFlag]);
 
   const handleOpenEditEvent = useCallback(
     (id) => {
@@ -100,7 +111,7 @@ const Dashboard = () => {
     >
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loadingPlan || loadingEvents || loadingHomework}
+        open={loadingFlag || loadingPlan || loadingEvents || loadingHomework}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
@@ -141,9 +152,12 @@ const init = (homework, events, plan, handleOpenEditEvent) => {
       const name = planElement.name
         ? planElement.name
         : `${planElement.teacherSubjectType.subject.name}`;
+
       const name2 = planElement.name
         ? planElement.name
-        : `${planElement.teacherSubjectType.subject.name} - ${planElement.teacherSubjectType.type.name} - ${planElement.teacherSubjectType.teacher.academicTitle} ${planElement.teacherSubjectType.teacher.firstName} ${planElement.teacherSubjectType.teacher.lastName}`;
+        : planElement.teacherSubjectType.teacher
+        ? `${planElement.teacherSubjectType.subject.name} - ${planElement.teacherSubjectType.type.name} - ${planElement.teacherSubjectType.teacher.academicTitle} ${planElement.teacherSubjectType.teacher.firstName} ${planElement.teacherSubjectType.teacher.lastName}`
+        : `${planElement.teacherSubjectType.subject.name} - ${planElement.teacherSubjectType.type.name}`;
 
       array.push({
         id: `p-${homework.id}`,
@@ -158,7 +172,9 @@ const init = (homework, events, plan, handleOpenEditEvent) => {
 
   for (const task of homework) {
     const name = task.name;
-    const name2 = `${task.name} - ${task.teacherSubjectType.subject.name} - ${task.teacherSubjectType.type.name} - ${task.teacherSubjectType.teacher.academicTitle} ${task.teacherSubjectType.teacher.firstName} ${task.teacherSubjectType.teacher.lastName}`;
+    const name2 = task.teacherSubjectType.teacher
+      ? `${task.name} - ${task.teacherSubjectType.subject.name} - ${task.teacherSubjectType.type.name} - ${task.teacherSubjectType.teacher.academicTitle} ${task.teacherSubjectType.teacher.firstName} ${task.teacherSubjectType.teacher.lastName}`
+      : `${task.name} - ${task.teacherSubjectType.subject.name} - ${task.teacherSubjectType.type.name}`;
 
     const nextMilisec = new Date(task.deadline);
     nextMilisec.setMilliseconds(nextMilisec.getMilliseconds() + 1);
@@ -178,7 +194,9 @@ const init = (homework, events, plan, handleOpenEditEvent) => {
   for (const event of events) {
     const name = event.name;
     const name2 = event.teacherSubjectType
-      ? `${event.name} - ${event.teacherSubjectType.subject.name} - ${event.teacherSubjectType.type.name} - ${event.teacherSubjectType.teacher.academicTitle} ${event.teacherSubjectType.teacher.firstName} ${event.teacherSubjectType.teacher.lastName}`
+      ? event.teacherSubjectType.teacher
+        ? `${event.name} - ${event.teacherSubjectType.subject.name} - ${event.teacherSubjectType.type.name} - ${event.teacherSubjectType.teacher.academicTitle} ${event.teacherSubjectType.teacher.firstName} ${event.teacherSubjectType.teacher.lastName}`
+        : `${event.name} - ${event.teacherSubjectType.subject.name} - ${event.teacherSubjectType.type.name}`
       : event.name;
 
     array.push({
@@ -206,9 +224,12 @@ const initRepetition = (plan, currentDate) => {
       const name = planElement.name
         ? planElement.name
         : `${planElement.teacherSubjectType.subject.name}`;
+
       const name2 = planElement.name
         ? planElement.name
-        : `${planElement.teacherSubjectType.subject.name} - ${planElement.teacherSubjectType.type.name} - ${planElement.teacherSubjectType.teacher.academicTitle} ${planElement.teacherSubjectType.teacher.firstName} ${planElement.teacherSubjectType.teacher.lastName}`;
+        : planElement.teacherSubjectType.teacher
+        ? `${planElement.teacherSubjectType.subject.name} - ${planElement.teacherSubjectType.type.name} - ${planElement.teacherSubjectType.teacher.academicTitle} ${planElement.teacherSubjectType.teacher.firstName} ${planElement.teacherSubjectType.teacher.lastName}`
+        : `${planElement.teacherSubjectType.subject.name} - ${planElement.teacherSubjectType.type.name}`;
 
       const dayOfWeek = (planElement.day + 1) % 7;
       const firstEventDateOnTab = new Date(
@@ -235,8 +256,8 @@ const initRepetition = (plan, currentDate) => {
             id: id,
             title: name,
             title2: name2,
-            start: `${formatDate(newDate)}T${planElement.startTime}`,
-            end: `${formatDate(newDate)}T${planElement.endTime}`,
+            start: `${format(newDate, 'yyyy-MM-dd')}T${planElement.startTime}`,
+            end: `${format(newDate, 'yyyy-MM-dd')}T${planElement.endTime}`,
           });
         }
       }
@@ -244,26 +265,6 @@ const initRepetition = (plan, currentDate) => {
   }
 
   return array;
-};
-
-const getWeekNumber = (d) => {
-  d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-  var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  var weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
-  return weekNo;
-};
-
-const formatDate = (date) => {
-  var d = new Date(date),
-    month = '' + (d.getMonth() + 1),
-    day = '' + d.getDate(),
-    year = d.getFullYear();
-
-  if (month.length < 2) month = '0' + month;
-  if (day.length < 2) day = '0' + day;
-
-  return [year, month, day].join('-');
 };
 
 export default Dashboard;

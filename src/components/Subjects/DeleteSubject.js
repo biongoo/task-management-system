@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect } from 'react';
 
 import MainModal from '../UI/Modals/MainModal';
 import { setError } from '../../store/user-slice';
 import { showSnackbar } from '../../store/palette-slice';
-import { Cancel, Delete as DeleteBtn } from '../UI/Buttons/FormButtons';
 import deleteSubject from '../../store/subjects/deleteSubject';
+import { Cancel, Delete as DeleteBtn } from '../UI/Buttons/FormButtons';
 
 const DeleteSubject = ({ deleting, onClose }) => {
   const dispatch = useDispatch();

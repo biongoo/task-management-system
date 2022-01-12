@@ -119,7 +119,9 @@ const AddItem = ({ editing, onClose }) => {
         const subjectTypeTmp = {
           target: {
             value: {
-              label: `${editing.teacherSubjectType.type.name} - ${editing.teacherSubjectType.teacher.academicTitle} ${editing.teacherSubjectType.teacher.firstName} ${editing.teacherSubjectType.teacher.lastName}`,
+              label: editing.teacherSubjectType.teacher
+                ? `${editing.teacherSubjectType.type.name} - ${editing.teacherSubjectType.teacher.academicTitle} ${editing.teacherSubjectType.teacher.firstName} ${editing.teacherSubjectType.teacher.lastName}`
+                : editing.teacherSubjectType.type.name,
               id: editing.teacherSubjectType.id,
             },
           },
@@ -129,7 +131,9 @@ const AddItem = ({ editing, onClose }) => {
         subjectNameChangeHandler(subjectNameTmp);
         setTypesLabel(
           teacherSubjectTypes.map((tst) => ({
-            label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
+            label: tst.teacher
+              ? `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`
+              : tst.type.name,
             id: tst.id,
           }))
         );
@@ -234,11 +238,11 @@ const AddItem = ({ editing, onClose }) => {
     const resultAction = await dispatch(
       editPlan({
         id: editing.id,
-        name: name.trim() ? name : null,
+        name: tab === 1 ? name.trim() : null,
         day: editing.day,
         startTime: start,
         endTime: end,
-        tstId: subjectType ? subjectType.id : null,
+        tstId: tab === 0 ? subjectType.id : null,
         repetition: +frequency,
       })
     );
@@ -291,7 +295,9 @@ const AddItem = ({ editing, onClose }) => {
       );
       setTypesLabel(
         teacherSubjectTypes.map((tst) => ({
-          label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
+          label: tst.teacher
+            ? `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`
+            : tst.type.name,
           id: tst.id,
         }))
       );
@@ -347,7 +353,9 @@ const AddItem = ({ editing, onClose }) => {
       const subjectTypeTmp = {
         target: {
           value: {
-            label: `${editing.teacherSubjectType.type.name} - ${editing.teacherSubjectType.teacher.academicTitle} ${editing.teacherSubjectType.teacher.firstName} ${editing.teacherSubjectType.teacher.lastName}`,
+            label: editing.teacherSubjectType.teacher
+              ? `${editing.teacherSubjectType.type.name} - ${editing.teacherSubjectType.teacher.academicTitle} ${editing.teacherSubjectType.teacher.firstName} ${editing.teacherSubjectType.teacher.lastName}`
+              : editing.teacherSubjectType.type.name,
             id: editing.teacherSubjectType.id,
           },
         },
@@ -357,7 +365,9 @@ const AddItem = ({ editing, onClose }) => {
       subjectNameChangeHandler(subjectNameTmp);
       setTypesLabel(
         teacherSubjectTypes.map((tst) => ({
-          label: `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`,
+          label: tst.teacher
+            ? `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`
+            : tst.type.name,
           id: tst.id,
         }))
       );

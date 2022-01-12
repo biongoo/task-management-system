@@ -14,7 +14,9 @@ import Attachments from './Attachments';
 import EditHomework from './EditHomework';
 import FinishHomework from './FinishHomework';
 import DeleteHomework from './DeleteHomework';
+import { getHour } from '../../utils/formatDate';
 import IconButton from '../UI/Buttons/IconButton';
+import { getWeekNumber } from '../../utils/helpers';
 import { buildDate, buildDateTime } from '../../utils/formatDate';
 import {
   Accordion,
@@ -36,6 +38,7 @@ const HomeworkList = ({ homework, search, tab, homeworkToCalculateTime }) => {
   const [deleting, setDeleting] = useState(null);
   const [expanded, setExpanded] = useState(false);
   const [finishing, setFinishing] = useState(null);
+  const typeOfAccount = useSelector((state) => state.auth.type);
   const [attachments, setAttachments] = useState(initAttachments);
   const paletteColor = useSelector((state) => state.palette.color);
 
@@ -146,11 +149,13 @@ const HomeworkList = ({ homework, search, tab, homeworkToCalculateTime }) => {
                         )}`}
                       </Typography>
                     )}
-                    <Typography variant="body2">
-                      {`${t('global.isMarked')}: ${t(
-                        `global.${homework.isMarked ? 'yes' : 'no'}`
-                      )}`}
-                    </Typography>
+                    {typeOfAccount === 1 && (
+                      <Typography variant="body2">
+                        {`${t('global.isMarked')}: ${t(
+                          `global.${homework.isMarked ? 'yes' : 'no'}`
+                        )}`}
+                      </Typography>
+                    )}
                   </Stack>
                   <Stack>
                     <IconButton
@@ -477,34 +482,19 @@ const insertWithoutDuplicates = (intervals, index, start, end) => {
   }
 };
 
-const getHour = (totalMinutes, t) => {
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-
-  return hours
-    ? minutes
-      ? t('homework.time', { h: hours, m: minutes })
-      : t('homework.timeWoM', { h: hours })
-    : t('homework.timeWoH', { m: minutes });
-};
-
-const getWeekNumber = (d) => {
-  d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-  var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  var weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
-  return weekNo;
-};
-
 const getType = (tst) => {
   let type = '';
   type += tst.type.name;
-  type += ' - ';
-  type += tst.teacher.academicTitle;
-  type += ' ';
-  type += tst.teacher.firstName;
-  type += ' ';
-  type += tst.teacher.lastName;
+
+  if (tst.teacher) {
+    type += ' - ';
+    type += tst.teacher.academicTitle;
+    type += ' ';
+    type += tst.teacher.firstName;
+    type += ' ';
+    type += tst.teacher.lastName;
+  }
+
   return type;
 };
 

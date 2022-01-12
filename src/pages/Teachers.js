@@ -3,11 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Paper, Stack, Backdrop, CircularProgress } from '@mui/material';
 
-import AddTeacher from '../components/Teachers/AddTeacher';
-import Search from '../components/UI/Inputs/Search';
 import Sort from '../components/UI/Sorts/Sort';
-import TeachersList from '../components/Teachers/TeachersList';
+import Search from '../components/UI/Inputs/Search';
 import getTeachers from '../store/teachers/getTeachers';
+import AddTeacher from '../components/Teachers/AddTeacher';
+import TeachersList from '../components/Teachers/TeachersList';
 
 const Teachers = () => {
   const navigate = useNavigate();

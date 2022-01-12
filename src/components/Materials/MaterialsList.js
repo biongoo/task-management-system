@@ -3,14 +3,15 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import EditIcon from '@mui/icons-material/Edit';
 import Highlighter from 'react-highlight-words';
+import InfoIcon from '@mui/icons-material/Info';
 import { Typography, Box, Stack } from '@mui/material';
 import { TransitionGroup } from 'react-transition-group';
-import InfoIcon from '@mui/icons-material/Info';
 
 import Attachments from './Attachments';
 import EditMaterial from './EditMaterial';
 import Divider from '../UI/Dividers/Divider';
 import IconButton from '../UI/Buttons/IconButton';
+import { buildDate } from '../../utils/formatDate';
 import {
   Accordion,
   AccordionSummary,
@@ -25,7 +26,7 @@ const initAttachments = {
 };
 
 const MaterialsList = ({ materials, search, loading }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [editing, setEditing] = useState(null);
   const [expanded, setExpanded] = useState(false);
   const [attachments, setAttachments] = useState(initAttachments);
@@ -78,12 +79,17 @@ const MaterialsList = ({ materials, search, loading }) => {
                       const idx = index + 1;
                       let type = '';
                       type += material.teacherSubjectType.type.name;
-                      type += ' - ';
-                      type += material.teacherSubjectType.teacher.academicTitle;
-                      type += ' ';
-                      type += material.teacherSubjectType.teacher.firstName;
-                      type += ' ';
-                      type += material.teacherSubjectType.teacher.lastName;
+
+                      if (material.teacherSubjectType.teacher) {
+                        type += ' - ';
+                        type +=
+                          material.teacherSubjectType.teacher.academicTitle;
+                        type += ' ';
+                        type += material.teacherSubjectType.teacher.firstName;
+                        type += ' ';
+                        type += material.teacherSubjectType.teacher.lastName;
+                      }
+
                       return (
                         <Collapse key={material.id}>
                           <Stack
@@ -95,7 +101,10 @@ const MaterialsList = ({ materials, search, loading }) => {
                           >
                             <Stack spacing={0.5}>
                               <Typography variant="body2">
-                                {`${t('materials.date')}: ${material.date}`}
+                                {`${t('materials.date')}: ${buildDate(
+                                  new Date(material.date),
+                                  i18n.language
+                                )}`}
                               </Typography>
                               <Typography variant="body2">
                                 {`${t('materials.name')}: ${material.name}`}

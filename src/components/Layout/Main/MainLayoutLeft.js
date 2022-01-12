@@ -4,9 +4,9 @@ import { NavLink } from 'react-router-dom';
 import { alpha } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import HomeIcon from '@mui/icons-material/Home';
+import TaskIcon from '@mui/icons-material/Task';
 import SchoolIcon from '@mui/icons-material/School';
 import SubjectIcon from '@mui/icons-material/Subject';
-import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import AttachmentIcon from '@mui/icons-material/Attachment';
@@ -49,7 +49,7 @@ const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
       },
       {
         text: t('layout.homework'),
-        icon: <HomeWorkIcon sx={{ color: 'primary.light' }} />,
+        icon: <TaskIcon sx={{ color: 'primary.light' }} />,
         path: '/dashboard/homework',
       },
       {
@@ -92,6 +92,16 @@ const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
         text: t('layout.subjects'),
         icon: <SchoolIcon sx={{ color: 'primary.light' }} />,
         path: '/dashboard/subjects',
+      },
+      {
+        text: t('layout.homework'),
+        icon: <TaskIcon sx={{ color: 'primary.light' }} />,
+        path: '/dashboard/homework',
+      },
+      {
+        text: t('layout.materials'),
+        icon: <AttachmentIcon sx={{ color: 'primary.light' }} />,
+        path: '/dashboard/materials',
       },
       {
         text: t('layout.plan'),

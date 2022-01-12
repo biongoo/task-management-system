@@ -124,11 +124,13 @@ const EditDay = ({ openDay, onClose }) => {
 
             if (item.teacherSubjectType) {
               subject += item.teacherSubjectType.subject.name;
-              teacher += item.teacherSubjectType.teacher.academicTitle;
-              teacher += ' ';
-              teacher += item.teacherSubjectType.teacher.firstName;
-              teacher += ' ';
-              teacher += item.teacherSubjectType.teacher.lastName;
+              if (item.teacherSubjectType.teacher) {
+                teacher += item.teacherSubjectType.teacher.academicTitle;
+                teacher += ' ';
+                teacher += item.teacherSubjectType.teacher.firstName;
+                teacher += ' ';
+                teacher += item.teacherSubjectType.teacher.lastName;
+              }
               type += item.teacherSubjectType.type.name;
             }
 

@@ -1,16 +1,13 @@
-import { format } from 'date-fns';
 import { alpha } from '@mui/material/styles';
-import plLocaleFNS from 'date-fns/locale/pl';
 import FullCalendar from '@fullcalendar/react';
 import { useTranslation } from 'react-i18next';
-import enLocaleFNS from 'date-fns/locale/en-US';
 import React, { forwardRef, useEffect } from 'react';
 import InfoIcon from '@mui/icons-material/InfoOutlined';
-import { Box, Stack, Tooltip, Typography } from '@mui/material';
-import { useMediaQuery } from '@mui/material';
+import { Box, Stack, Tooltip, Typography, useMediaQuery } from '@mui/material';
 
 import listPlugin from '@fullcalendar/list';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import { buildTime } from '../../utils/formatDate';
 import plLocale from '@fullcalendar/core/locales/pl';
 import interactionPlugin from '@fullcalendar/interaction';
 
@@ -55,28 +52,15 @@ const renderEventContent = (eventInfo) => {
   let endTime = eventInfo.event.end;
   let onlyDeadline = eventInfo.event.extendedProps.onlyDeadline;
   let onClick = eventInfo.event.extendedProps.onClick;
-  let startTimeString = '';
-  let endTimeString = '';
 
-  switch (eventInfo.view.dateEnv.locale.codeArg) {
-    case 'pl':
-      startTimeString = format(startTime, 'HH:mm', {
-        locale: plLocaleFNS,
-      });
-      endTimeString = format(endTime, 'HH:mm', {
-        locale: plLocaleFNS,
-      });
-      break;
-    case 'en':
-    default:
-      startTimeString = format(startTime, 'h:mmaaaaa', {
-        locale: enLocaleFNS,
-      });
-      endTimeString = format(endTime, 'h:mmaaaaa', {
-        locale: enLocaleFNS,
-      });
-      break;
-  }
+  const startTimeString = buildTime(
+    startTime,
+    eventInfo.view.dateEnv.locale.codeArg
+  );
+  const endTimeString = buildTime(
+    endTime,
+    eventInfo.view.dateEnv.locale.codeArg
+  );
 
   const phoneText = (
     <Typography

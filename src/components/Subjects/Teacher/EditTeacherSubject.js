@@ -216,7 +216,7 @@ const EditTeacherSubject = ({ editing, onClose }) => {
 
     for (const index in state) {
       if (state[index].type !== null) {
-        const entry = { typeId: state[index].type.id };
+        const entry = { id: state[index].id, typeId: state[index].type.id };
 
         if (!isDuplicate(entry, types)) {
           types.push(entry);

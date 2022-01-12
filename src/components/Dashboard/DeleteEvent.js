@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import Dialog from '../UI/Modals/Dialog';
 import { setError } from '../../store/user-slice';
 import { showSnackbar } from '../../store/palette-slice';
-import { Cancel, Delete } from '../UI/Buttons/FormButtons';
 import deleteEvent from '../../store/events/deleteEvent';
+import { Cancel, Delete } from '../UI/Buttons/FormButtons';
 
 const DeleteEvent = ({ deleting, onBack, onExit }) => {
   const dispatch = useDispatch();

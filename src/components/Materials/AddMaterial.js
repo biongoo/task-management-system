@@ -167,6 +167,14 @@ const AddMaterial = () => {
             );
           }, 500);
           break;
+        case 'outOfMaterialsLimit':
+          setErrorAlert('global.error', t('materials.outOfMaterialsLimit'));
+          setLoading(false);
+          return;
+        case 'outOfFilesLimit':
+          setErrorAlert('global.error', t('global.outOfFilesLimit'));
+          setLoading(false);
+          return;
         default:
           dispatch(setError(t('global.expiredSession')));
           break;
@@ -193,7 +201,9 @@ const AddMaterial = () => {
       );
       setTypesLabel(
         teacherSubjectTypes.map((tst) => ({
-          label: tst.teacher ? `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}` : tst.type.name,
+          label: tst.teacher
+            ? `${tst.type.name} - ${tst.teacher.academicTitle} ${tst.teacher.firstName} ${tst.teacher.lastName}`
+            : tst.type.name,
           id: tst.id,
         }))
       );

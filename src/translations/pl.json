@@ -42,6 +42,7 @@
     "notifications": "Powiadomienia",
     "notMarked": "Brak",
     "or": "Lub",
+    "outOfFilesLimit": "Osiągnięto limit przesłanych plików. Kup premium, aby dodać więcej!",
     "password": "Hasło",
     "previous": "Poprzedni",
     "previousMonth": "Poprzedni miesiąc",
@@ -77,6 +78,7 @@
     "noOptions": "Brak opcji",
     "open": "Otwórz",
     "plan": "Plan stały",
+    "premiumTMS": "TMS Premium",
     "settings": "Ustawienia",
     "shortTitle": "TMS",
     "subjects": "Przedmioty",
@@ -194,6 +196,7 @@
     "info": "Info",
     "letsAdd": "Dodaj swoje materiały!",
     "name": "Nazwa",
+    "outOfMaterialsLimit": "Osiągnięto limit dodanych materiałów. Kup premium, aby dodać więcej!",
     "type": "Typ"
   },
   "homework": {
@@ -268,5 +271,14 @@
     "faculty": "Wydział",
     "letsAdd": "Dodaj swoje kierunki!",
     "university": "Uczelnia"
+  },
+  "premium": {
+    "buy": "Kup - 25 PLN/msc",
+    "expires": "Wygasa",
+    "files10": "Więcej niż 10 plików w aplikacji",
+    "materials10": "Więcej niż 10 materiałów",
+    "notActive": "Nieaktywny",
+    "premiumStatus": "Twój status premium",
+    "tasks10": "Więcej niż 10 aktywnych zadań"
   }
 }

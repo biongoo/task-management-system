@@ -16,6 +16,7 @@ import getSubjects from '../store/subjects/getSubjects';
 import getTeachers from '../store/teachers/getTeachers';
 import getHomework from '../store/homework/getHomework';
 import getMaterials from '../store/materials/getMaterials';
+import getPremiumStatus from '../store/user/getPremiumStatus';
 import getUniversities from '../store/universities/getUniversities';
 
 import { resetPlan } from '../store/plan-slice';
@@ -49,6 +50,7 @@ const useInit = () => {
           dispatch(getTypes());
           dispatch(getMaterials());
           dispatch(getSubjects());
+          dispatch(getPremiumStatus());
           if (+typeOfAccount === 1) {
             dispatch(getMarks());
           } else if (+typeOfAccount === 2) {

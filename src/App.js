@@ -10,6 +10,7 @@ import Marks from './pages/Marks';
 import Login from './pages/Login';
 import Forgot from './pages/Forgot';
 import Fields from './pages/Fields';
+import Premium from './pages/Premium';
 import NotFound from './pages/404.js';
 import Settings from './pages/Settings';
 import Teachers from './pages/Teachers';
@@ -33,6 +34,7 @@ function App() {
           <Route path="plan" element={<Plan />} />
           <Route path="marks" element={<Marks />} />
           <Route path="fields" element={<Fields />} />
+          <Route path="premium" element={<Premium />} />
           <Route path="teachers" element={<Teachers />} />
           <Route path="subjects" element={<Subjects />} />
           <Route path="homework" element={<Homework />} />

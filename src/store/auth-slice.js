@@ -16,8 +16,8 @@ const initialState = {
   type:
     localStorage.getItem('type') || sessionStorage.getItem('type')
       ? localStorage.getItem('type')
-        ? localStorage.getItem('type')
-        : sessionStorage.getItem('type')
+        ? +localStorage.getItem('type')
+        : +sessionStorage.getItem('type')
       : '',
   isLoggedIn:
     localStorage.getItem('email') || sessionStorage.getItem('email')

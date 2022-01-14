@@ -42,6 +42,7 @@
     "notifications": "Notifications",
     "notMarked": "Not marked",
     "or": "OR",
+    "outOfFilesLimit": "You reached limit of uploaded files. Buy premium to add more!",
     "password": "Password",
     "previous": "Previous",
     "previousMonth": "Previous month",
@@ -77,6 +78,7 @@
     "noOptions": "No options",
     "open": "Open",
     "plan": "Pernament plan",
+    "premiumTMS": "TMS Premium",
     "settings": "Settings",
     "shortTitle": "TMS",
     "subjects": "Subjects",
@@ -194,6 +196,7 @@
     "info": "Info",
     "letsAdd": "Let's add your materials!",
     "name": "Name",
+    "outOfMaterialsLimit": "You reached limit of added materials. Buy premium to add more!",
     "type": "Type"
   },
   "homework": {
@@ -268,5 +271,14 @@
     "faculty": "Faculty",
     "letsAdd": "Let's add your fields!",
     "university": "University"
+  },
+  "premium": {
+    "buy": "Buy - 25 PLN/mth",
+    "expires": "Expires on",
+    "files10": "More than 10 files in the application",
+    "materials10": "More than 10 materials",
+    "notActive": "Not active",
+    "premiumStatus": "Your premium status",
+    "tasks10": "More than 10 active tasks"
   }
 }

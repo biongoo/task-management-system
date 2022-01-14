@@ -5,6 +5,7 @@ import { alpha } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import HomeIcon from '@mui/icons-material/Home';
 import TaskIcon from '@mui/icons-material/Task';
+import StarIcon from '@mui/icons-material/Star';
 import SchoolIcon from '@mui/icons-material/School';
 import SubjectIcon from '@mui/icons-material/Subject';
 import ScheduleIcon from '@mui/icons-material/Schedule';
@@ -13,14 +14,14 @@ import AttachmentIcon from '@mui/icons-material/Attachment';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import {
   Box,
-  Drawer,
-  SwipeableDrawer,
-  Toolbar,
   List,
+  Drawer,
+  Toolbar,
   ListItem,
+  Typography,
   ListItemIcon,
   ListItemText,
-  Typography,
+  SwipeableDrawer,
 } from '@mui/material';
 
 const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
@@ -147,6 +148,34 @@ const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
     </>
   );
 
+  const premium = (
+    <List style={{ marginTop: `auto` }}>
+      <ListItem
+        component={NavLink}
+        to="/dashboard/premium"
+        button
+        sx={{
+          '&.active': {
+            bgcolor: (theme) => alpha(theme.palette.secondary.main, 0.15),
+            color: 'secondary.main',
+            borderRight: '4px solid',
+            '& .MuiSvgIcon-root': {
+              color: 'secondary.main',
+            },
+          },
+          '&:hover': {
+            bgcolor: (theme) => alpha(theme.palette.primary.light, 0.1),
+          },
+        }}
+      >
+        <ListItemIcon>
+          <StarIcon sx={{ color: 'secondary.main' }} />
+        </ListItemIcon>
+        <ListItemText primary={t('layout.premiumTMS')} />
+      </ListItem>
+    </List>
+  );
+
   return (
     <Box
       component="nav"
@@ -172,8 +201,8 @@ const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
         }}
       >
         {drawer}
+        {premium}
       </SwipeableDrawer>
-
       <Drawer
         variant="permanent"
         sx={{
@@ -189,6 +218,7 @@ const MainLayoutLeft = ({ drawerWidth, mobileOpen, drawerToggleHandler }) => {
         open
       >
         {drawer}
+        {premium}
       </Drawer>
     </Box>
   );

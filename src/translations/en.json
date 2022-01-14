@@ -216,6 +216,7 @@
     "finishBody": "Are you sure you want to finish \"{{name}}\"?",
     "incorrectNumber": "Incorrect number. Min {{min}}, max {{max}}.",
     "letsAdd": "Let's add your tasks!",
+    "outOfCurrentTasksLimit": "You reached limit of current tasks. Buy premium to add more!",
     "restore": "Restore",
     "restoreBody": "Are you sure you want to restore \"{{name}}\"?",
     "time": "{{h}} h {{m}} min",

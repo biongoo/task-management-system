@@ -245,6 +245,14 @@ const AddHomework = () => {
             );
           }, 500);
           break;
+        case 'outOfFilesLimit':
+          setErrorAlert('global.error', t('global.outOfFilesLimit'));
+          setLoading(false);
+          return;
+        case 'outOfCurrentTasksLimit':
+          setErrorAlert('global.error', t('homework.outOfCurrentTasksLimit'));
+          setLoading(false);
+          return;
         default:
           dispatch(setError(t('global.expiredSession')));
           break;

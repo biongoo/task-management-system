@@ -216,6 +216,7 @@
     "finishBody": "Czy aby na pewno chcesz zakończyć \"{{name}}\"?",
     "incorrectNumber": "Nieprawidłowa liczba. Min {{min}}, maks {{max}}.",
     "letsAdd": "Dodaj swoje zadania!",
+    "outOfCurrentTasksLimit": "Osiągnięto limit bieżących zadań. Kup premium, aby dodać więcej!",
     "restore": "Przywróć",
     "restoreBody": "Czy aby na pewno chcesz przywrócić \"{{name}}\"?",
     "time": "{{h}} godz. {{m}} min",

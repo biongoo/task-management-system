@@ -43,6 +43,17 @@ const FinishHomework = ({ finishing, onClose }) => {
             );
           }, 500);
           break;
+        case 'outOfCurrentTasksLimit':
+          setTimeout(() => {
+            dispatch(
+              showSnackbar({
+                message: t('homework.outOfCurrentTasksLimit'),
+                time: 6000,
+                variant: 'error',
+              })
+            );
+          }, 500);
+          break;
         default:
           dispatch(setError(t('global.expiredSession')));
           break;

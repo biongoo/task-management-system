@@ -361,6 +361,10 @@ const EditEvent = ({ editing, onClose }) => {
             );
           }, 500);
           break;
+        case 'outOfFilesLimit':
+          setErrorAlert('global.error', t('global.outOfFilesLimit'));
+          setLoading(false);
+          return;
         default:
           dispatch(setError(t('global.expiredSession')));
           break;

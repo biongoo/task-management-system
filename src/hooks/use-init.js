@@ -1,5 +1,6 @@
 import { useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useIdleTimer } from 'react-idle-timer';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { clearError } from '../store/user-slice';
@@ -17,10 +18,12 @@ import getTeachers from '../store/teachers/getTeachers';
 import getHomework from '../store/homework/getHomework';
 import getMaterials from '../store/materials/getMaterials';
 import getPremiumStatus from '../store/user/getPremiumStatus';
+import getNotifications from '../store/user/getNotifications';
 import getUniversities from '../store/universities/getUniversities';
 
 import { resetPlan } from '../store/plan-slice';
 import { resetMarks } from '../store/marks-slice';
+import { resetPremium } from '../store/user-slice';
 import { resetEvents } from '../store/events-slice';
 import { resetFields } from '../store/fields-slice';
 import { resetHomework } from '../store/homework-slice';
@@ -50,6 +53,7 @@ const useInit = () => {
           dispatch(getTypes());
           dispatch(getMaterials());
           dispatch(getSubjects());
+          dispatch(getNotifications());
           dispatch(getPremiumStatus());
           if (+typeOfAccount === 1) {
             dispatch(getMarks());
@@ -77,11 +81,34 @@ const useInit = () => {
     }
   }, [dispatch, t, typeOfAccount]);
 
+  const handleOnIdle = () => {
+    if (isLoggedIn) {
+      dispatch(startLogout());
+      dispatch(
+        showSnackbar({ message: t('global.expiredSession'), variant: 'error' })
+      );
+    }
+  };
+
+  useIdleTimer({
+    timeout: 1000 * 60 * 30,
+    onIdle: handleOnIdle,
+    crossTab: {
+      emitOnAllTabs: true,
+      type: 'localStorage',
+    },
+  });
+
   useEffect(() => {
     if (isLoggedIn) {
       checkLogin();
+
+      const interval = setInterval(() => {
+        dispatch(getNotifications());
+      }, 15000);
+      return () => clearInterval(interval);
     }
-  }, [isLoggedIn, checkLogin]);
+  }, [isLoggedIn, dispatch, checkLogin]);
 
   useEffect(() => {
     if (error) {
@@ -100,6 +127,7 @@ const useInit = () => {
       dispatch(resetMarks());
       dispatch(resetEvents());
       dispatch(resetFields());
+      dispatch(resetPremium());
       dispatch(resetHomework());
       dispatch(resetSubjects());
       dispatch(resetTeachers());

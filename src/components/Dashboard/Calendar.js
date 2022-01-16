@@ -78,34 +78,19 @@ const renderEventContent = (eventInfo) => {
   );
 
   const normalText = (
-    <Tooltip
-      title={
-        <>
-          <Typography variant="body1">
-            {startTimeString} {!onlyDeadline && <>- {endTimeString}</>}
-          </Typography>
-          <Typography variant="body2">
-            {eventInfo.event.extendedProps.title2}
-          </Typography>
-        </>
-      }
-      placement="right"
-      arrow
+    <Typography
+      variant="body2"
+      sx={{
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        width: '100%',
+        px: 0.5,
+        color: 'text.primary',
+      }}
     >
-      <Typography
-        variant="body2"
-        sx={{
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          width: '100%',
-          px: 0.5,
-          color: 'text.primary',
-        }}
-      >
-        <span style={{ fontWeight: 500 }}>{startTimeString} </span>
-        {eventInfo.event.title}
-      </Typography>
-    </Tooltip>
+      <span style={{ fontWeight: 500 }}>{startTimeString} </span>
+      {eventInfo.event.title}
+    </Typography>
   );
 
   const body =
@@ -128,25 +113,57 @@ const renderEventContent = (eventInfo) => {
     ) : (
       <>
         {onClick && (
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            spacing={0}
-            onClick={onClick}
-            sx={{ width: '100%' }}
+          <Tooltip
+            title={
+              <>
+                <Typography variant="body1">
+                  {startTimeString} {!onlyDeadline && <>- {endTimeString}</>}
+                </Typography>
+                <Typography variant="body2">
+                  {eventInfo.event.extendedProps.title2}
+                </Typography>
+              </>
+            }
+            placement="right"
+            arrow
+          >
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              spacing={0}
+              onClick={onClick}
+              sx={{ width: '100%' }}
+            >
+              {normalText}
+              <InfoIcon
+                sx={{
+                  fontSize: '1.1rem',
+                  marginRight: '2px',
+                  color: 'text.primary',
+                }}
+              />
+            </Stack>
+          </Tooltip>
+        )}
+        {!onClick && (
+          <Tooltip
+            title={
+              <>
+                <Typography variant="body1">
+                  {startTimeString} {!onlyDeadline && <>- {endTimeString}</>}
+                </Typography>
+                <Typography variant="body2">
+                  {eventInfo.event.extendedProps.title2}
+                </Typography>
+              </>
+            }
+            placement="right"
+            arrow
           >
             {normalText}
-            <InfoIcon
-              sx={{
-                fontSize: '1.1rem',
-                marginRight: '2px',
-                color: 'text.primary',
-              }}
-            />
-          </Stack>
+          </Tooltip>
         )}
-        {!onClick && normalText}
       </>
     );
 

@@ -1,6 +1,10 @@
-import { format } from 'date-fns';
 import plLocaleFNS from 'date-fns/locale/pl';
 import enLocaleFNS from 'date-fns/locale/en-US';
+import {
+  format,
+  formatDistanceToNow as formatDistanceToNowFNS,
+  formatDistanceStrict as formatDistanceStrictFNS,
+} from 'date-fns';
 
 export const buildDateTime = (date, lang) => {
   let string = '';
@@ -75,6 +79,50 @@ export const buildTime = (date, lang) => {
     default:
       string = format(date, "h:mmaaaaa'm'", {
         locale: enLocaleFNS,
+      });
+      break;
+  }
+
+  return string;
+};
+
+export const formatDistanceToNow = (date, lang) => {
+  let string = '';
+
+  switch (lang) {
+    case 'pl':
+      string = formatDistanceToNowFNS(date, {
+        locale: plLocaleFNS,
+        addSuffix: true,
+      });
+      break;
+    case 'en':
+    default:
+      string = formatDistanceToNowFNS(date, {
+        locale: enLocaleFNS,
+        addSuffix: true,
+      });
+      break;
+  }
+
+  return string;
+};
+
+export const formatDistanceStrict = (date, date2, lang) => {
+  let string = '';
+
+  switch (lang) {
+    case 'pl':
+      string = formatDistanceStrictFNS(date, date2, {
+        locale: plLocaleFNS,
+        addSuffix: true,
+      });
+      break;
+    case 'en':
+    default:
+      string = formatDistanceStrictFNS(date, date2, {
+        locale: enLocaleFNS,
+        addSuffix: true,
       });
       break;
   }

@@ -38,7 +38,7 @@ const AddUniversity = () => {
     inputTouchHandler: nameTouchHandler,
     reset: nameReset,
   } = useInput(
-    (value) => value.trim().length > 1 && value.trim().length <= 200
+    (value) => value.trim().length > 0 && value.trim().length <= 200
   );
 
   const formIsValis = nameIsValid;

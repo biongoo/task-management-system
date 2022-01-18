@@ -339,9 +339,13 @@ const buildIntervals = (events, plan, homeworkToCalculateTime) => {
             }
           }
 
-          if (maxDayTime.getTime() < maxTime.getTime()) {
-            maxTime = maxDayTime;
-          }
+          maxTime = new Date(
+            Math.min(
+              maxDayTime.getTime(),
+              maxTime.getTime(),
+              endTaskDate.getTime()
+            )
+          );
 
           const minutes = (maxTime.getTime() - freeStart.getTime()) / 1000 / 60;
 
@@ -367,6 +371,48 @@ const buildIntervals = (events, plan, homeworkToCalculateTime) => {
           }
         }
         if (breakLoop) break;
+      }
+
+      if (estimatedTime > 0) {
+        const length = intervals.length === 0;
+        const lastSmallerThanEndTask = !length
+          ? intervals[intervals.length - 1].end < endTaskDate
+          : false;
+
+        if (length || lastSmallerThanEndTask) {
+          if (lastSmallerThanEndTask) {
+            freeStart = new Date(intervals[intervals.length - 1].end);
+          }
+
+          while (estimatedTime > 0 && freeStart < endTaskDate) {
+            let maxTime = new Date(freeStart);
+            maxTime.setHours(22);
+            maxTime.setMinutes(0);
+
+            maxTime = new Date(
+              Math.min(maxTime.getTime(), endTaskDate.getTime())
+            );
+
+            const minutes =
+              (maxTime.getTime() - freeStart.getTime()) / 1000 / 60;
+
+            if (minutes > estimatedTime) {
+              maxTime.setHours(freeStart.getHours());
+              maxTime.setMinutes(freeStart.getMinutes() + estimatedTime);
+            }
+
+            times.push({ start: new Date(freeStart), end: new Date(maxTime) });
+            estimatedTime -= minutes;
+
+            if (estimatedTime <= 0) {
+              break;
+            }
+
+            freeStart.setDate(freeStart.getDate() + 1);
+            freeStart.setHours(8);
+            freeStart.setMinutes(0);
+          }
+        }
       }
 
       if (estimatedTime <= 0) {

@@ -37,8 +37,10 @@ const useInit = () => {
   const dispatch = useDispatch();
 
   const { error } = useSelector((state) => state.user);
-  const { isLoggedIn, logsOut } = useSelector((state) => state.auth);
   const typeOfAccount = useSelector((state) => state.auth.type);
+  const { isLoggedIn, logsOut, changingPassword } = useSelector(
+    (state) => state.auth
+  );
 
   const checkLogin = useCallback(async () => {
     const resultAction = await dispatch(checkLoginAsync());
@@ -104,11 +106,13 @@ const useInit = () => {
       checkLogin();
 
       const interval = setInterval(() => {
-        dispatch(getNotifications());
+        if (!changingPassword) {
+          dispatch(getNotifications());
+        }
       }, 15000);
       return () => clearInterval(interval);
     }
-  }, [isLoggedIn, dispatch, checkLogin]);
+  }, [isLoggedIn, changingPassword, dispatch, checkLogin]);
 
   useEffect(() => {
     if (error) {

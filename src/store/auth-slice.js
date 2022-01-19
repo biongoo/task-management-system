@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import changePassword from './auth/changePassword';
+
 const initialState = {
   token:
     localStorage.getItem('token') || sessionStorage.getItem('token')
@@ -24,6 +26,7 @@ const initialState = {
       ? true
       : false,
   logsOut: false,
+  changingPassword: false,
 };
 
 const authSlice = createSlice({
@@ -36,6 +39,7 @@ const authSlice = createSlice({
       state.email = email;
       state.type = type;
       state.isLoggedIn = true;
+      state.changingPassword = false;
 
       if (rememberPassword) {
         localStorage.setItem('token', token);
@@ -64,12 +68,23 @@ const authSlice = createSlice({
       state.token = '';
       state.type = 0;
       state.isLoggedIn = false;
+      state.changingPassword = false;
     },
     startLogout: (state) => {
       state.logsOut = true;
     },
     stopLogout: (state) => {
       state.logsOut = false;
+    },
+  },
+  extraReducers: {
+    [changePassword.pending]: (state) => {
+      state.changingPassword = true;
+    },
+    [changePassword.fulfilled]: (state) => {
+      setTimeout(() => {
+        state.changingPassword = false;
+      }, 500);
     },
   },
 });

@@ -339,6 +339,17 @@ const buildIntervals = (events, plan, homeworkToCalculateTime) => {
             }
           }
 
+          if (freeStart.getHours() >= 22) {
+            freeStart.setDate(freeStart.getDate() + 1);
+            freeStart.setHours(8);
+            freeStart.setMinutes(0);
+            continue;
+          } else if (freeStart.getHours() < 8) {
+            freeStart.setHours(8);
+            freeStart.setMinutes(0);
+            continue;
+          }
+
           maxTime = new Date(
             Math.min(
               maxDayTime.getTime(),
@@ -388,6 +399,17 @@ const buildIntervals = (events, plan, homeworkToCalculateTime) => {
             let maxTime = new Date(freeStart);
             maxTime.setHours(22);
             maxTime.setMinutes(0);
+
+            if (freeStart.getHours() >= 22) {
+              freeStart.setDate(freeStart.getDate() + 1);
+              freeStart.setHours(8);
+              freeStart.setMinutes(0);
+              continue;
+            } else if (freeStart.getHours() < 8) {
+              freeStart.setHours(8);
+              freeStart.setMinutes(0);
+              continue;
+            }
 
             maxTime = new Date(
               Math.min(maxTime.getTime(), endTaskDate.getTime())

@@ -25,7 +25,7 @@ const editSubjectStudent = createAsyncThunk(
 
       const dataRes = await response.json();
 
-      return { ...dataRes };
+      return dataRes;
     } catch (err) {
       if (!err.response) throw err;
       return rejectWithValue(err.response.data);

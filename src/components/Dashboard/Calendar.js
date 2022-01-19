@@ -190,6 +190,8 @@ const sxCalendar = {
         },
         '& .fc-popover-body': {
           '& .fc-daygrid-event': {
+            bgcolor: 'inherit',
+            border: 'none',
             marginBottom: 0.5,
             '&:hover': {
               bgcolor: (theme) => alpha(theme.palette.primary.light, 0.15),

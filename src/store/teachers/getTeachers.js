@@ -5,7 +5,7 @@ const getTeachers = createAsyncThunk(
   'teachers/get',
   async (_, { getState, dispatch }) => {
     try {
-      const url = 'http://java.ts4ever.pl/teachers/get';
+      const url = 'https://ts4ever.pl:8443/teachers/get';
       const { email: userEmail, token: userToken, type } = getState().auth;
 
       const response = await fetch(url, {

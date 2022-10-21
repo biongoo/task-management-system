@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 const editMaterial = createAsyncThunk(
   'materials/edit',
   async (formData, { rejectWithValue, getState }) => {
-    const url = 'http://java.ts4ever.pl/materials/edit';
+    const url = 'https://ts4ever.pl:8443/materials/edit';
     const { email, token } = getState().auth;
 
     formData.append('userEmail', email);

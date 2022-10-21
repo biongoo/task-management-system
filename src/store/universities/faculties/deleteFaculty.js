@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 const deleteFaculty = createAsyncThunk(
   'faculties/delete',
   async (data, { rejectWithValue, getState }) => {
-    const url = 'http://java.ts4ever.pl/universities/faculties/delete';
+    const url = 'https://ts4ever.pl:8443/universities/faculties/delete';
     const { email: userEmail, token: userToken } = getState().auth;
 
     try {

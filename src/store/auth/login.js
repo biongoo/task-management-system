@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 const login = createAsyncThunk(
   'auth/signIn',
   async (data, { rejectWithValue }) => {
-    const url = 'http://java.ts4ever.pl/signin';
+    const url = 'https://ts4ever.pl:8443/signin';
     const method = 'POST';
 
     try {

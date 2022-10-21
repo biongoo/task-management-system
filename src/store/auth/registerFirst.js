@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 const registerFirst = createAsyncThunk(
   'auth/registerFirst',
   async (data, { rejectWithValue }) => {
-    const url = 'http://java.ts4ever.pl/signup/firststep';
+    const url = 'https://ts4ever.pl:8443/signup/firststep';
     const method = 'POST';
 
     try {

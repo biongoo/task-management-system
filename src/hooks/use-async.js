@@ -4,7 +4,7 @@ export const editThunk = (path) => {
   const thunk = createAsyncThunk(
     path,
     async (data, { rejectWithValue, getState }) => {
-      const url = 'http://java.ts4ever.pl/subjects/types/delete';
+      const url = 'https://ts4ever.pl:8443/subjects/types/delete';
       const method = 'POST';
 
       const { id } = data;

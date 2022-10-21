@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 const forgotThird = createAsyncThunk(
   'auth/forgotThird',
   async (data, { rejectWithValue }) => {
-    const url = 'http://java.ts4ever.pl/forgotpassword/thirdstep';
+    const url = 'https://ts4ever.pl:8443/forgotpassword/thirdstep';
     const method = 'POST';
 
     try {

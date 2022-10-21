@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 const addMark = createAsyncThunk(
   'marks/add',
   async (data, { rejectWithValue, getState }) => {
-    const url = 'http://java.ts4ever.pl/marks/add';
+    const url = 'https://ts4ever.pl:8443/marks/add';
     const { email: userEmail, token: userToken } = getState().auth;
 
     try {

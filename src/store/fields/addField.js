@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 const addField = createAsyncThunk(
   'fields/add',
   async (data, { rejectWithValue, getState }) => {
-    const url = 'http://java.ts4ever.pl/fields/add';
+    const url = 'https://ts4ever.pl:8443/fields/add';
     const { email: userEmail, token: userToken } = getState().auth;
 
     try {

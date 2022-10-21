@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 const addType = createAsyncThunk(
   'subjects/types/add',
   async (data, { rejectWithValue, getState }) => {
-    const url = 'http://java.ts4ever.pl/subjects/types/add';
+    const url = 'https://ts4ever.pl:8443/subjects/types/add';
     const { email: userEmail, token: userToken } = getState().auth;
 
     try {

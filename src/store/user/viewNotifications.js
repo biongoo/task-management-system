@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 const viewNotifications = createAsyncThunk(
   'notifications/view',
   async (data, { rejectWithValue, getState }) => {
-    const url = 'http://java.ts4ever.pl/notifications/view';
+    const url = 'https://ts4ever.pl:8443/notifications/view';
     const { email: userEmail, token: userToken } = getState().auth;
 
     try {

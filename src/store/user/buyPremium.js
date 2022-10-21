@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 const buyPremium = createAsyncThunk(
   'premium/buy',
   async (data, { rejectWithValue, getState }) => {
-    const url = 'http://java.ts4ever.pl/premium/buy';
+    const url = 'https://ts4ever.pl:8443/premium/buy';
     const { email: userEmail, token: userToken } = getState().auth;
 
     try {

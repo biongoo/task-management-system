@@ -689,7 +689,7 @@ const EditEvent = ({ editing, onClose }) => {
                           <Link
                             href={
                               index >= Object.keys(files).length
-                                ? `http://java.ts4ever.pl/files/download/${item.id}`
+                                ? `https://ts4ever.pl:8443/files/download/${item.id}`
                                 : '#'
                             }
                             color="inherit"

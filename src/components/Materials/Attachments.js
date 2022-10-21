@@ -49,7 +49,7 @@ const Attachments = ({ attachments, handleClose }) => {
               <ListItemText
                 primary={
                   <Link
-                    href={`http://java.ts4ever.pl/files/download/${item.id}`}
+                    href={`https://ts4ever.pl:8443/files/download/${item.id}`}
                     color="inherit"
                   >
                     {item.name}

@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 const checkLogin = createAsyncThunk(
   'auth/checkLogin',
   async (_, { rejectWithValue, getState }) => {
-    const url = 'http://java.ts4ever.pl/signin/checklogin';
+    const url = 'https://ts4ever.pl:8443/signin/checklogin';
     const method = 'POST';
 
     const { email: userEmail, token: userToken, type } = getState().auth;

@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 const finishHomework = createAsyncThunk(
   'homework/finish',
   async (data, { rejectWithValue, getState }) => {
-    const url = 'http://java.ts4ever.pl/homework/finish';
+    const url = 'https://ts4ever.pl:8443/homework/finish';
     const { email: userEmail, token: userToken } = getState().auth;
 
     try {

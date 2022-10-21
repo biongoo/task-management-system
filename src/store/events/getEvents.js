@@ -5,7 +5,7 @@ const getEvents = createAsyncThunk(
   'events/get',
   async (_, { getState, dispatch }) => {
     try {
-      const url = 'http://java.ts4ever.pl/events/get';
+      const url = 'https://ts4ever.pl:8443/events/get';
       const { email: userEmail, token: userToken, type } = getState().auth;
 
       const response = await fetch(url, {

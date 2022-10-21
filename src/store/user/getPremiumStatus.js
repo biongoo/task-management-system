@@ -5,7 +5,7 @@ const getPremiumStatus = createAsyncThunk(
   'premium/get',
   async (_, { getState, dispatch }) => {
     try {
-      const url = 'http://java.ts4ever.pl/premium/get';
+      const url = 'https://ts4ever.pl:8443/premium/get';
       const { email: userEmail, token: userToken, type } = getState().auth;
 
       const response = await fetch(url, {

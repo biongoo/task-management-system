@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 const changePassword = createAsyncThunk(
   'account/password',
   async (data, { rejectWithValue, getState }) => {
-    const url = 'http://java.ts4ever.pl/account/password';
+    const url = 'https://ts4ever.pl:8443/account/password';
     const { email: userEmail, token: userToken } = getState().auth;
 
     try {

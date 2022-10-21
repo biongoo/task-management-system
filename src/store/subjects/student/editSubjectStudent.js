@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 const editSubjectStudent = createAsyncThunk(
   'subjects/student/edit',
   async (data, { rejectWithValue, getState }) => {
-    const url = 'http://java.ts4ever.pl/subjects/student/edit';
+    const url = 'https://ts4ever.pl:8443/subjects/student/edit';
     const { email: userEmail, token: userToken } = getState().auth;
     const { id, name, teacherType } = data;
 
